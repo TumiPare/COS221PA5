@@ -24,10 +24,8 @@ export class EventsComponent implements OnInit {
 
   ngOnInit(): void { }
 
-  navigateToEventPage(url: string) {
-    url = url.replace(/ /g, '-');
-    console.log(url);
-    this.router.navigate([`${url}`]);
+  navigateToTeamPage(teamID: number, teamName: string) {
+    this.router.navigate([`team/${teamID}/${teamName}`]);
   }
 
 }

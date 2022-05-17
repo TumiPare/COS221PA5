@@ -12,12 +12,14 @@ import { MaterialModule } from './material/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { TeamCardComponent } from './team-card/team-card.component';
+import { TeamComponent } from './team/team.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     EventsComponent,
     TeamCardComponent,
+    TeamComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
