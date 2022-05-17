@@ -1,0 +1,13 @@
+<div fxFlex fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="40px" class="container">
+    <p style="padding-top: 4rem; font-size: 50pt;">Tournements</p>
+    <div fxFlex fxLayout="column" fxLayoutAlign="center center" class="tourneyContainer"
+        *ngFor="let tournement of tournements">
+        <p class="tourneyName">{{tournement.tournementName}}</p>
+        <div fxFlex fxLayout="row" fxLayoutGap="10px" class="tourneyParticipants">
+            <div fxFlex="25%" style="border: 3px solid; border-radius: 30px; border-color: grey; height: 5rem;"></div>
+            <div fxFlex="25%" style="border: 3px solid; border-radius: 30px; border-color: grey; height: 5rem;"></div>
+            <div fxFlex="25%" style="border: 3px solid; border-radius: 30px; border-color: grey; height: 5rem;"></div>
+            <div fxFlex="25%" style="border: 3px solid; border-radius: 30px; border-color: grey; height: 5rem;"></div>
+        </div>
+    </div>
+</div>
