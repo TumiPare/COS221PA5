@@ -1,1 +1,12 @@
-<p>{{teamName}}</p>
+<div fxFlex fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="40px" class="container"
+    style="padding-top: 6rem;">
+    <div style="display: flex; width: 90%; justify-content: space-around;" class="">
+        <p style="font-size: 50pt;">{{teamName}}</p>
+        <div style="border: 3px solid; border-color: grey; border-radius: 30px; width: 120px; height: 100px;">team_logo
+        </div>
+    </div>
+    <p style="font-size: 30pt; width: 80%">Members</p>
+    <div class="teamMembersCont">
+        <app-team-member *ngFor="let i of [0, 1, 2, 3, 4, 5, 6]" [memberID]="i"></app-team-member>
+    </div>
+</div>

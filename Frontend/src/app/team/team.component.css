@@ -1,0 +1,11 @@
+.teamMembersCont {
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+}
+.teamMembersCont > app-team-member {
+    flex: 30%;
+    height: 8rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
