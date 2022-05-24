@@ -1,0 +1,164 @@
+
+
+body {
+
+
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    position: relative;
+    background-position: 10%;
+    background-size: 100% 134%;
+    color: gainsboro;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif
+}
+
+ .fa-regular fa-diamond
+ {
+     font-size: 2em;
+ }
+ 
+
+
+ .Main{
+     display: flex;
+     flex-direction: row;
+     gap: 30px;
+     
+     background-repeat: no-repeat;  
+     background-position: 55%;
+     background-size: 30% 40%;
+     justify-content: flex-start;
+ }
+ 
+
+
+
+
+ .lefter{
+     display: flex;
+     flex-direction: column;
+     position: relative;
+     left: 2%;
+     gap: 20px;
+     width: 350px;
+     
+     /* border: solid black 1px; */
+ }
+
+ .navbar:hover{
+    background-color: rgba(202, 202, 202, 0.068);
+}
+ 
+ .headers{
+     display: flex;
+     flex-direction: row;
+     gap:100px;
+     font-family: Verdana, Geneva, Tahoma, sans-serif;
+ }
+ .header{
+     display: flex;
+     color: rgb(198, 204, 207);
+     flex-direction: row;
+     gap: 10px;
+     
+     
+     /* border: solid black 1px; */
+     align-items: center;
+ }
+
+ #WP{
+     padding-left: 50px;
+     padding-top: 20px;
+ }
+
+
+
+
+ #mess{
+     visibility:hidden;
+ }
+ 
+
+
+ .Input:hover{
+    background-color: rgba(202, 202, 202, 0.068);
+}
+
+
+
+
+  .Input,.Pref{
+    background-color: rgba(0, 0, 0, 0.2);
+    width: 260px;
+    padding: 10px 10px;
+    border-radius: 30px;
+    border: solid black 1px;
+    text-align: center;
+    height:  450px;
+  }
+
+  .Pref
+  {
+      visibility: hidden;
+  }
+
+
+  #buffer{
+      height: 450px;
+  }
+
+
+.navbar a:hover{
+
+
+    animation: yeet;
+    animation-duration: 4s;
+    animation-iteration-count: infinite;
+}
+
+ #Logo{
+    shape-rendering: auto;
+    width: 10%;
+
+ }
+
+
+
+
+ .navbar{
+     background-color:    rgba(0, 0, 0, 0.2);
+     width: 260px;
+     border-radius: 5%;
+     padding: 10px 10px;
+     text-align: center;
+     border: solid black 1px;
+ }
+
+
+ 
+ .navbar a{
+     text-decoration: none;
+     color: yellow;
+    
+ }
+
+ #buff{
+     height: 20px;
+ }
+
+  .bar{
+    background-color: rgba(0, 0, 0, 0.2);
+    width: 360px;
+    padding: 10px 10px;
+    border-radius: 40px;
+    height: 100px;
+    border: solid black 1px;
+    text-align: center;
+    visibility: hidden;
+  }
+
+  
+
+  #Helpimg{
+      width: 30%;
+  }

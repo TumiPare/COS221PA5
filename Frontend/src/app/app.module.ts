@@ -14,6 +14,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { TeamCardComponent } from './team-card/team-card.component';
 import { TeamComponent } from './team/team.component';
 import { TeamMemberComponent } from './team-member/team-member.component';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { TeamMemberComponent } from './team-member/team-member.component';
     TeamCardComponent,
     TeamComponent,
     TeamMemberComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
