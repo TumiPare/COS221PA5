@@ -1,0 +1,325 @@
+
+
+body {
+
+
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    position: relative;
+    background-position: 10%;
+    background-size: 100% 134%;
+    color: gainsboro;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif
+}
+
+ .fa-regular fa-diamond
+ {
+     font-size: 2em;
+ }
+ 
+
+ footer {
+    text-align: center;
+    float: none;
+}
+
+ .Main{
+     display: flex;
+     flex-direction: row;
+     gap: 30px;
+     
+     background-repeat: no-repeat;  
+     background-position: 55%;
+     background-size: 30% 40%;
+     justify-content: flex-start;
+ }
+ #theme{
+    width: 1%;
+ }
+
+ #MNT{
+     font-size: xx-large;
+     text-align: center;
+     justify-content: center;
+ }
+
+
+ .lefter{
+     display: flex;
+     flex-direction: column;
+     position: relative;
+     left: 2%;
+     gap: 20px;
+     width: 350px;
+     
+     /* border: solid black 1px; */
+ }
+
+ .navbar:hover{
+    background-color: rgba(202, 202, 202, 0.068);
+}
+ 
+ .headers{
+     display: flex;
+     flex-direction: row;
+     gap:100px;
+     font-family: Verdana, Geneva, Tahoma, sans-serif;
+ }
+ .header{
+     display: flex;
+     color: rgb(198, 204, 207);
+     flex-direction: row;
+     gap: 10px;
+     
+     
+     /* border: solid black 1px; */
+     align-items: center;
+ }
+
+ 
+
+ #HealthImg,#PoliticalImg,#ScienceImg,#EconomicImg,#TourismImg{
+   
+      width: 90%; 
+      z-index: 20;
+ }
+
+ #san{
+     justify-content: center;
+ }
+
+ #mess{
+     visibility:hidden;
+ }
+ 
+
+
+ 
+
+
+
+ .Input:hover{
+    background-color: rgba(202, 202, 202, 0.068);
+}
+
+ 
+  #pici{
+    shape-rendering: auto;
+    width: 10%;
+  }
+  .dark-mode {
+    background-color: black;
+    background-image: none;
+    color: white;
+  }
+
+
+
+  .Input,.Pref{
+    background-color: rgba(0, 0, 0, 0.2);
+    width: 260px;
+    padding: 10px 10px;
+    border-radius: 30px;
+    border: solid black 1px;
+    text-align: center;
+    height:  450px;
+  }
+
+  .Pref
+  {
+      visibility: hidden;
+  }
+
+  #cate{
+      text-align: left;
+  }
+
+
+
+  #buffer{
+      height: 450px;
+  }
+
+
+
+
+@keyframes yeet {
+    0%   {color:red; left:0px; top:0px;}
+    25%  {color:rgb(9, 255, 0); left:200px; top:0px;}
+    50%  {color:blue; left:200px; top:200px;}
+    75%  {color:rgb(117, 0, 128); left:0px; top:200px;}
+    100% {color:red; left:0px; top:0px;}
+    
+}
+
+.navbar a:hover{
+
+
+    animation: yeet;
+    animation-duration: 4s;
+    animation-iteration-count: infinite;
+}
+  
+
+
+
+ #Category{
+    width: 50%;
+    align-self: center;
+    justify-content: center;
+ }
+
+  
+
+
+ #Logo{
+    shape-rendering: auto;
+    width: 10%;
+
+ }
+
+ .searchbar{
+     display: flex;
+     flex-direction: row;
+     gap: 5px;
+     justify-content:left;
+
+ }
+
+
+ #bar{
+     width: 80%;
+ }
+
+ 
+
+ 
+
+ #bar:focus::placeholder{
+     
+     color: transparent;
+
+ }
+
+ #Search{
+     align-self: flex-end;
+     width: 8%;
+ }
+
+ .home{
+     left: 20%;
+     display: flex;
+     flex-direction: column;
+     border: solid black 1px;
+     padding: 10px 10px;
+
+     width: 260px;
+     gap: 10px;
+     flex-wrap: nowrap;
+
+     background-color: rgba(0, 0, 0, 0.2);
+     border-radius: 5%;
+     justify-content: center;
+ }
+
+ .home:hover{
+    background-color: rgba(202, 202, 202, 0.068);
+}
+
+ #Info{
+     text-align: center;
+ }
+
+
+ .navbar{
+     background-color:    rgba(0, 0, 0, 0.2);
+     width: 260px;
+     border-radius: 5%;
+     padding: 10px 10px;
+     text-align: center;
+     border: solid black 1px;
+ }
+
+ #NV{
+     color:snow;
+     
+ }
+
+ #Today{
+     color: green;
+ }
+
+ 
+ .navbar a{
+     text-decoration: none;
+     color: yellow;
+    
+ }
+
+ #buff{
+     height: 20px;
+ }
+
+  .bar{
+    background-color: rgba(0, 0, 0, 0.2);
+    width: 360px;
+    padding: 10px 10px;
+    border-radius: 40px;
+    height: 100px;
+    border: solid black 1px;
+    text-align: center;
+    visibility: hidden;
+  }
+
+  
+
+  #MN{
+      text-align: center;
+  }
+
+  #Helpimg{
+      width: 30%;
+  }
+
+  .Category{
+      display: flex;
+      flex-direction: row;
+      gap: 10px;
+  }
+
+  #loger
+  {
+      visibility: hidden;
+  }
+
+  #jan
+  {
+    /* background-color:    rgba(209, 9, 9, 0.8); */
+    border-radius: 15px;
+    padding: 5px 5px;
+    background: linear-gradient(217deg, rgba(87,49,162,1) 0%, rgba(24,8,44,1) 100%);
+  }
+
+  #loder{
+      position: relative;
+      justify-content: center;
+   
+      z-index: 30;
+  }
+
+  #loader{
+    justify-content: center;
+    -ms-flex-align: center;
+    
+    
+    z-index: 30; 
+  }
+
+  #ano{
+    text-decoration:underline;
+    color: snow;
+  }
+
+  .checkbox1{
+      text-align: center;
+  }
