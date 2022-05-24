@@ -13,6 +13,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { TeamCardComponent } from './team-card/team-card.component';
 import { TeamComponent } from './team/team.component';
+import { TeamMemberComponent } from './team-member/team-member.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { TeamComponent } from './team/team.component';
     EventsComponent,
     TeamCardComponent,
     TeamComponent,
+    TeamMemberComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
