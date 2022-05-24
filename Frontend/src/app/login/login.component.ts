@@ -48,7 +48,7 @@ export class LoginComponent implements OnInit {
         passwordD.value="";
 
           document.getElementById("Password").focus();
-          this.Print("Please check that your Password is valid");
+          this.Print("Please ensure that your Password is valid and correct");
           return;
         }
     // Password validated.
@@ -57,6 +57,15 @@ export class LoginComponent implements OnInit {
  
 
   ngOnInit(): void {
+
+    document.getElementById("Helpimg").onclick = function()
+    {
+      document.getElementsByClassName("bar")[0].innerHTML= "<br><p>Please enter your email and password. Ensure your password has a digit and special character</p>"
+      let jan = document.getElementsByClassName("bar") as HTMLCollectionOf<HTMLElement>;
+      jan[0].style.visibility = "visible";
+    }
   }
+
+
 
 }

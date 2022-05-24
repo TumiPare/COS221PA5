@@ -18,10 +18,6 @@ body {
  }
  
 
- footer {
-    text-align: center;
-    float: none;
-}
 
  .Main{
      display: flex;
@@ -33,15 +29,9 @@ body {
      background-size: 30% 40%;
      justify-content: flex-start;
  }
- #theme{
-    width: 1%;
- }
+ 
 
- #MNT{
-     font-size: xx-large;
-     text-align: center;
-     justify-content: center;
- }
+
 
 
  .lefter{
@@ -76,17 +66,13 @@ body {
      align-items: center;
  }
 
- 
-
- #HealthImg,#PoliticalImg,#ScienceImg,#EconomicImg,#TourismImg{
-   
-      width: 90%; 
-      z-index: 20;
+ #WP{
+     padding-left: 50px;
+     padding-top: 20px;
  }
 
- #san{
-     justify-content: center;
- }
+
+
 
  #mess{
      visibility:hidden;
@@ -94,24 +80,10 @@ body {
  
 
 
- 
-
-
-
  .Input:hover{
     background-color: rgba(202, 202, 202, 0.068);
 }
 
- 
-  #pici{
-    shape-rendering: auto;
-    width: 10%;
-  }
-  .dark-mode {
-    background-color: black;
-    background-image: none;
-    color: white;
-  }
 
 
 
@@ -130,27 +102,11 @@ body {
       visibility: hidden;
   }
 
-  #cate{
-      text-align: left;
-  }
-
-
 
   #buffer{
       height: 450px;
   }
 
-
-
-
-@keyframes yeet {
-    0%   {color:red; left:0px; top:0px;}
-    25%  {color:rgb(9, 255, 0); left:200px; top:0px;}
-    50%  {color:blue; left:200px; top:200px;}
-    75%  {color:rgb(117, 0, 128); left:0px; top:200px;}
-    100% {color:red; left:0px; top:0px;}
-    
-}
 
 .navbar a:hover{
 
@@ -159,18 +115,6 @@ body {
     animation-duration: 4s;
     animation-iteration-count: infinite;
 }
-  
-
-
-
- #Category{
-    width: 50%;
-    align-self: center;
-    justify-content: center;
- }
-
-  
-
 
  #Logo{
     shape-rendering: auto;
@@ -178,57 +122,7 @@ body {
 
  }
 
- .searchbar{
-     display: flex;
-     flex-direction: row;
-     gap: 5px;
-     justify-content:left;
 
- }
-
-
- #bar{
-     width: 80%;
- }
-
- 
-
- 
-
- #bar:focus::placeholder{
-     
-     color: transparent;
-
- }
-
- #Search{
-     align-self: flex-end;
-     width: 8%;
- }
-
- .home{
-     left: 20%;
-     display: flex;
-     flex-direction: column;
-     border: solid black 1px;
-     padding: 10px 10px;
-
-     width: 260px;
-     gap: 10px;
-     flex-wrap: nowrap;
-
-     background-color: rgba(0, 0, 0, 0.2);
-     border-radius: 5%;
-     justify-content: center;
- }
-
- .home:hover{
-    background-color: rgba(202, 202, 202, 0.068);
-}
-
- #Info{
-     text-align: center;
- }
 
 
  .navbar{
@@ -240,14 +134,6 @@ body {
      border: solid black 1px;
  }
 
- #NV{
-     color:snow;
-     
- }
-
- #Today{
-     color: green;
- }
 
  
  .navbar a{
@@ -273,53 +159,6 @@ body {
 
   
 
-  #MN{
-      text-align: center;
-  }
-
   #Helpimg{
       width: 30%;
-  }
-
-  .Category{
-      display: flex;
-      flex-direction: row;
-      gap: 10px;
-  }
-
-  #loger
-  {
-      visibility: hidden;
-  }
-
-  #jan
-  {
-    /* background-color:    rgba(209, 9, 9, 0.8); */
-    border-radius: 15px;
-    padding: 5px 5px;
-    background: linear-gradient(217deg, rgba(87,49,162,1) 0%, rgba(24,8,44,1) 100%);
-  }
-
-  #loder{
-      position: relative;
-      justify-content: center;
-   
-      z-index: 30;
-  }
-
-  #loader{
-    justify-content: center;
-    -ms-flex-align: center;
-    
-    
-    z-index: 30; 
-  }
-
-  #ano{
-    text-decoration:underline;
-    color: snow;
-  }
-
-  .checkbox1{
-      text-align: center;
   }
