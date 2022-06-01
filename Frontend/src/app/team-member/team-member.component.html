@@ -1,4 +1,7 @@
-<div fxLayout="column" fxLayoutAlign="center center" class="memberContainer">
+<div fxLayout="column" fxLayoutAlign="center center" class="memberContainer" (mouseenter)="displayEdit()" (mouseleave)="displayEdit()">
+    <div #editButton class="editMember" style="display: none;" (click)="editMember()">
+        <mat-icon class="editIcon">edit</mat-icon>
+    </div>
     <p>member name</p>
     <p>photo</p>
     <p>stats</p>
