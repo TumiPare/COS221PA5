@@ -20,14 +20,12 @@ export class LoginComponent implements OnInit {
     let  Regex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
 
-    let mailD = document.getElementById("email") as HTMLInputElement;
-    let mail = mailD.value;   //because typescript doesnt recognize getelementbyid.value
-    if (mail.match(Regex)) {
+    let mailD = (document.getElementById("email") as HTMLInputElement).value;
+    if (mailD.match(Regex)) {
     // Good job :)
       }
     else {
         document.getElementById("email").focus();
-        mailD.value="";
         this.Print("Please check that your email is valid");
         return;
       }
@@ -45,7 +43,6 @@ export class LoginComponent implements OnInit {
       // Good job :)
         }
       else {
-        passwordD.value="";
 
           document.getElementById("Password").focus();
           this.Print("Please ensure that your Password is valid and correct");
