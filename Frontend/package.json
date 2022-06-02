@@ -10,7 +10,7 @@
         "e2e": "ng e2e",
         "dev:ssr": "ng run faade:serve-ssr",
         "serve:ssr": "node dist/faade/server/main.js",
-        "build:prod": "ng build --prod",
+        "build:prod": "node --max-old-space-size=512 ./node_modules/@angular/cli/bin/ng build --prod",
         "build:ssr": "ng build --prod && ng run faade:server:production",
         "prerender": "ng run faade:prerender",
         "backend": "nodemon dist/faade/server"
