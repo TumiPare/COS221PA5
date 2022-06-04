@@ -114,11 +114,36 @@ class API {
     } else if ($this->request["type"] == "login") {
       $this->LoginUser();
     }
+
+    switch(this->request["type"]) //TODO: FIX THIS
+    {
+      case "player": handlePlayer(this->request); break;
+      case "team":   handleTeam(this->request); break;
+      case "user":   handleUser(this->request); break;
+
+    }
     // creates the last part of the response, You should make the main
     //  parts of the response in the body of the function that you
     //  excecute
     $this->response["status"] = "success";
     $this->response["timestamp"] = time();
+  }
+}
+
+function handlePlayer($req)
+{
+  if(isset($req["add"]))
+  {
+    $toSet = $req["set"];
+    $email = "";
+    if(!isset($toSet["email"]) || !isset($toSet["password"]))
+    {
+      throw new ApiException(400, "invalid_user_add", "The request to add a new user was of invalid format");
+    }
+  }
+  else if (isset($req["get"]))
+  {
+
   }
 }
 
@@ -130,4 +155,15 @@ try {
 } catch (ApiException $e) {
   error_log($e->getTraceAsString());
   $e->sendJsonResponse();
+}
+
+function sendResponse($data) {
+  header("200 OK");
+  header("Content-Type: application/json");
+
+  echo (json_encode([
+    "status" => "succes",
+    "timestamp" => time(),
+    "data" => $data
+  ]));
 }
