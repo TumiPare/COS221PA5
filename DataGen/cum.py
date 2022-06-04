@@ -1,6 +1,5 @@
 import csv
 import requests as req
-import randimage
 import base64
 from random import random, randrange, seed
 from time import time
@@ -141,6 +140,4 @@ def addTeams(): #TODO
 
 init()
 
-for i in range(2):
-    print(getImage())
-    print()
+addPlayers(10)
