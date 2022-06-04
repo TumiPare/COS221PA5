@@ -1,10 +1,9 @@
 import csv
 import requests as req
 import base64
+import json as JSON
 from random import random, randrange, seed
 from time import time
-
-from torch import rand
 
 HASH_ALPHABET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 # API = "https://faade.co.za/API.php"
@@ -107,7 +106,9 @@ def addPlayers(n):
         "operation": "add",
         "data": data
     }
-    qAPI(json)
+    # print(JSON.dumps(json))
+    print(json)
+    # qAPI(json)
 
 #=====USERS=====
 def getEmail():
@@ -145,5 +146,5 @@ def addTeams(): #TODO
 
 init()
 
-# addPlayers(10)
-addUsers(10)
+addPlayers(10)
+# addUsers(10)
