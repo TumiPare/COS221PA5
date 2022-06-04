@@ -18,3 +18,9 @@ body {
     padding-right: 1rem;
     padding-top: .65rem;
 }
+
+.outline {
+    border: 3px solid;
+    border-radius: 30px;
+    border-color: grey;
+}
