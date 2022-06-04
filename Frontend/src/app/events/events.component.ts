@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { UserService } from '../user.service';
 
 @Component({
   selector: 'app-events',
@@ -19,13 +20,20 @@ export class EventsComponent implements OnInit {
   }];
 
   constructor(
-    private router: Router
+    private router: Router,
+    private userService: UserService
   ) { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    if (this.userService.userSignedIn)
+      document.getElementById('addTourneyBtn').style.display = "block";
+  }
 
   navigateToTeamPage(teamID: number, teamName: string) {
     this.router.navigate([`team/${teamID}/${teamName}`]);
   }
 
+  addTourney(): void {
+    alert("open Dialog");
+  }
 }
