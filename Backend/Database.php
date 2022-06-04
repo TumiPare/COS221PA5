@@ -1,128 +1,123 @@
 <?php
-  require_once "APIException.php";
-  class Database {
+require_once "APIException.php";
+class Database {
     private static $instance = null;
-    private $server;
-    private $username;
-    private $password;
     private $connection;
 
     public static function getInstance() {
-      if(!self::$instance) {
-	self::$instance = new Database();
-      }
-      return self::$instance;
+        if (!self::$instance) {
+            self::$instance = new Database();
+        }
+        return self::$instance;
     }
 
     private function __construct() {
-      $this->server = "178.128.33.26";
-      $this->username = "blue_church_member";
-      $this->password = "blue_church";
+        $host = $GLOBALS["config"]["database"]["host"];
+		$user = $GLOBALS["config"]["database"]["user"];
+		$password = $GLOBALS["config"]["database"]["password"];
+		$name = $GLOBALS["config"]["database"]["name"];
+		$port = $GLOBALS["config"]["database"]["port"];
 
-      $this->connection = new mysqli($this->server, $this->username, $this->password);
+        $this->connection = new mysqli($host, $user, $password, $name, $port);
 
-      if ($this->connection->connect_error) {
-	die("Connection failed: " . $this->connection->connect_error);
-      }
-      $this->connection->select_db("waitless"); // this maay change
+        if ($this->connection->connect_error) {
+            throw new ApiException(500, "server_error", "Could not connect to database");
+        }
     }
 
     private function __destruct() {
-      $this->connection->close();
+        $this->connection->close();
     }
 
+    // ======================================================================================
+	// MAIN DATABASE FUNCTIONS
+	// ======================================================================================
 
-    // Runs any given query.
-    // 	Make a seperate fucntion for each type of SQL statemtn that you want
-    // 	And then use this function in that statement. This makes code
-    // 	Easier to read from the API File.
-    //
-    // 	Uses a  prepared statement.
-    //  Query : SQL string
-    // 	Types : string of sql types, eg: "sdss".
-    //  Parameters: The parameters that you want to use for the statement.
-    // 		Must be a array
-    //  Returns a accociative array of the results
-    public function query($query = "", $types = "", $params = []) {
-      try {
-	$stmt = $this->executeStmt($query, $types, $params);
+    /** Runs a given SQL query (insert OR update)
+     * Will throw an API exception if the query execution failed
+     * @param $query: the SQL query
+     * @param $types: string of sql types, eg: 'sdss'
+     * @param $params: Array of parameters passed for the prepared statement
+     * @return the MySQLi statement
+     */
+    public function executeQuery($query = "", $types = "", $params = []) {
+        $stmt = self::$connection->prepare($query);
 
-	$result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
-	$stmt->close();
+        if ($stmt === false) {
+            throw new ApiException(500, "server_error", "We had a problem with our server. Try again later.");
+        }
 
-	return $result;
-      } catch (ApiException $e) {
-	throw $e;
-      }
+        if (count($params) !== 0 && $stmt->bind_param($types, ...$params) === false) {
+            throw new ApiException(500, "server_error", "We had a problem with our server. Try again later.");
+        }
+
+        $stmt->execute();
+
+        return $stmt;
     }
 
-    // Part of query. IDk how the fuck this works. Ask armand
-    public function executeStmt($query = "", $types = "", $params = []) {
-      $stmt = self::$connection->prepare($query);
-
-      if ($stmt === false) {
-	throw new ApiException(500, "server_error", "We had a problem with our server. Try again later.");
-      }
-
-      if (count($params) !== 0 && $stmt->bind_param($types, ...$params) === false) {
-	throw new ApiException(500, "server_error", "We had a problem with our server. Try again later.");
-      }
-
-      $stmt->execute();
-
-      return $stmt;
+    /** Runs a given select query
+     * Will throw an API exception if the query execution failed
+     * @param $query: the SQL query
+     * @param $types: string of sql types, eg: 'sdss'
+     * @param $params: Array of parameters passed for the prepared statement
+     * @return associative array of the select results
+     */
+    public function select($query = "", $types = "", $params = []) {
+        try {
+            $stmt = $this->executeQuery($query, $types, $params);
+            $result = $stmt->get_result();
+            if ($result == false) {
+                throw new ApiException(500, "server_error", "We had a problem with our server. Try again later.");
+            }
+            $stmt->close();
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } catch (ApiException $e) {
+            throw $e;
+        }
     }
+
+    // ======================================================================================
+	// MAIN QUERY FUNCTIONS
+	// ======================================================================================
 
     // Registers a user. Adds their details to the database.
     // TODO: No idea how the db implimentation works. SO stuff should change
     // 	will mark as todo where needed.
     public function registerUser($email, $password) {
-      // Check if a user exists
-      // TODO: Replace Query
-      $query = "SELECT THE EMAIL";
-      try {
-	$results = $this->query($query, "s", [$email]);
-      } catch (APIException $e) {
-	throw $e;
-      }
+        // Check if a user exists
+        // TODO: Replace Query
+        $query = "SELECT THE EMAIL";
+        $results = $this->select($query, "s", [$email]);
 
-      // if the email exists then throw a error.
-      if ($results[0]["email"] == $email) {
-	throw new APIException(454, "user_error", "The email you provided already has a accociated account. Please login.");
-      }
+        // if the email exists then throw a error.
+        if ($results[0]["email"] == $email) {
+            throw new APIException(454, "user_error", "The email you provided already has a accociated account. Please login.");
+        }
 
-      // Register the user. TODO: Change this according to the database.
-      $query = "INSERT SOME THING IDFK";
-      // Hashing and salting.
-      $password = password_hash($password, PASSWORD_DEFAULT);
+        // Register the user. TODO: Change this according to the database.
+        $query = "INSERT SOME THING IDFK";
+        // Hashing and salting.
+        $password = password_hash($password, PASSWORD_DEFAULT);
 
-      // No need to store result.
-      try {
-	$this->query($query, "ss", [$email, $password]);
-      } catch (APIException $e) {
-	throw $e;
-      }
+        // No need to store result.
+        $this->executeQuery($query, "ss", [$email, $password]);
     }
 
     public function loginUser($email, $password) {
-      // Check if a user exists
-      // TODO: Replace Query
-      $query = "SELECT THE EMAIL";
-      try {
-	$results = $this->query($query, "s", [$email]);
-      } catch (APIException $e) {
-	throw $e;
-      }
+        // Check if a user exists
+        // TODO: Replace Query
+        $query = "SELECT THE EMAIL";
+        $results = $this->select($query, "s", [$email]);
 
-      // Hashing and salting.
-      // TODO: password field might be something else
-      if (password_verify($password,$results["password"])) {
-	//TODO add cookie stuff probably
-	return true;
-      // No need to store result.
-      } else {
-	return false;
-      }
+        // Hashing and salting.
+        // TODO: password field might be something else
+        if (password_verify($password, $results["password"])) {
+            //TODO add cookie stuff probably
+            return true;
+            // No need to store result.
+        } else {
+            return false;
+        }
     }
-  }
-?>
+}

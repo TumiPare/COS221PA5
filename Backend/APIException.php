@@ -35,7 +35,7 @@ class ApiException extends Exception {
 		}
 	}
 
-	public function makeJsonResponse() {
+	public function sendJsonResponse() {
 		header("HTTP/1.1 " . $this->status . " " . $this->error);
 
 		if ($this->message !== "") {
@@ -53,7 +53,7 @@ class ApiException extends Exception {
 			if ($this->id !== "") {
 				$response["error"]["id"] = $this->id;
 			}
-			return json_encode($response);
+			echo (json_encode($response));
 		}
 	}
 }
