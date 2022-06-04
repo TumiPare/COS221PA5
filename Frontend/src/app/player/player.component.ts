@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-player',
@@ -6,8 +7,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./player.component.css']
 })
 export class PlayerComponent implements OnInit {
+  playerName: string;
+  playerID: number;
 
-  constructor() { }
+  constructor(private route: ActivatedRoute,) {
+    this.playerName = this.route.snapshot.paramMap.get('playerName');
+    this.playerID = Number(this.route.snapshot.paramMap.get('playerID'));
+  }
 
   ngOnInit(): void {
   }

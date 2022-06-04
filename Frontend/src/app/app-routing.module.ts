@@ -9,7 +9,7 @@ import { TeamComponent } from './team/team.component';
 const routes: Routes = [
   { path: '', component: EventsComponent },
   { path: 'team/:teamID/:teamName', component: TeamComponent },
-  { path: 'player/:playerID/playerName', component: PlayerComponent },
+  { path: 'player/:playerID/:playerName', component: PlayerComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent }
 ];
