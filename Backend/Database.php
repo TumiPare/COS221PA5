@@ -1,5 +1,6 @@
 <?php
-require_once "APIException.php";
+require_once("APIException.php");
+require_once("config.php");
 class Database {
     private static $instance = null;
     private $connection;

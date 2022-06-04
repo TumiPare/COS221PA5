@@ -1,6 +1,6 @@
 <?php
 require_once("Database.php");
-require_once("ApiException.php");
+require_once("APIException.php");
 class API {
     // Stores the response to be sent. This will be a associative array.
     private $response;
@@ -9,7 +9,7 @@ class API {
     // Database connection.
     private $database;
 
-    private function __construct() {
+    public function __construct() {
         $this->response = "";
         $this->request = "";
         $this->database = Database::getInstance();
