@@ -93,7 +93,24 @@ class Database {
     // ======================================================================================
     // USER FUNCTIONS
     // ======================================================================================
-    
+
+    private function generateAPIKey() {
+      $invalid = true;
+      while ($invalid) {
+	$invalid = false;
+	$key = bin2hex(random_bytes(32));
+	$sub = substr($key,0,32);
+	$closematch = $this->connection->prepare("some database shit. '$sub'");
+	foreach ($closematch as $match) {
+	  if (hash_equals($match, $key)) {
+	    $invalid = true;
+	    break;
+	  }
+	}
+      }
+      return $key;
+    }
+
     // Registers a user. Adds their details to the database.
     // TODO: No idea how the db implimentation works. SO stuff should change
     // 	will mark as todo where needed.
@@ -112,9 +129,65 @@ class Database {
         $query = "INSERT SOME THING IDFK";
         // Hashing and salting.
         $password = password_hash($password, PASSWORD_DEFAULT);
-
+	$apiKey = $this->generateAPIKey();
         // No need to store result.
-        $this->executeQuery($query, "ss", [$email, $password]);
+        $this->executeQuery($query, "sss", [$email, $password, $apiKey]);
+	return $apiKey;
+    }
+
+    public function changeUserPassword($newpassword, $apiKey) {
+        // Check if a user exists
+        // TODO: Replace Query
+        $query = "SELECT THE apiKey";
+        $results = $this->select($query, "s", [$apiKey]);
+
+        // if the email exists then throw a error.
+        if ($results[0]["apiKey"] == $apiKey) {
+	    // Register the user. TODO: Change this according to the database.
+	    $query = "Update SOME THING IDFK";
+	    // Hashing and salting.
+	    $password = password_hash($newpassword, PASSWORD_DEFAULT);
+
+	    // TODO Check  paramter order
+	    $this->executeQuery($query, "ss", [$password, $apiKey]);
+
+	    return $apiKey;
+	} else {
+            throw new APIException(454, "user_error", "This user does not exist. Please login or re-log.");
+	}
+
+    }
+
+    public function changeUserEmail($newEmail, $apiKey) {
+        $query = "SELECT THE apiKey";
+        $results = $this->select($query, "s", [$apiKey]);
+
+        // if the email exists then throw a error.
+        if ($results[0]["apiKey"] == $apiKey) {
+	    // Register the user. TODO: Change this according to the database.
+	    $query = "update SOME THING IDFK";
+	    // TODO Check parameter order
+	    $this->executeQuery($query, "ss", [$newEmail, $apiKey]);
+	    return $apiKey;
+	} else {
+            throw new APIException(454, "user_error", "This user does not exist. Please login or re-log.");
+	}
+    }
+
+    public function changeUserProfilePicture($picture, $apiKey) {
+        $query = "SELECT THE apiKey";
+        $results = $this->select($query, "s", [$apiKey]);
+
+        // if the email exists then throw a error.
+        if ($results[0]["apiKey"] == $apiKey) {
+	    // Register the user. TODO: Change this according to the database.
+	    $query = "update SOME THING IDFK";
+	    // TODO Check parameter order
+	    $this->executeQuery($query, "ss", [$picture, $apiKey]);
+	    return $apiKey;
+	} else {
+            throw new APIException(454, "user_error", "This user does not exist. Please login or re-log.");
+	}
     }
 
     public function loginUser($email, $password) {
@@ -127,7 +200,7 @@ class Database {
         // TODO: password field might be something else
         if (password_verify($password, $results["password"])) {
             //TODO add cookie stuff probably
-            return true;
+            return $results["apiKey"];
             // No need to store result.
         } else {
             return false;
@@ -144,10 +217,10 @@ class Database {
             $query = "INSERT INTO locations (city, country, country_code) VALUES (?, ?, ?)";
             $locationStmt = $this->executeQuery($query, "sss", [$birthAddr["city"], $birthAddr["country"], $birthAddr["countryCode"]]);
             $locationId = $this->getLastGeneratedID();
-            
+
             $query = "INSERT INTO addresses (location_id, street_number, street, postal_code, country) VALUES (?, ?, ?, ?, ?)";
             $addressStmt = $this->executeQuery($query, "iisis", [$locationId, $birthAddr["streetNo"], $birthAddr["street"], $birthAddr["postalCode"], $birthAddr["country"]]);
-    
+
             $query = "INSERT INTO persons (person_key, publisher_id, gender, birth_date, birth_location_id) VALUES (?, ?, ?, ?, ?)";
             $personStmt = $this->executeQuery($query, "sissi", [$object["personKey"], $this->publisher, $object["gender"], $object["DOB"], $locationId]);
             $personId = $this->getLastGeneratedID();
