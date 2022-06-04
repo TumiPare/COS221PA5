@@ -2,9 +2,10 @@
 require_once("Database.php");
 require_once("APIException.php");
 class API {
-    // Stores the response to be sent. This will be a associative array.
+    // Stores the response to be sent. This will be an associative array.
+    // Example: $this->response = $this->database->getPlayers();
     private $response;
-    // Stores the request made by a call. This will be a associative array.
+    // Stores the request made by a user request. This will be an associative array.
     private $request;
     // Database connection.
     private $database;
@@ -41,7 +42,6 @@ class API {
                 "data" => $this->response
             ]));
         }
-
     }
 
     /** Validates all the required fields in a JSON request
@@ -186,7 +186,7 @@ class API {
             throw new ApiException(400, "wrong_request_method", "Only POST requests are allowed.");
         }
 
-        // Get request from user and validate the JSON request
+        // Validate user JSON request
         $request = file_get_contents('php://input');
         if ($this->validateJSON($request)) {
             $this->request = json_decode($request, true);
@@ -217,14 +217,15 @@ class API {
                 break;
         }
 
+        // Response will be sent after whichever query has executed successfully
         $this->sendResponse();
     }
 
     private function handlePlayer() {
         if ($this->request["operation"] == "set") {
-            $this->response = ["this worked"];
+            
         } else if ($this->request["operation"] == "get") {
-
+           $this->response = $this->database->getPlayers();
         } else if ($this->request["operation"] == "add") {
             $data = $this->request["data"];
             $requiredPersonInfo = ["firstName", "lastName", "gender", "DOB", "personKey", "birthAddr"];
