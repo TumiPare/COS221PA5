@@ -95,7 +95,7 @@ def addPlayers(n):
             "surname": name[1],
             "personKey": getPersonKey(),
             "gender": ("female" if name[2]==0 else "male"),
-            "DOB": "/".join(getBirthdate),
+            "DOB": "/".join(map(str, getBirthdate())),
             "pic": getImage(),
             "birthAddr": getAddress(),
             "residenceAddr": getAddress()
@@ -121,14 +121,19 @@ def getRandomHash(n): #n = hash length
         s += randomElement(HASH_ALPHABET)
     return s
 
-def addUsers():
+def addUsers(n):
+    data = []
+    for i in range(n):
+        data.append({
+            "email": getEmail(),
+            "password": getRandomHash(24)
+        })
+
     json = {
         "apiKey": API_KEY,
         "type": "user",
-        "add": {
-            "email": getEmail(),
-            "password": getRandomHash()
-        }
+        "operation": "add",
+        "data": data
     }
     qAPI(json)
     return
@@ -140,4 +145,5 @@ def addTeams(): #TODO
 
 init()
 
-addPlayers(10)
+# addPlayers(10)
+addUsers(10)
