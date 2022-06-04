@@ -15,6 +15,7 @@ import { EditMemberDialog, TeamMemberComponent } from './team-member/team-member
 import { LoginComponent } from './login/login.component';
 import { UserService } from './user.service';
 import { RegisterComponent } from './register/register.component';
+import { PlayerComponent } from './player/player.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { RegisterComponent } from './register/register.component';
     TeamMemberComponent,
     LoginComponent,
     EditMemberDialog,
-    RegisterComponent,   
+    RegisterComponent,
+    PlayerComponent,   
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
