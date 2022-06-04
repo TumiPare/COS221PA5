@@ -10,8 +10,6 @@ class API {
     private $database;
 
     public function __construct() {
-        $this->response = "";
-        $this->request = "";
         $this->database = Database::getInstance();
     }
 
@@ -124,6 +122,14 @@ class API {
             throw new ApiException(400, "malformed_request", "JSON request could not be decoded, make sure syntax is correct.");
         }
 
+        if (!array_key_exists("type", $this->request)) {
+            throw new ApiException(400, "invalid_type", "Type is not specified.");
+        }
+
+        if (!array_key_exists("operation", $this->request)) {
+            throw new ApiException(400, "invalid_operation", "Operation is not specified.");
+        }
+
         switch ($this->request["type"]) {
             case "player":
                 $this->handlePlayer();
@@ -134,19 +140,23 @@ class API {
             case "user":
                 $this->handleUser();
                 break;
+            default:
+                throw new ApiException(400, "invalid_type", "The specified type is not valid.");
+                break;
         }
 
         $this->sendResponse();
     }
 
     function handlePlayer() {
-        if (isset($req["add"])) {
-            $toSet = $req["set"];
-            $email = "";
-            if (!isset($toSet["email"]) || !isset($toSet["password"])) {
-                throw new ApiException(400, "invalid_user_add", "The request to add a new user was of invalid format");
-            }
-        } else if (isset($req["get"])) {
+        if ($this->request["operation"] == "set") {
+            $this->response = ["this worked"];
+        } else if ($this->request["operation"] == "get") {
+
+        } else if ($this->request["operation"] == "add") {
+            $this->database->insertPlayer($this->request["add"]);
+        } else {
+            throw new ApiException(400, "invalid_operation", "Invalid operation, only set, get and add is allowed.");
         }
     }
 
@@ -159,12 +169,9 @@ class API {
     }
 
     function handleTeam() {
+        
     }
 }
-
-
-
-
 
 // API instance to handle all incoming requests
 $api = new API();
