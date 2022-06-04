@@ -1,12 +1,14 @@
 <div fxFlex fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="40px" class="container"
     style="padding-top: 6rem;">
-    <div class="PlayerInfo">
-        playerinfo
-        Player's name: {{playerName}}
+    <p>{{playerName}}</p>
+    <div class="outline playerInfo" fxFlex fxLayout="column" fxLayoutAlign="center center">
+        <p class="outline playerPic">pic</p>
+        <p style="height: 10rem;">Life Description</p>
     </div>
-    <div class="stats">
-        <div class="stat1">foul</div>
-        <div class="stat1">defence</div>
-        <div class="stat1">offence</div>
+    <div class="stats" fxFlex fxLayoutAlign="space-around">
+        <div class="outline statistic" fxFlex fxFlex="30%" fxLayoutAlign="center">foul</div>
+        <div class="outline statistic" fxFlex fxFlex="30%" fxLayoutAlign="center">defence</div>
+        <div class="outline statistic" fxFlex fxFlex="30%" fxLayoutAlign="center">offence</div>
     </div>
+    <div style="margin-bottom: 13rem;"></div>
 </div>
