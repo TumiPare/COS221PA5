@@ -29,11 +29,63 @@ class API {
         header("200 OK");
         header("Content-Type: application/json");
 
-        echo (json_encode([
-            "status" => "success",
-            "timestamp" => time(),
-            "data" => $this->response
-        ]));
+        if ($this->response == null) {
+            echo (json_encode([
+                "status" => "success",
+                "timestamp" => time()
+            ]));
+        } else {
+            echo (json_encode([
+                "status" => "success",
+                "timestamp" => time(),
+                "data" => $this->response
+            ]));
+        }
+
+    }
+
+    /** Validates all the required fields in a JSON request
+     * Will throw an API exception if a required field is missing
+     * @param $data: A associative array containing the request data
+     * @param $fields: An associative array with all the required fields
+     */
+    function validateRequiredFields($data, $fields) {
+        foreach ($fields as $field) {
+            $fieldFound = false;
+
+            foreach ($data as $key => $value) {
+                if ($key == $field) {
+                    $fieldFound = true;
+                    break;
+                }
+            }
+                
+            if (!$fieldFound) {
+                throw new ApiException(400, "required_field_missing", "A required field is missing from one of the objects.");
+            }
+        }
+    }
+
+    /** Validates all the optional fields in a JSON request
+     * Will set any missing optional fields to NULL
+     * @param $data: A associative array containing the request data
+     * @param $fields: An associative array with all the optional fields
+     */
+    function validateOptionalFields(&$data, $fields) {
+        foreach ($fields as $field) {
+            $fieldFound = false;
+
+            foreach ($data as $key => $value) {
+                if ($key == $field) {
+                    $fieldFound = true;
+                    break;
+                }
+            }
+
+            if (!$fieldFound) {
+                $data[$field] = "NULL";
+            }
+        }
     }
 
     // ======================================================================================
@@ -154,7 +206,16 @@ class API {
         } else if ($this->request["operation"] == "get") {
 
         } else if ($this->request["operation"] == "add") {
-            $this->database->insertPlayer($this->request["add"]);
+            $data = $this->request["data"];
+            $requiredPersonInfo = ["firstName", "lastName", "gender", "DOB", "personKey", "birthAddr"];
+            $requiredAddressInfo = ["streetNo", "street", "city", "postalCode", "country", "countryCode"];
+            
+            foreach ($data as $object) {
+                $this->validateRequiredFields($object, $requiredPersonInfo);
+                $this->validateRequiredFields($object["birthAddr"], $requiredAddressInfo);
+            }
+            
+            $this->database->insertPlayer($data);
         } else {
             throw new ApiException(400, "invalid_operation", "Invalid operation, only set, get and add is allowed.");
         }

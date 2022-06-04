@@ -4,6 +4,7 @@ require_once("config.php");
 class Database {
     private static $instance = null;
     private $connection;
+    private $publisher;
 
     public static function getInstance() {
         if (!self::$instance) {
@@ -13,6 +14,7 @@ class Database {
     }
 
     private function __construct() {
+        $this->publisher = $GLOBALS["config"]["publisher"]["publisher_id"];
         $host = $GLOBALS["config"]["database"]["host"];
 		$user = $GLOBALS["config"]["database"]["user"];
 		$password = $GLOBALS["config"]["database"]["password"];
@@ -26,7 +28,7 @@ class Database {
         }
     }
 
-    private function __destruct() {
+    public function __destruct() {
         $this->connection->close();
     }
 
@@ -42,7 +44,7 @@ class Database {
      * @return the MySQLi statement
      */
     public function executeQuery($query = "", $types = "", $params = []) {
-        $stmt = self::$connection->prepare($query);
+        $stmt = $this->connection->prepare($query);
 
         if ($stmt === false) {
             throw new ApiException(500, "server_error", "We had a problem with our server. Try again later.");
@@ -78,6 +80,15 @@ class Database {
         }
     }
 
+    public function getLastGeneratedID() {
+        $id = $this->connection->insert_id;
+
+        if ($id === 0) {
+            throw new ApiException(500, "server_error", "We had a problem with our server. Try again later.");
+        }
+
+        return $id;
+    }
 
     // ======================================================================================
     // USER FUNCTIONS
@@ -128,7 +139,23 @@ class Database {
     // ======================================================================================
 
     function insertPlayer($data) {
-        
+        foreach ($data as $object) {
+            $birthAddr = $object["birthAddr"];
+            $query = "INSERT INTO locations (city, country, country_code) VALUES (?, ?, ?)";
+            $locationStmt = $this->executeQuery($query, "sss", [$birthAddr["city"], $birthAddr["country"], $birthAddr["countryCode"]]);
+            $locationId = $this->getLastGeneratedID();
+            
+            $query = "INSERT INTO addresses (location_id, street_number, street, postal_code, country) VALUES (?, ?, ?, ?, ?)";
+            $addressStmt = $this->executeQuery($query, "iisis", [$locationId, $birthAddr["streetNo"], $birthAddr["street"], $birthAddr["postalCode"], $birthAddr["country"]]);
+    
+            $query = "INSERT INTO persons (person_key, publisher_id, gender, birth_date, birth_location_id) VALUES (?, ?, ?, ?, ?)";
+            $personStmt = $this->executeQuery($query, "sissi", [$object["personKey"], $this->publisher, $object["gender"], $object["DOB"], $locationId]);
+            $personId = $this->getLastGeneratedID();
+
+            $query = "INSERT INTO display_names (language, entity_type, entity_id, full_name, first_name, last_name) VALUES (?, ?, ?, ?, ?, ?)";
+            $fullName = $object["firstName"] . " " . $object["lastName"];
+            $displayNameStmt = $this->executeQuery($query, "ssisss", ["en-US", "persons", $personId, $fullName, $object["firstName"], $object["lastName"]]);
+        }
     }
 
     // ======================================================================================
