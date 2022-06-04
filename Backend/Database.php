@@ -37,6 +37,7 @@ class Database {
 	// ======================================================================================
 
     /** Runs a given SQL query (insert OR update)
+     * There needs to be at least 1 parameter to bind
      * Will throw an API exception if the query execution failed
      * @param $query: the SQL query
      * @param $types: string of sql types, eg: 'sdss'
@@ -50,11 +51,12 @@ class Database {
             throw new ApiException(500, "server_error", "We had a problem with our server. Try again later.");
         }
 
-        if (count($params) !== 0 && $stmt->bind_param($types, ...$params) === false) {
+        if (count($params) != 0 && $stmt->bind_param($types, ...$params) === false) {
             throw new ApiException(500, "server_error", "We had a problem with our server. Try again later.");
         }
 
         $stmt->execute();
+        echo($stmt->error);
 
         return $stmt;
     }
@@ -70,16 +72,21 @@ class Database {
         try {
             $stmt = $this->executeQuery($query, $types, $params);
             $result = $stmt->get_result();
+            $stmt->close();
+
             if ($result == false) {
                 throw new ApiException(500, "server_error", "We had a problem with our server. Try again later.");
             }
-            $stmt->close();
+
             return $result->fetch_all(MYSQLI_ASSOC);
         } catch (ApiException $e) {
             throw $e;
         }
     }
 
+    /** Returns the last auto generated ID created by a new insert
+     * @return integer
+     */
     public function getLastGeneratedID() {
         $id = $this->connection->insert_id;
 
@@ -141,6 +148,7 @@ class Database {
     function insertPlayer($data) {
         foreach ($data as $object) {
             $birthAddr = $object["birthAddr"];
+
             $query = "INSERT INTO locations (city, country, country_code) VALUES (?, ?, ?)";
             $locationStmt = $this->executeQuery($query, "sss", [$birthAddr["city"], $birthAddr["country"], $birthAddr["countryCode"]]);
             $locationId = $this->getLastGeneratedID();
@@ -156,6 +164,39 @@ class Database {
             $fullName = $object["firstName"] . " " . $object["lastName"];
             $displayNameStmt = $this->executeQuery($query, "ssisss", ["en-US", "persons", $personId, $fullName, $object["firstName"], $object["lastName"]]);
         }
+    }
+
+    function getPlayers() {
+        // Example 1
+        $query = "SELECT disp_names.full_name, persons.gender, persons.birth_date, loca.city AS birth_city, loca.country AS birth_country
+                    FROM persons
+                    JOIN ( 
+                            SELECT display_names.full_name, display_names.entity_id
+                            FROM display_names
+                            WHERE display_names.entity_type = 'persons'
+                    ) AS disp_names ON persons.id = disp_names.entity_id
+                    JOIN (
+                            SELECT locations.id, locations.city, locations.country
+                            FROM locations
+                    ) AS loca ON persons.birth_location_id = loca.id";
+        $response = $this->select($query);
+        
+        // Example 2
+        $query = "SELECT disp_names.full_name, persons.gender, persons.birth_date, loca.city AS birth_city, loca.country AS birth_country
+                    FROM persons
+                    JOIN ( 
+                            SELECT display_names.full_name, display_names.entity_id
+                            FROM display_names
+                            WHERE display_names.entity_type = 'persons'
+                    ) AS disp_names ON persons.id = disp_names.entity_id
+                    JOIN (
+                            SELECT locations.id, locations.city, locations.country
+                            FROM locations
+                    ) AS loca ON persons.birth_location_id = loca.id
+                    WHERE gender = ?";
+        $response = $this->select($query, "s", ["female"]);
+
+        return $response;
     }
 
     // ======================================================================================
