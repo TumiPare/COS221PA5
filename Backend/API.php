@@ -104,57 +104,11 @@ class API {
     // DANIEL's FUNCTIONS
     // ======================================================================================
 
-    // Checks if a given email is valid or not.
-    // 	Returns false if it is not.
-    // 	Returns the given email if the email is valid.
-    private function validateEmail($email) {
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            return false;
-        } else {
-            return $email;
-        }
-    }
-
-    // Checks if a password matches the requirements that we specify
-    // 	Returns false if the password is not valid
-    // 	Returns the password if the password is valid.
-    private function validatePassword($password) {
-        $reg = '/^.*(?=.{8,})(?=.*\d)(?=.*[!#$%&?@ "]).*$/';
-
-        if (!preg_match($reg, $password)) {
-            return false;
-        } else {
-            return $password;
-        }
-    }
-
-    // Registers a user to the database.
-    // Requires:
-    // 	- type : "register"
-    // 	- email
-    //  - password
-    private function RegisterUser() {
-        $email = $this->validateEmail($this->request["email"]);
-        $password = $this->validatePassword($this->request["password"]);
-
-        if ($email !== false && $password !== false) {
-            $apikey = $this->database->registerUser($email, $password);
-        // dealing with email exceptions and stuff.
-        } else if ($email === false) {
-            throw new APIException(400, "user_error", "The provided email is invalid. Please provide a valid email address.");
-        } else if ($password === false) {
-            throw new APIException(400, "user_error", "The provided password did not meet the required criteria.");
-        }
-        $this->response["data"]["message"] = "User successfully created.";
-	$this->response["data"]["apiKey"] = $apikey;
-        return true;
-    }
-
     // Checks that provided details are valid and then
     // 	logs-in user if they are.
     private function LoginUser() {
-        $email = $this->validateEmail($this->request["email"]);
-        $password = $this->validatePassword($this->request["password"]);
+        $email = $this->request["email"];
+        $password = $this->request["password"];
 
         if ($email !== false && $password !== false) {
             // Try for APIException
@@ -166,7 +120,7 @@ class API {
             throw new APIException(400, "user_error", "The login details that were provided are incorrect.");
         }
         $this->response["data"]["message"] = "User successfully logged in.";
-	$this->response["data"]["apiKey"] = $apiKey;
+	    $this->response["data"]["apiKey"] = $apiKey;
         return true;
     }
 
@@ -206,23 +160,22 @@ class API {
             throw new ApiException(400, "malformed_request", "JSON request could not be decoded, make sure syntax is correct.");
         }
 
-        $this->authorizeRequest();
-
+        
         if (!array_key_exists("type", $this->request)) {
             throw new ApiException(400, "invalid_type", "Type is not specified.");
         }
-
+        
         if (!array_key_exists("operation", $this->request)) {
             throw new ApiException(400, "invalid_operation", "Operation is not specified.");
         }
-
+        
         switch ($this->request["type"]) {
             case "player":
-                $this->handlePlayer();
-                break;
-            case "team":
-                $this->handleTeam();
-                break;
+                    $this->handlePlayer();
+                    break;
+                case "team":
+                    $this->handleTeam();
+                    break;
             case "user":
                 $this->handleUser();
                 break;
@@ -236,43 +189,71 @@ class API {
     }
 
     private function handlePlayer() {
+        $this->authorizeRequest();
+
         if ($this->request["operation"] == "set") {
             
         } else if ($this->request["operation"] == "get") {
            $this->response = $this->database->getPlayers();
         } else if ($this->request["operation"] == "add") {
-            $data = $this->request["data"];
-            $requiredPersonInfo = ["firstName", "lastName", "gender", "DOB", "personKey", "birthAddr"];
-            $requiredAddressInfo = ["streetNo", "street", "city", "postalCode", "country", "countryCode"];
-
-            foreach ($data as $object) {
-                $this->validateRequiredFields($object, $requiredPersonInfo);
-                $this->validateRequiredFields($object["birthAddr"], $requiredAddressInfo);
-            }
-
-            $this->database->insertPlayer($data);
+            $this->addPlayers($this->request["data"]);
         } else {
             throw new ApiException(400, "invalid_operation", "Invalid operation, only set, get and add is allowed.");
         }
     }
 
     private function handleUser() {
-        # TODO Move the log in and register requests into the main case.
         if ($this->request["operation"] == "add") {
-            $this->RegisterUser();
+            $this->addUser($this->request["data"]);
+        } else if ($this->request["operation"] == "set") {
+            $this->authorizeRequest();
+            $this->ModifyUser();
         } else if ($this->request["operation"] == "login") {
+            $this->authorizeRequest();
             $this->LoginUser();
-	} else if ($this->request["operation"] == "modify") {
-	    $this->ModifyUser();
-	}
+	    }
     }
 
     private function handleTeam() {
 
     }
+
+
+    // ======================================================================================
+    // OPERATION FUNCTIONS
+    // ======================================================================================
+
+    // ==================PLAYERS==================
+    function addPlayers($data) {
+        $requiredPersonInfo = ["firstName", "lastName", "gender", "DOB", "personKey", "birthAddr"];
+        $requiredAddressInfo = ["streetNo", "street", "city", "postalCode", "country", "countryCode"];
+
+        foreach ($data as $object) {
+            $this->validateRequiredFields($object, $requiredPersonInfo);
+            $this->validateRequiredFields($object["birthAddr"], $requiredAddressInfo);
+        }
+
+        $this->database->addPlayers($data);
+    }
+
+
+    // ===================USERS===================
+    function addUser($data) {
+        $requiredUserInfo = ["username", "email", "password"];
+
+        foreach ($data as $object) {
+            $this->validateRequiredFields($object, $requiredUserInfo);
+        }
+
+        $this->response = $this->database->addUser($this->request["data"]);
+    }
 }
 
-// API instance to handle all incoming requests
+// ======================================================================================
+// API INSTANCE TO HANDLE INCOMING REQUESTS
+// ======================================================================================
+
+header('Access-Control-Allow-Origin: *');
 $api = new API();
 try {
     $api->handleRequest();

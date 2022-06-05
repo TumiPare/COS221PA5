@@ -22,7 +22,6 @@ class Database {
 
         try {
             $this->connection = new PDO("mysql:host=$host;dbname=$name", $user, $password);
-            $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
             error_log($e->getTraceAsString());
             throw new ApiException(500, "server_error", "Could not connect to database.");
@@ -46,17 +45,15 @@ class Database {
     public function executeQuery($query = "", $params = []) {
         try {
             $stmt = $this->connection->prepare($query);
-    
+            
             if ($stmt === false) {
                 throw new ApiException(500, "server_error", "Error while trying to execute a database query.");
             }
-            
-            if (!$stmt->execute($params)) {
-                throw new ApiException(500, "server_error", "Error while trying to execute a database query.");
-            }
+
+            !$stmt->execute($params);
             
         } catch (PDOException $e) {
-            error_log($e->getTraceAsString());
+            error_log($e->getMessage());
             throw new ApiException(500, "server_error", "Error while trying to execute a database query.");
         }
 
@@ -87,49 +84,62 @@ class Database {
         return intval($id);
     }
 
+    public function getErrorCode($stmt) {
+        return $stmt->errorInfo()[1];
+    }
+
     // ======================================================================================
     // USER FUNCTIONS
     // ======================================================================================
 
-    private function generateAPIKey() {
-      $invalid = true;
-      while ($invalid) {
-	$invalid = false;
-	$key = bin2hex(random_bytes(32));
-	$sub = substr($key,0,32);
-	$closematch = $this->connection->prepare("some database shit. '$sub'");
-	foreach ($closematch as $match) {
-	  if (hash_equals($match, $key)) {
-	    $invalid = true;
-	    break;
-	  }
-	}
-      }
-      return $key;
-    }
+    /**
+     * Register a new user/users to the the database
+     * 
+     * @param $data Associative array with all the user objects
+     * @return array Associative array with all the newly registered user info
+     */
+    function addUser($data) {
+        $response = [];
 
-    // Registers a user. Adds their details to the database.
-    // TODO: No idea how the db implimentation works. SO stuff should change
-    // 	will mark as todo where needed.
-    public function registerUser($email, $password) {
-        // Check if a user exists
-        // TODO: Replace Query
-        $query = "SELECT THE EMAIL";
-        $results = $this->select($query, "s", [$email]);
+        foreach ($data as $user) {
 
-        // if the email exists then throw a error.
-        if ($results[0]["email"] == $email) {
-            throw new APIException(454, "user_error", "The email you provided already has a accociated account. Please login.");
+            if (count($data) == 1) {
+                if (!$this->validateEmail($user["email"])) {
+                    throw new ApiException(400, "invalid_email", "Provided email is invalid.");
+                }
+
+                if (!$this->validatePassword($user["password"])) {
+                    throw new ApiException(400, "invalid_password", "Provided password is invalid.");
+                }
+            }
+
+            $query = "INSERT INTO users (email, username, password) VALUES (?, ?, ?)";
+            $password = password_hash($user["password"], PASSWORD_DEFAULT);
+            $stmt = $this->executeQuery($query, [$user["email"], $user["username"], $password]);
+            
+            if ($this->getErrorCode($stmt) == 1062) {
+                if (count($data) == 1) {
+                    throw new ApiException(454, "email_taken", "The email provided already has an account associated with it. Please log in.");
+                } else {
+                    continue;
+                }
+            }
+            
+            $query = "UPDATE users SET apiKey = ? WHERE email = ?";
+            
+            while (true) {
+                $apiKey = $this->generateAPIKey();
+                $stmt = $this->executeQuery($query, [$apiKey, $user["email"]]);
+
+                if ($this->getErrorCode($stmt) == NULL) {
+                    break;
+                }
+            }
+
+            array_push($response, ["apiKey" => $apiKey, "username" => $user["username"], "email" => $user["email"]]);
         }
 
-        // Register the user. TODO: Change this according to the database.
-        $query = "INSERT SOME THING IDFK";
-        // Hashing and salting.
-        $password = password_hash($password, PASSWORD_DEFAULT);
-	$apiKey = $this->generateAPIKey();
-        // No need to store result.
-        $this->executeQuery($query, "sss", [$email, $password, $apiKey]);
-	return $apiKey;
+        return $response;
     }
 
     public function changeUserPassword($newpassword, $apiKey) {
@@ -204,6 +214,10 @@ class Database {
         }
     }
 
+    /** Used to validate wether a incoming API request is valid
+     * @param $key User's API Key
+     * @return boolean
+     */
     public function authorizeUser($key) {
         $query = "SELECT * FROM users WHERE apiKey = ?";
         $result = $this->select($query, [$key]);
@@ -218,7 +232,7 @@ class Database {
     // PLAYER FUNCTIONS
     // ======================================================================================
 
-    function insertPlayer($data) {
+    function addPlayers($data) {
         foreach ($data as $object) {
             $birthAddr = $object["birthAddr"];
 
@@ -248,4 +262,33 @@ class Database {
     // ======================================================================================
     // TEAM FUNCTIONS
     // ======================================================================================
+
+
+    // ======================================================================================
+    // SMALL UTILITY FUNCTIONS
+    // ======================================================================================
+
+    private function generateAPIKey() {
+        $alphabet = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        $key = "";
+
+        for ($i = 0; $i < 32; $i++) {
+            $index = random_int(0, 61);
+            $key .= substr($alphabet, $index, 1);
+        }
+
+        return $key;
+    }
+
+
+    function validateEmail($email) {
+        $regex = '/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/';
+        return (preg_match($regex, $email) == false) ? false : true;
+    }
+
+    function validatePassword($password) {
+        $regex = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/";
+        return (preg_match($regex, $password) == false) ? false : true;
+    }
+
 }
