@@ -33,7 +33,7 @@ def genPic(isMale):
     return DEFAULT_IMG
 
 def init():
-    global surnames, mnames, fnames, domains, tlds, picsM, picsF
+    global surnames, mnames, fnames, domains, tlds, picsM, picsF, adjs, nouns
     seed(time())
 
     # Load data
@@ -42,6 +42,8 @@ def init():
     fnames = csvToList("fnames.csv")
     domains = csvToList("domains.csv")
     tlds = csvToList("tld.csv")
+    adjs = csvToList("adjectives.csv")
+    nouns = csvToList("nouns.csv")
     print("> Loaded CSVs")
 
     # Generate pics
@@ -116,7 +118,7 @@ def addPlayers(n):
         "data": data
     }
     print(JSON.dumps(json))
-    # qAPI(json)
+    qAPI(json)
 
 #=====USERS=====
 def getEmail():
@@ -130,20 +132,25 @@ def getRandomHash(n): #n = hash length
         s += randomElement(HASH_ALPHABET)
     return s
 
+def getUsername():
+    return randomElement(adjs) + randomElement(nouns) + str(randrange(10, 99))
+
 def addUsers(n):
     data = []
     for i in range(n):
         data.append({
+            "username": getUsername(),
             "email": getEmail(),
             "password": getRandomHash(24)
         })
 
     json = {
-        "apiKey": API_KEY,
         "type": "user",
         "operation": "add",
         "data": data
     }
+
+    # print(JSON.dumps(json))
     qAPI(json)
     return
 
@@ -154,5 +161,5 @@ def addTeams(): #TODO
 
 init()
 
-addPlayers(10)
-# addUsers(10)
+# addPlayers(100)
+addUsers(100)
