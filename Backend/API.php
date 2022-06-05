@@ -26,6 +26,18 @@ class API {
         return false;
     }
 
+    private function authorizeRequest() {
+        if (!array_key_exists("apiKey", $this->request)) {
+            throw new ApiException(401, "unauthorized", "User key has to be provided.");
+        }
+
+        $authorized = $this->database->authorizeUser($this->request["apiKey"]);
+
+        if (!$authorized) {
+            throw new ApiException(401, "unauthorized", "User key is invalid.");
+        }
+    }
+
     function sendResponse() {
         header("200 OK");
         header("Content-Type: application/json");
@@ -193,6 +205,8 @@ class API {
         } else {
             throw new ApiException(400, "malformed_request", "JSON request could not be decoded, make sure syntax is correct.");
         }
+
+        $this->authorizeRequest();
 
         if (!array_key_exists("type", $this->request)) {
             throw new ApiException(400, "invalid_type", "Type is not specified.");
