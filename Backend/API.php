@@ -209,8 +209,7 @@ class API {
             $this->authorizeRequest();
             $this->ModifyUser();
         } else if ($this->request["operation"] == "login") {
-            $this->authorizeRequest();
-            $this->LoginUser();
+            $this->response = $this->database->loginUser($this->request["data"]);
 	    }
     }
 

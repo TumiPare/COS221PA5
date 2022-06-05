@@ -142,6 +142,23 @@ class Database {
         return $response;
     }
 
+    public function loginUser($data) {
+        $query = "SELECT * FROM users WHERE email = ?";
+        $result = $this->select($query, [$data[0]["email"]]);
+
+        if ($result == []) {
+            throw new ApiException(401, "invalid_email", "Account with this email does not exist.");
+        }
+
+        $result = $result[0];
+
+        if (!password_verify($data[0]["password"], $result["password"])) {
+            throw new ApiException(401, "invalid_password", "Provided password is invalid");
+        }
+
+        return array(["apiKey" => $result["apiKey"], "username" => $result["username"], "email" => $result["email"]]);
+    }
+
     public function changeUserPassword($newpassword, $apiKey) {
         // Check if a user exists
         // TODO: Replace Query
@@ -195,23 +212,6 @@ class Database {
 	} else {
             throw new APIException(454, "user_error", "This user does not exist. Please login or re-log.");
 	}
-    }
-
-    public function loginUser($email, $password) {
-        // Check if a user exists
-        // TODO: Replace Query
-        $query = "SELECT THE EMAIL";
-        $results = $this->select($query, "s", [$email]);
-
-        // Hashing and salting.
-        // TODO: password field might be something else
-        if (password_verify($password, $results["password"])) {
-            //TODO add cookie stuff probably
-            return $results["apiKey"];
-            // No need to store result.
-        } else {
-            return false;
-        }
     }
 
     /** Used to validate wether a incoming API request is valid
