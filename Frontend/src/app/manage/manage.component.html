@@ -24,23 +24,28 @@
   
     <div class="Input">
       <div id="HH">
-        <h3>Manage</h3>
+        <h3>Manage Account</h3>
       </div>
   
       <div id='buff'>
       </div>
   
       <form id="info" method="post">
-        <input type="radio" id="lss" name="Theme" value="Light">
-        <label for="Light">Light</label><br>
-        <input type="radio" id="css" name="Theme" value="Dark">
-        <label for="Dark">Dark</label><br>
+        <label for="fname">Email:</label><br>
+        <input type="text" id="email" name="email" required><br>
+        <span></span>
+        <label for="Uname">Username:</label><br>
+        <input type="text" id="Username" name="Username" required><br>
+        <label for="Password">Password:</label><br>
+        <input type="password" id="Password" name="Password" required><br>
+        <label for="Password">Confirm Password:</label><br>
+        <input type="password" id="Password" name="Password" required><br>
+        
   
         <br>
         <br>
   
-        <!-- <button type="button" (click)="Setter()"> Save </button> -->
-        <!-- <input type="submit" id="sub" value="Login"> -->
+        <button type="button" (click)="Setter()"> Save </button> 
   
       </form>
       <div id='buff'>

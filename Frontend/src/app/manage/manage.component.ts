@@ -9,6 +9,11 @@ export class ManageComponent implements OnInit {
 
   constructor() { }
 
+  Setter() :void  // Validate that give input is valid
+  {
+
+  }
+
   ngOnInit(): void {
   }
 
