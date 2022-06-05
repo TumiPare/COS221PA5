@@ -16,6 +16,8 @@ body {
  {
      font-size: 2em;
  }
+
+
  
 
 
@@ -123,7 +125,10 @@ body {
 
  }
 
-
+ label {
+    display: inline-block;
+    margin: 5px;
+}
 
 
  .navbar{
