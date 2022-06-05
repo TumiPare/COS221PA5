@@ -28,13 +28,10 @@ export class APIService {
     return this.http.post(this.apiURL, body, this.httpOptions);
   }
 
-
-  //Thuga I need an api key
-  ValidateUser(username: string, email: string, password: string): Observable<any> {
+  ValidateUser( email: string, password: string): Observable<any> {
     let body = {
-      apiKey: "key",
       type: "user",
-      operation: "add",
+      operation: "login",
       data: {
         email: email,
         password: password,

@@ -36,7 +36,7 @@ export class LoginComponent implements OnInit {
     } else {
       // All validations passed
       // TODO do the login here
-      this.api.ValidateUser(username, userEmail, userPassword).subscribe((res) => {
+      this.api.ValidateUser( userEmail, userPassword).subscribe((res) => {
         console.log(res);
 
         if(res.status=="success")   // Login succesfull
