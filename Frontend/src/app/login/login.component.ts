@@ -35,10 +35,7 @@ export class LoginComponent implements OnInit {
       this.print("Please ensure that your Password is valid and correct");
     } else {
       // All validations passed
-      this.api.signUpUser(username, userEmail, userPassword).subscribe((res) => {
-        console.log(res);
-        // do something whether it is successful or not
-      })
+      // TODO do the login here
     }
   }
 
