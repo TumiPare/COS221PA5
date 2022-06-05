@@ -27,11 +27,11 @@ export class RegisterComponent implements OnInit {
     let username = (<HTMLInputElement>document.getElementById("username")).value;
     let userPassword = (<HTMLInputElement>document.getElementById("password")).value;
 
-    if (!/^\S+@\S+\.\S+$/.test(userEmail)) {
+    if (!/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(userEmail)) {
       // Bad email
       document.getElementById("email").focus();
       this.print("Please check that your email is valid");
-    } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#@$!%*?&])[A-Za-z\d#@$!%*?&]{8,}$/gm.test(userPassword)) {
+    } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/gm.test(userPassword)) {
       // Bad Password
       document.getElementById("Password").focus();
       this.print("Please ensure that your Password is valid and correct");
