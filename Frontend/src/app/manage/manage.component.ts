@@ -13,8 +13,20 @@ export class ManageComponent implements OnInit {
   {
 
   }
+  
 
   ngOnInit(): void {
+
+    document.getElementById("Deleteimg").onclick = function()
+    {
+      if(confirm('Are you sure you want to delete this account? This decision is permanent.'))
+      {
+        // API request to kill account
+      }
+    
+    }
   }
+
+  
 
 }

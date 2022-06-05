@@ -31,11 +31,16 @@ export class LoginComponent implements OnInit {
       this.print("Please check that your email is valid");
     } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#@$!%*?&])[A-Za-z\d#@$!%*?&]{8,}$/gm.test(userPassword)) {
       // Bad Password
-      document.getElementById("Password").focus();
+      document.getElementById("password").focus();
       this.print("Please ensure that your Password is valid and correct");
     } else {
       // All validations passed
       // TODO do the login here
+      this.api.ValidateUser(username, userEmail, userPassword).subscribe((res) => {
+        console.log(res);
+
+        
+      });
     }
   }
 
