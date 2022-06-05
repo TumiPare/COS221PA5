@@ -19,17 +19,17 @@ class Database {
 		$user = $GLOBALS["config"]["database"]["user"];
 		$password = $GLOBALS["config"]["database"]["password"];
 		$name = $GLOBALS["config"]["database"]["name"];
-		$port = $GLOBALS["config"]["database"]["port"];
 
-        $this->connection = new mysqli($host, $user, $password, $name, $port);
-
-        if ($this->connection->connect_error) {
-            throw new ApiException(500, "server_error", "Could not connect to database");
+        try {
+            $this->connection = new PDO("mysql:host=$host;dbname=$name", $user, $password);
+            $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch (PDOException $e) {
+            throw new ApiException(500, "server_error", "Could not connect to database.");
         }
     }
 
     public function __destruct() {
-        $this->connection->close();
+        $this->connection = null;
     }
 
     // ======================================================================================
@@ -37,26 +37,21 @@ class Database {
 	// ======================================================================================
 
     /** Runs a given SQL query (insert OR update)
-     * There needs to be at least 1 parameter to bind
      * Will throw an API exception if the query execution failed
      * @param $query: the SQL query
-     * @param $types: string of sql types, eg: 'sdss'
      * @param $params: Array of parameters passed for the prepared statement
-     * @return the MySQLi statement
+     * @return a PDO object
      */
-    public function executeQuery($query = "", $types = "", $params = []) {
+    public function executeQuery($query = "", $params = []) {
         $stmt = $this->connection->prepare($query);
 
         if ($stmt === false) {
-            throw new ApiException(500, "server_error", "We had a problem with our server. Try again later.");
+            throw new ApiException(500, "server_error", "Error while trying to execute a database query.");
         }
-
-        if (count($params) != 0 && $stmt->bind_param($types, ...$params) === false) {
-            throw new ApiException(500, "server_error", "We had a problem with our server. Try again later.");
+        
+        if (!$stmt->execute($params)) {
+            throw new ApiException(500, "server_error", "Error while trying to execute a database query.");
         }
-
-        $stmt->execute();
-        echo($stmt->error);
 
         return $stmt;
     }
@@ -64,37 +59,25 @@ class Database {
     /** Runs a given select query
      * Will throw an API exception if the query execution failed
      * @param $query: the SQL query
-     * @param $types: string of sql types, eg: 'sdss'
      * @param $params: Array of parameters passed for the prepared statement
      * @return associative array of the select results
      */
-    public function select($query = "", $types = "", $params = []) {
-        try {
-            $stmt = $this->executeQuery($query, $types, $params);
-            $result = $stmt->get_result();
-            $stmt->close();
-
-            if ($result == false) {
-                throw new ApiException(500, "server_error", "We had a problem with our server. Try again later.");
-            }
-
-            return $result->fetch_all(MYSQLI_ASSOC);
-        } catch (ApiException $e) {
-            throw $e;
-        }
+    public function select($query = "", $params = []) {
+        $stmt = $this->executeQuery($query, $params);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     /** Returns the last auto generated ID created by a new insert
      * @return integer
      */
     public function getLastGeneratedID() {
-        $id = $this->connection->insert_id;
+        $id = $this->connection->lastInsertId();
 
-        if ($id === 0) {
-            throw new ApiException(500, "server_error", "We had a problem with our server. Try again later.");
+        if ($id === false) {
+            throw new ApiException(500, "server_error", "Error while trying to execute a database query.");
         }
 
-        return $id;
+        return intval($id);
     }
 
     // ======================================================================================
@@ -223,51 +206,25 @@ class Database {
             $birthAddr = $object["birthAddr"];
 
             $query = "INSERT INTO locations (city, country, country_code) VALUES (?, ?, ?)";
-            $locationStmt = $this->executeQuery($query, "sss", [$birthAddr["city"], $birthAddr["country"], $birthAddr["countryCode"]]);
+            $locationStmt = $this->executeQuery($query, [$birthAddr["city"], $birthAddr["country"], $birthAddr["countryCode"]]);
             $locationId = $this->getLastGeneratedID();
 
             $query = "INSERT INTO addresses (location_id, street_number, street, postal_code, country) VALUES (?, ?, ?, ?, ?)";
-            $addressStmt = $this->executeQuery($query, "iisis", [$locationId, $birthAddr["streetNo"], $birthAddr["street"], $birthAddr["postalCode"], $birthAddr["country"]]);
-
+            $addressStmt = $this->executeQuery($query, [$locationId, $birthAddr["streetNo"], $birthAddr["street"], $birthAddr["postalCode"], $birthAddr["country"]]);
+    
             $query = "INSERT INTO persons (person_key, publisher_id, gender, birth_date, birth_location_id) VALUES (?, ?, ?, ?, ?)";
-            $personStmt = $this->executeQuery($query, "sissi", [$object["personKey"], $this->publisher, $object["gender"], $object["DOB"], $locationId]);
+            $personStmt = $this->executeQuery($query, [$object["personKey"], $this->publisher, $object["gender"], $object["DOB"], $locationId]);
             $personId = $this->getLastGeneratedID();
 
             $query = "INSERT INTO display_names (language, entity_type, entity_id, full_name, first_name, last_name) VALUES (?, ?, ?, ?, ?, ?)";
             $fullName = $object["firstName"] . " " . $object["lastName"];
-            $displayNameStmt = $this->executeQuery($query, "ssisss", ["en-US", "persons", $personId, $fullName, $object["firstName"], $object["lastName"]]);
+            $displayNameStmt = $this->executeQuery($query, ["en-US", "persons", $personId, $fullName, $object["firstName"], $object["lastName"]]);
         }
     }
 
     function getPlayers() {
-        // Example 1
-        $query = "SELECT disp_names.full_name, persons.gender, persons.birth_date, loca.city AS birth_city, loca.country AS birth_country
-                    FROM persons
-                    JOIN ( 
-                            SELECT display_names.full_name, display_names.entity_id
-                            FROM display_names
-                            WHERE display_names.entity_type = 'persons'
-                    ) AS disp_names ON persons.id = disp_names.entity_id
-                    JOIN (
-                            SELECT locations.id, locations.city, locations.country
-                            FROM locations
-                    ) AS loca ON persons.birth_location_id = loca.id";
+        $query = "SELECT * FROM player_data";
         $response = $this->select($query);
-        
-        // Example 2
-        $query = "SELECT disp_names.full_name, persons.gender, persons.birth_date, loca.city AS birth_city, loca.country AS birth_country
-                    FROM persons
-                    JOIN ( 
-                            SELECT display_names.full_name, display_names.entity_id
-                            FROM display_names
-                            WHERE display_names.entity_type = 'persons'
-                    ) AS disp_names ON persons.id = disp_names.entity_id
-                    JOIN (
-                            SELECT locations.id, locations.city, locations.country
-                            FROM locations
-                    ) AS loca ON persons.birth_location_id = loca.id
-                    WHERE gender = ?";
-        $response = $this->select($query, "s", ["female"]);
 
         return $response;
     }

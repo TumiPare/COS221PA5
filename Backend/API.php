@@ -30,7 +30,7 @@ class API {
         header("200 OK");
         header("Content-Type: application/json");
 
-        if ($this->response == null) {
+        if (!is_array($this->response)) {
             echo (json_encode([
                 "status" => "success",
                 "timestamp" => time()
