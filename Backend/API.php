@@ -104,26 +104,6 @@ class API {
     // DANIEL's FUNCTIONS
     // ======================================================================================
 
-    // Checks that provided details are valid and then
-    // 	logs-in user if they are.
-    private function LoginUser() {
-        $email = $this->request["email"];
-        $password = $this->request["password"];
-
-        if ($email !== false && $password !== false) {
-            // Try for APIException
-            $apiKey = $this->database->LoginUser($email, $password);
-            // dealing with email exceptions and stuff.
-        } else if ($email === false) {
-            throw new APIException(400, "user_error", "The login details that were provided are incorrect.");
-        } else if ($password === false) {
-            throw new APIException(400, "user_error", "The login details that were provided are incorrect.");
-        }
-        $this->response["data"]["message"] = "User successfully logged in.";
-	    $this->response["data"]["apiKey"] = $apiKey;
-        return true;
-    }
-
     // modifys the values of a user.
     private function ModifyUser() {
 	// set a password if it needs setting.
