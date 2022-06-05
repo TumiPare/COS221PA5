@@ -17,6 +17,7 @@ import { UserService } from './user.service';
 import { RegisterComponent } from './register/register.component';
 import { PlayerComponent } from './player/player.component';
 import { TournementComponent } from './tournement/tournement.component';
+import { ManageComponent } from './manage/manage.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { TournementComponent } from './tournement/tournement.component';
     EditMemberDialog,
     RegisterComponent,
     PlayerComponent,
-    TournementComponent,   
+    TournementComponent,
+    ManageComponent,   
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),

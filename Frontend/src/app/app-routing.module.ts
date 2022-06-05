@@ -6,6 +6,7 @@ import { PlayerComponent } from './player/player.component';
 import { RegisterComponent } from './register/register.component';
 import { TeamComponent } from './team/team.component';
 import { TournementComponent } from './tournement/tournement.component';
+import { ManageComponent } from './manage/manage.component';
 
 const routes: Routes = [
   { path: '', component: EventsComponent },
@@ -13,7 +14,8 @@ const routes: Routes = [
   { path: 'player/:playerID/:playerName', component: PlayerComponent },
   { path: 'tournement/:tournementID/:tournementName', component: TournementComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent }
+  { path: 'register', component: RegisterComponent },
+  { path: 'manage', component: ManageComponent }
 ];
 
 @NgModule({

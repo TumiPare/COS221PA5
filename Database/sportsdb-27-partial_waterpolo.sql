@@ -174,7 +174,7 @@ time this package was originally published
 CREATE TABLE document_package_entry (
     id INTEGER AUTO_INCREMENT NOT NULL PRIMARY KEY,
     document_package_id INTEGER NOT NULL,
-    rank VARCHAR(100),
+    `rank` VARCHAR(100),
     document_id INTEGER NOT NULL,
     headline VARCHAR(100),
     short_headline VARCHAR(100)
@@ -362,7 +362,7 @@ CREATE TABLE addresses (
     location_id INTEGER NOT NULL,
     language VARCHAR(100),
     suite VARCHAR(100),
-    floor VARCHAR(100),
+    `floor` VARCHAR(100),
     building VARCHAR(100),
     street_number VARCHAR(100),
     street_prefix VARCHAR(100),
@@ -697,7 +697,7 @@ CREATE TABLE participants_events (
     alignment VARCHAR(100),
     score VARCHAR(100),
     event_outcome VARCHAR(100),
-    rank INTEGER,
+    `rank` INTEGER,
     result_effect VARCHAR(100),
     score_attempts INTEGER,
     sort_order VARCHAR(100),
@@ -711,7 +711,7 @@ CREATE TABLE periods (
     period_value VARCHAR(100),
     score VARCHAR(100),
     score_attempts INTEGER,
-    rank VARCHAR(100),
+    `rank` VARCHAR(100),
     sub_score_key VARCHAR(100),
     sub_score_type VARCHAR(100),
     sub_score_name VARCHAR(100)
@@ -755,7 +755,7 @@ CREATE TABLE awards (
     award_type VARCHAR(100),
     name VARCHAR(100),
     total INTEGER,
-    rank VARCHAR(100),
+    `rank` VARCHAR(100),
     award_value VARCHAR(100),
     currency VARCHAR(100),
     date_coverage_type VARCHAR(100),
@@ -847,7 +847,7 @@ CREATE TABLE wagering_runlines (
     rotation_key VARCHAR(100),
     comment VARCHAR(255),
     vigorish VARCHAR(100),
-    line VARCHAR(100),
+    `line` VARCHAR(100),
     line_opening VARCHAR(100),
     line_value VARCHAR(100),
     prediction VARCHAR(100)
@@ -970,7 +970,7 @@ CREATE TABLE outcome_totals (
     standing_subgroup_id INTEGER NOT NULL,
     outcome_holder_type VARCHAR(100),
     outcome_holder_id INTEGER,
-    rank VARCHAR(100),
+    `rank` VARCHAR(100),
     wins VARCHAR(100),
     losses VARCHAR(100),
     ties VARCHAR(100),
@@ -1030,7 +1030,7 @@ number of games
 
 CREATE TABLE media (
     id INTEGER AUTO_INCREMENT NOT NULL PRIMARY KEY,
-    object_id INTEGER,
+    `object_id` INTEGER,
     source_id INTEGER,
     revision_id INTEGER,
     media_type VARCHAR(100),
@@ -1077,7 +1077,7 @@ CREATE TABLE media_contents (
     id INTEGER AUTO_INCREMENT NOT NULL PRIMARY KEY,
     media_id INTEGER NOT NULL,
     object VARCHAR(100),
-    format VARCHAR(100),
+    `format` VARCHAR(100),
     mime_type VARCHAR(100),
     height VARCHAR(100),
     width VARCHAR(100),
@@ -1207,108 +1207,6 @@ CREATE TABLE event_action_substitutions (
     comment VARCHAR(512)
 );
 
-/*============================================================================*/
-/* WATERPOLO TABLES                                                           */
-/*============================================================================*/
-
-CREATE TABLE waterpolo_action_fouls (
-  id int NOT NULL,
-  event_state_id int NOT NULL,
-  foul_name varchar(100) DEFAULT NULL,
-  foul_result varchar(100) DEFAULT NULL,
-  foul_type varchar(100) DEFAULT NULL,
-  fouler_id varchar(100) DEFAULT NULL,
-  recipient_type varchar(100) DEFAULT NULL,
-  recipient_id int DEFAULT NULL,
-  comment varchar(512) DEFAULT NULL
-) 
-
-CREATE TABLE waterpolo_action_penalties (
-  id int NOT NULL,
-  event_state_id int NOT NULL,
-  penalty_type varchar(100) DEFAULT NULL,
-  penalty_level varchar(100) DEFAULT NULL,
-  caution_level varchar(100) DEFAULT NULL,
-  recipient_type varchar(100) DEFAULT NULL,
-  recipient_id int DEFAULT NULL,
-  comment varchar(512) DEFAULT NULL
-) 
-
-CREATE TABLE waterpolo_defensive_stats (
-  id int NOT NULL,
-  steals int DEFAULT NULL,
-  saves int DEFAULT NULL,
-  failed_blocks int DEFAULT NULL,
-  successful_passes int DEFAULT NULL
-)
-
-CREATE TABLE waterpolo_event_states (
-  id int NOT NULL,
-  event_id int NOT NULL,
-  current_state int DEFAULT NULL,
-  period_value varchar(100) DEFAULT NULL,
-  period_time_elapsed varchar(100) DEFAULT NULL,
-  period_time_remaining varchar(100) DEFAULT NULL,
-  home_team_score tinyint NOT NULL DEFAULT '0',
-  away_team_score tinyint NOT NULL DEFAULT '0',
-  total_time_remaining varchar(100) DEFAULT NULL,
-  total_time_elapsed varchar(100) DEFAULT NULL
-) 
-
-CREATE TABLE waterpolo_offensive_stats (
-  id int NOT NULL,
-  assists int DEFAULT NULL,
-  passes_made int DEFAULT NULL,
-  successful_passes int DEFAULT NULL,
-  sprints int DEFAULT NULL,
-  sprints_won int DEFAULT NULL,
-  goals int DEFAULT NULL,
-  shots_on_goal int DEFAULT NULL,
-  shots_on_goal_missed int DEFAULT NULL,
-  steals int DEFAULT NULL
-) 
-
-/*============================================================================*/
-/* WATERPOLO TABLE CONSTRAINTS                                                */
-/*============================================================================*/
-
-ALTER TABLE waterpolo_action_fouls
-  ADD PRIMARY KEY (id),
-  ADD KEY FK_event_states_event_action_fouls (event_state_id);
-
-ALTER TABLE waterpolo_action_penalties
-  ADD PRIMARY KEY (id),
-  ADD KEY FK_event_states_event_action_penalties (event_state_id);
-
-ALTER TABLE waterpolo_defensive_stats
-  ADD PRIMARY KEY (id);
-
-
-ALTER TABLE waterpolo_event_states
-  ADD PRIMARY KEY (id),
-  ADD KEY FK_events_event_states (event_id);
-
-ALTER TABLE waterpolo_offensive_stats
-  ADD PRIMARY KEY (id);
-
-ALTER TABLE waterpolo_action_fouls
-  MODIFY id int NOT NULL AUTO_INCREMENT;
-
-ALTER TABLE waterpolo_action_penalties
-  MODIFY id int NOT NULL AUTO_INCREMENT;
-
-ALTER TABLE waterpolo_event_states
-  MODIFY id int NOT NULL AUTO_INCREMENT;
-
-ALTER TABLE waterpolo_action_fouls
-  ADD CONSTRAINT FK_event_states_event_action_fouls FOREIGN KEY (event_state_id) REFERENCES waterpolo_event_states (id);
-
-ALTER TABLE waterpolo_action_penalties
-  ADD CONSTRAINT FK_event_states_event_action_penalties FOREIGN KEY (event_state_id) REFERENCES waterpolo_event_states (id);
-
-ALTER TABLE waterpolo_event_states
-  ADD CONSTRAINT FK_events_event_states FOREIGN KEY (event_id) REFERENCES events (id);
-COMMIT;
 
 /*============================================================================*/
 /* TABLE CONSTRAINTS                                                          */
@@ -2049,3 +1947,112 @@ ADD INDEX IDX_FK_wea_con_eve_id__eve_id (event_id);
 
 DELETE FROM db_info;
 INSERT INTO db_info (version) VALUES ('27');
+
+
+/*============================================================================*/
+/* WATERPOLO TABLES                                                           */
+/*============================================================================*/
+
+CREATE TABLE `users` (
+  `id` int NOT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `password` varchar(100) DEFAULT NULL,
+  `key` varchar(45) DEFAULT NULL
+);
+
+CREATE TABLE `waterpolo_action_fouls` (
+  `id` int NOT NULL,
+  `event_state_id` int NOT NULL,
+  `foul_name` varchar(100) DEFAULT NULL,
+  `foul_result` varchar(100) DEFAULT NULL,
+  `foul_type` varchar(100) DEFAULT NULL,
+  `fouler_id` varchar(100) DEFAULT NULL,
+  `recipient_type` varchar(100) DEFAULT NULL,
+  `recipient_id` int DEFAULT NULL,
+  `comment` varchar(512) DEFAULT NULL
+);
+
+CREATE TABLE `waterpolo_action_penalties` (
+  `id` int NOT NULL,
+  `event_state_id` int NOT NULL,
+  `penalty_type` varchar(100) DEFAULT NULL,
+  `penalty_level` varchar(100) DEFAULT NULL,
+  `caution_level` varchar(100) DEFAULT NULL,
+  `recipient_type` varchar(100) DEFAULT NULL,
+  `recipient_id` int DEFAULT NULL,
+  `comment` varchar(512) DEFAULT NULL
+);
+
+CREATE TABLE `waterpolo_defensive_stats` (
+  `id` int NOT NULL,
+  `steals` int DEFAULT NULL,
+  `saves` int DEFAULT NULL,
+  `failed_blocks` int DEFAULT NULL,
+  `successful_passes` int DEFAULT NULL
+);
+
+CREATE TABLE `waterpolo_event_states` (
+  `id` int NOT NULL,
+  `event_id` int NOT NULL,
+  `current_state` int DEFAULT NULL,
+  `period_value` varchar(100) DEFAULT NULL,
+  `period_time_elapsed` varchar(100) DEFAULT NULL,
+  `period_time_remaining` varchar(100) DEFAULT NULL,
+  `home_team_score` tinyint NOT NULL DEFAULT '0',
+  `away_team_score` tinyint NOT NULL DEFAULT '0',
+  `total_time_remaining` varchar(100) DEFAULT NULL,
+  `total_time_elapsed` varchar(100) DEFAULT NULL
+);
+
+CREATE TABLE `waterpolo_offensive_stats` (
+  `id` int NOT NULL,
+  `assists` int DEFAULT NULL,
+  `passes_made` int DEFAULT NULL,
+  `successful_passes` int DEFAULT NULL,
+  `sprints` int DEFAULT NULL,
+  `sprints_won` int DEFAULT NULL,
+  `goals` int DEFAULT NULL,
+  `shots_on_goal` int DEFAULT NULL,
+  `shots_on_goal_missed` int DEFAULT NULL,
+  `steals` int DEFAULT NULL
+);
+
+/*============================================================================*/
+/* WATERPOLO CONSTRAINTS                                                      */
+/*============================================================================*/
+
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `waterpolo_action_fouls`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `waterpolo_action_penalties`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `waterpolo_defensive_stats`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `waterpolo_event_states`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `waterpolo_offensive_stats`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `waterpolo_action_fouls`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `waterpolo_action_penalties`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `waterpolo_event_states`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `waterpolo_action_fouls`
+  ADD CONSTRAINT `FK_action_fouls` FOREIGN KEY (`event_state_id`) REFERENCES `waterpolo_event_states` (`id`);
+
+ALTER TABLE `waterpolo_action_penalties`
+  ADD CONSTRAINT `FK_action_penalties` FOREIGN KEY (`event_state_id`) REFERENCES `waterpolo_event_states` (`id`);
+
+ALTER TABLE `waterpolo_event_states`
+  ADD CONSTRAINT `FK_event_states` FOREIGN KEY (`event_id`) REFERENCES `events` (`id`);
