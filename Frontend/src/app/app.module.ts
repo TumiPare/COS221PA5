@@ -13,11 +13,13 @@ import { TeamCardComponent } from './team-card/team-card.component';
 import { TeamComponent } from './team/team.component';
 import { EditMemberDialog, TeamMemberComponent } from './team-member/team-member.component';
 import { LoginComponent } from './login/login.component';
-import { UserService } from './user.service';
 import { RegisterComponent } from './register/register.component';
 import { PlayerComponent } from './player/player.component';
 import { TournementComponent } from './tournement/tournement.component';
 import { ManageComponent } from './manage/manage.component';
+
+import { UserService } from './user.service';
+import { APIService } from './api.service';
 
 @NgModule({
   declarations: [
@@ -31,7 +33,6 @@ import { ManageComponent } from './manage/manage.component';
     RegisterComponent,
     PlayerComponent,
     TournementComponent,
-    ManageComponent,   
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
@@ -43,7 +44,7 @@ import { ManageComponent } from './manage/manage.component';
     ReactiveFormsModule,
     FormsModule,
   ],
-  providers: [UserService],
+  providers: [UserService, APIService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
