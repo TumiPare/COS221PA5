@@ -24,6 +24,7 @@ class Database {
             $this->connection = new PDO("mysql:host=$host;dbname=$name", $user, $password);
             $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
+            error_log($e->getTraceAsString());
             throw new ApiException(500, "server_error", "Could not connect to database.");
         }
     }
@@ -36,20 +37,26 @@ class Database {
 	// MAIN DATABASE FUNCTIONS
 	// ======================================================================================
 
-    /** Runs a given SQL query (insert OR update)
-     * Will throw an API exception if the query execution failed
-     * @param $query: the SQL query
-     * @param $params: Array of parameters passed for the prepared statement
-     * @return a PDO object
+    /** Runs a given SQL query (e.g. insert, update, etc.)
+     * @param string $query SQL query
+     * @param array $params Bound parameters for each query
+     * @return PDOStatement PDO Statement object
+     * @throws ApiException
      */
     public function executeQuery($query = "", $params = []) {
-        $stmt = $this->connection->prepare($query);
-
-        if ($stmt === false) {
-            throw new ApiException(500, "server_error", "Error while trying to execute a database query.");
-        }
-        
-        if (!$stmt->execute($params)) {
+        try {
+            $stmt = $this->connection->prepare($query);
+    
+            if ($stmt === false) {
+                throw new ApiException(500, "server_error", "Error while trying to execute a database query.");
+            }
+            
+            if (!$stmt->execute($params)) {
+                throw new ApiException(500, "server_error", "Error while trying to execute a database query.");
+            }
+            
+        } catch (PDOException $e) {
+            error_log($e->getTraceAsString());
             throw new ApiException(500, "server_error", "Error while trying to execute a database query.");
         }
 
@@ -57,10 +64,10 @@ class Database {
     }
 
     /** Runs a given select query
-     * Will throw an API exception if the query execution failed
-     * @param $query: the SQL query
-     * @param $params: Array of parameters passed for the prepared statement
-     * @return associative array of the select results
+     * @param string $query SQL query
+     * @param array $params Bound parameters for each query
+     * @return array Associative array with select results
+     * @throws ApiException
      */
     public function select($query = "", $params = []) {
         $stmt = $this->executeQuery($query, $params);
@@ -68,7 +75,7 @@ class Database {
     }
 
     /** Returns the last auto generated ID created by a new insert
-     * @return integer
+     * @return integer Last generated ID
      */
     public function getLastGeneratedID() {
         $id = $this->connection->lastInsertId();
@@ -124,6 +131,16 @@ class Database {
         }
     }
 
+    public function authorizeUser($key) {
+        $query = "SELECT * FROM users WHERE apiKey = ?";
+        $result = $this->select($query, [$key]);
+        if ($result == []) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     // ======================================================================================
     // PLAYER FUNCTIONS
     // ======================================================================================
@@ -152,7 +169,6 @@ class Database {
     function getPlayers() {
         $query = "SELECT * FROM player_data";
         $response = $this->select($query);
-
         return $response;
     }
 
