@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { APIService } from '../api.service';
 
 @Component({
@@ -9,7 +10,8 @@ import { APIService } from '../api.service';
 export class LoginComponent implements OnInit {
 
   constructor(
-    private api: APIService
+    private api: APIService,
+    private router: Router,
   ) { }
 
   ngOnInit(): void { }
@@ -35,34 +37,27 @@ export class LoginComponent implements OnInit {
     } else {
       // All validations passed
       // TODO do the login here
-      this.api.ValidateUser( userEmail, userPassword).subscribe((res) => {
+      this.api.ValidateUser(userEmail, userPassword).subscribe((res) => {
         console.log(res);
-
-        if(res.status=="success")   // Login succesfull
-        {
-           sessionStorage.setItem('username',res.data[0].username);
-           sessionStorage.setItem('email',res.data[0].email);
-           sessionStorage.setItem('apiKey',res.data[0].key);
-           //Transistion to home page
-           window.location.replace("https://faade.co.za/");
-        }
-        else  // Failed
-        {
-          if(res.error.code=="invalid_email")  // email
-          {
+        if (res.status == "success") { // Login succesfull
+          sessionStorage.setItem('username', res.data[0].username);
+          sessionStorage.setItem('email', res.data[0].email);
+          sessionStorage.setItem('apiKey', res.data[0].key);
+          this.api.setAPIKey(res.data[0].key);
+          //Transistion to home page
+          this.router.navigate([``]);
+        } else { // FAILED
+          if (res.error.code == "invalid_email") { // email
             this.print("Please ensure that your email is valid ")
             document.getElementById("email").focus();
-          } 
-          else
-          if(res.error.code=="invalid_password")  // password
-          {
+          }
+          else if (res.error.code == "invalid_password") {  // password
             this.print("Please ensure that your password is valid")
             document.getElementById("password").focus();
-          } 
+          }
           else
-          this.print("Something went wrong, please try again");  
+            this.print("Something went wrong, please try again");
         }
-        
       });
     }
   }
