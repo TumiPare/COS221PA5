@@ -1,5 +1,6 @@
 import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { APIService } from '../api.service';
 import { UserService } from '../user.service';
 
 @Component({
@@ -46,10 +47,13 @@ export class TeamMemberComponent implements OnInit {
   templateUrl: 'edit-team-member-dialog.html',
 })
 export class EditMemberDialog {
+  @ViewChild('playerName') name;
 
   constructor(
     public dialogRef: MatDialogRef<EditMemberDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: any) {
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private api: APIService,
+  ) {
     console.log(data);
   }
 
@@ -59,6 +63,7 @@ export class EditMemberDialog {
 
   editMember() {
     // Set the appropriate data variables to whatever changes i guess
+    console.log(this.name.nativeElement.value);
     this.dialogRef.close(this.data);
   }
 

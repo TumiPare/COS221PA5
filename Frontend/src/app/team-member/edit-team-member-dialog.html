@@ -1,7 +1,20 @@
-<h1 mat-dialog-title>Edit User</h1>
+<h1 mat-dialog-title>Edit Player</h1>
 <div mat-dialog-content>
-    <p>Queestion i guess</p>
-    <div class="">pu8t the input here</div>
+    <mat-form-field>
+        <mat-label>Name</mat-label>
+        <input #playerName matInput placeholder="Enter Player Name" value="Mpappe">
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Surname</mat-label>
+        <input #playerSurname matInput placeholder="Enter Player Surame" value="Mpappe">
+    </mat-form-field>
+    <!-- maybe use the DatePicker -->
+    <mat-form-field>
+        <mat-label>DOB</mat-label>
+        <input #DOB matInput placeholder="dd/mm/yyyy" value="03/08/2002">
+    </mat-form-field>
+    <!-- Still Need to impliment -->
+    <button mat-raised-button color="primary">Select new Photo</button>
 </div>
 <div mat-dialog-actions>
     <button mat-button (click)="onNoClick()">No Thanks</button>
