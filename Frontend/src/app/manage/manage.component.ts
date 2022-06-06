@@ -70,12 +70,12 @@ export class ManageComponent implements OnInit {
             // do something
             if (res.error.code = "invalid_email") {
               this.print(res.error.message);
-              (<HTMLInputElement>document.getElementById("email")).focus;
+              (<HTMLInputElement>document.getElementById("email")).focus();
             }
 
             if (res.error.code = "invalid_password") {
               this.print(res.error.message);
-              (<HTMLInputElement>document.getElementById("password")).focus;
+              (<HTMLInputElement>document.getElementById("password")).focus();
             }
           }
           else
