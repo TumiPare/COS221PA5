@@ -81,17 +81,33 @@ export class APIService {
     // update email
     if(Email!="") jan.email = Email;
 
+    // update Username
     if(Username!="") jan.username = Username;
 
+    // update Password
     if(Password!="") jan.password = Password;
+
+    // wont include an attribute if its value stayed the same
 
     let body = {
       apiKey: Key,
       type: "user",
-      operation: "login",
+      operation: "set",
       data: [jan]   // jan is a json object
     };
 
+    console.log(body);
+    return this.http.post(this.apiURL, body, this.httpOptions);
+  }
+
+  DeleteUser( Key: string): Observable<any> {
+    let body = {
+      type: "user",
+      operation: "delete",
+      data: [{
+        apiKey: Key
+      }]
+    };
     console.log(body);
     return this.http.post(this.apiURL, body, this.httpOptions);
   }

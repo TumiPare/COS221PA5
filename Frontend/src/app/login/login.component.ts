@@ -42,7 +42,7 @@ export class LoginComponent implements OnInit {
         {
            sessionStorage.setItem('username',res.data[0].username);
            sessionStorage.setItem('email',res.data[0].email);
-           sessionStorage.setItem('apikey',res.data[0].key);
+           sessionStorage.setItem('apiKey',res.data[0].key);
            //Transistion to home page
            window.location.replace("https://faade.co.za/");
         }

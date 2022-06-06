@@ -31,6 +31,7 @@ export class ManageComponent implements OnInit {
 
     let Email = (<HTMLInputElement>document.getElementById("email")).value;
     let Username = (<HTMLInputElement>document.getElementById("username")).value;
+    let Key = sessionStorage.getItem("apiKey");
 
     //Check for is empty
   {  // Entire bracket to check if user just deletes values because oxygen commit no reach lungs
@@ -72,7 +73,7 @@ export class ManageComponent implements OnInit {
   
   else {
 
-  this.api.UpdateUser( Email, Username,Password,"jan").subscribe((res) => {
+  this.api.UpdateUser( Email, Username,Password,Key).subscribe((res) => {
     console.log(res);
 
 
@@ -105,12 +106,28 @@ export class ManageComponent implements OnInit {
     
 
 
-    document.getElementById("Deleteimg").onclick = function()
+    document.getElementById("Deleteimg").onclick = () =>
     {
-      if(confirm('Are you sure you want to delete this account? This decision is permanent.'))
+      if(confirm('Are you sure you want to delete this account? This decision is permanent'))
       {
-        // API request to kill account
+        let Key = sessionStorage.getItem("apiKey");
+        this.api.DeleteUser(Key).subscribe((res) => {
+          console.log(res);
+      
+      
+          if(res.status=="success")
+          {
+            alert("account deleted");
+            window.location.replace("https://faade.co.za/login");
+          }
+          else
+          this.print("Something went wrong");
+          
+      
+          });
       }
+      else
+      return;
     
     }
   }
