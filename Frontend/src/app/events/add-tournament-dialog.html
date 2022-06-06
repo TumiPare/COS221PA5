@@ -1,0 +1,32 @@
+<h1 mat-dialog-title>Add Tournement</h1>
+<div mat-dialog-content>
+    <div fxFlex fxLayout="row wrap" fxLayoutAlign="space-around">
+        <div fxLayout="column" fxLayoutAlign="space-around" fxFlex="25%" class="gameSelection"
+            *ngFor="let game of lineups; index as i">
+            <p>Match {{i + 1}}</p>
+            <mat-form-field>
+                <input type="text" placeholder="Team A" aria-label="Number" matInput [formControl]="myControl"
+                    [matAutocomplete]="auto" [(ngModel)]="game.teamA">
+                <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                    <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                        {{option}}
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+            <p>vs</p>
+            <mat-form-field>
+                <input type="text" placeholder="Team B" aria-label="Number" matInput [formControl]="myControl"
+                    [matAutocomplete]="auto" [(ngModel)]="game.teamB">
+                <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                    <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                        {{option}}
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+        </div>
+    </div>
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Cancel</button>
+    <button mat-button (click)="addTournament()" cdkFocusInitial>Add</button>
+</div>
