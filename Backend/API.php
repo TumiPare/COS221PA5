@@ -274,9 +274,9 @@ class API
 // ======================================================================================
 
 
-// header("Access-Control-Allow-Origin: *");
-$ownOrigin = $_SERVER['HTTP_OUR_OWN_ORIGIN'];
-header("Access-Control-Allow-Origin: $ownOrigin");
+// $ownOrigin = $_SERVER['HTTP_OUR_OWN_ORIGIN'];
+// header("Access-Control-Allow-Origin: $ownOrigin");
+header("Access-Control-Allow-Origin: " . $_SERVER['HTTP_ORIGIN']);
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods: POST, DELETE, OPTIONS");
 header("Access-Control-Max-Age: 3600");
