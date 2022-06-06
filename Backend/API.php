@@ -102,39 +102,9 @@ class API
             }
 
             if (!$fieldFound) {
-                $data[$field] = "NULL";
+                $data[$field] = NULL;
             }
         }
-    }
-
-    // ======================================================================================
-    // DANIEL's FUNCTIONS
-    // ======================================================================================
-
-    // modifys the values of a user.
-    private function ModifyUser()
-    {
-        // set a password if it needs setting.
-        if (isset($this->request["set"]["pass"])) {
-            $this->database->changeUserPassword(
-                $this->request["set"]["pass"],
-                $this->request["apiKey"]
-            );
-        }
-        if (isset($this->request["set"]["email"])) {
-            $this->database->changeUserEmail(
-                $this->request["set"]["email"],
-                $this->request["apiKey"]
-            );
-        }
-        if (isset($this->request["set"]["profilePic"])) {
-            $this->database->changeUserProfilePicture(
-                $this->request["set"]["profilePic"],
-                $this->request["apiKey"]
-            );
-        }
-        $this->response["data"]["message"] = "User successfully updated.";
-        return true;
     }
 
     // ======================================================================================
@@ -203,7 +173,7 @@ class API
             $this->addUser($this->request["data"]);
         } else if ($this->request["operation"] == "set") {
             $this->authorizeRequest();
-            $this->ModifyUser();
+            $this->setUser($this->request);
         } else if ($this->request["operation"] == "login") {
             $this->loginUser($this->request["data"]);
         }
@@ -260,6 +230,30 @@ class API
         $requiredUserInfo = ["email", "password"];
         $this->validateRequiredFields($data[0], $requiredUserInfo);
         $this->response = $this->database->loginUser($data[0]);
+    }
+
+    function setUser($data) {
+        $user = $data["data"][0];
+        $optionalUserInfo = ["username", "email", "password"];
+        $this->validateOptionalFields($user, $optionalUserInfo);
+
+        if ($user["username"] == NULL && $user["password"] == NULL && $user["email"] == NULL) {
+            throw new ApiException(400, "malformed_request", "New username, email, and password is missing.");
+        }
+
+        if ($user["email"] != NULL) {
+            if (!$this->validateEmail($user["email"])) {
+                throw new ApiException(400, "invalid_email", "Provided email is invalid.");
+            }
+        }
+
+        if ($user["password"] != NULL) {
+            if (!$this->validatePassword($user["password"])) {
+                throw new ApiException(400, "invalid_password", "Provided password is invalid.");
+            }
+        }
+        
+        $this->response = $this->database->setUser($user, $data["apiKey"]);
     }
 
     function validateEmail($email)
