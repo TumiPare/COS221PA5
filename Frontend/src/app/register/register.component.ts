@@ -42,7 +42,6 @@ export class RegisterComponent implements OnInit {
         if (res.status == "success") {
           this.api.setAPIKey(res.data.apiKey, 3);
           this.router.navigate([``]);
-          window.location.replace("https://faade.co.za/login");
         } else {
           // Bad Email
           document.getElementById("email").focus();
