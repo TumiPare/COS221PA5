@@ -102,24 +102,13 @@ class Database {
         $response = [];
 
         foreach ($data as $user) {
-
-            if (count($data) == 1) {
-                if (!$this->validateEmail($user["email"])) {
-                    throw new ApiException(400, "invalid_email", "Provided email is invalid.");
-                }
-
-                if (!$this->validatePassword($user["password"])) {
-                    throw new ApiException(400, "invalid_password", "Provided password is invalid.");
-                }
-            }
-
             $query = "INSERT INTO users (email, username, password) VALUES (?, ?, ?)";
             $password = password_hash($user["password"], PASSWORD_DEFAULT);
             $stmt = $this->executeQuery($query, [$user["email"], $user["username"], $password]);
             
             if ($this->getErrorCode($stmt) == 1062) {
                 if (count($data) == 1) {
-                    throw new ApiException(454, "email_taken", "The email provided already has an account associated with it. Please log in.");
+                    throw new ApiException(454, "email_taken", "The account with provided email is already taken.");
                 } else {
                     continue;
                 }
@@ -144,7 +133,7 @@ class Database {
 
     public function loginUser($data) {
         $query = "SELECT * FROM users WHERE email = ?";
-        $result = $this->select($query, [$data[0]["email"]]);
+        $result = $this->select($query, [$data["email"]]);
 
         if ($result == []) {
             throw new ApiException(401, "invalid_email", "Account with this email does not exist.");
@@ -152,8 +141,8 @@ class Database {
 
         $result = $result[0];
 
-        if (!password_verify($data[0]["password"], $result["password"])) {
-            throw new ApiException(401, "invalid_password", "Provided password is invalid");
+        if (!password_verify($data["password"], $result["password"])) {
+            throw new ApiException(401, "invalid_password", "Provided password is invalid.");
         }
 
         return array(["apiKey" => $result["apiKey"], "username" => $result["username"], "email" => $result["email"]]);
@@ -281,14 +270,6 @@ class Database {
     }
 
 
-    function validateEmail($email) {
-        $regex = '/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/';
-        return (preg_match($regex, $email) == false) ? false : true;
-    }
-
-    function validatePassword($password) {
-        $regex = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/";
-        return (preg_match($regex, $password) == false) ? false : true;
-    }
+    
 
 }

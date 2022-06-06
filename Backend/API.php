@@ -58,8 +58,8 @@ class API {
 
     /** Validates all the required fields in a JSON request
      * Will throw an API exception if a required field is missing
-     * @param $data: A associative array containing the request data
-     * @param $fields: An associative array with all the required fields
+     * @param $data A associative array containing the request data
+     * @param $fields An associative array with all the required fields
      */
     function validateRequiredFields($data, $fields) {
         foreach ($fields as $field) {
@@ -73,15 +73,15 @@ class API {
             }
 
             if (!$fieldFound) {
-                throw new ApiException(400, "required_field_missing", "A required field is missing from one of the objects.");
+                throw new ApiException(400, "required_field_missing", "The $field field is missing from one of the objects.");
             }
         }
     }
 
     /** Validates all the optional fields in a JSON request
      * Will set any missing optional fields to NULL
-     * @param $data: A associative array containing the request data
-     * @param $fields: An associative array with all the optional fields
+     * @param $data A associative array containing the request data
+     * @param $fields An associative array with all the optional fields
      */
     function validateOptionalFields(&$data, $fields) {
         foreach ($fields as $field) {
@@ -189,7 +189,7 @@ class API {
             $this->authorizeRequest();
             $this->ModifyUser();
         } else if ($this->request["operation"] == "login") {
-            $this->response = $this->database->loginUser($this->request["data"]);
+            $this->loginUser($this->request["data"]);
 	    }
     }
 
@@ -220,11 +220,37 @@ class API {
     function addUser($data) {
         $requiredUserInfo = ["username", "email", "password"];
 
-        foreach ($data as $object) {
-            $this->validateRequiredFields($object, $requiredUserInfo);
+        foreach ($data as $user) {
+            $this->validateRequiredFields($user, $requiredUserInfo);
+
+            if (count($data) == 1) {
+                if (!$this->validateEmail($user["email"])) {
+                    throw new ApiException(400, "invalid_email", "Provided email is invalid.");
+                }
+
+                if (!$this->validatePassword($user["password"])) {
+                    throw new ApiException(400, "invalid_password", "Provided password is invalid.");
+                }
+            }
         }
 
         $this->response = $this->database->addUser($this->request["data"]);
+    }
+
+    function loginUser($data) {
+        $requiredUserInfo = ["email", "password"];
+        $this->validateRequiredFields($data[0], $requiredUserInfo);
+        $this->response = $this->database->loginUser($data[0]);
+    }
+
+    function validateEmail($email) {
+        $regex = '/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/';
+        return (preg_match($regex, $email) == false) ? false : true;
+    }
+
+    function validatePassword($password) {
+        $regex = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/";
+        return (preg_match($regex, $password) == false) ? false : true;
     }
 }
 
