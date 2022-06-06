@@ -27,12 +27,16 @@ export class EventsComponent implements OnInit {
   constructor(
     private router: Router,
     private userService: UserService,
+    private api: APIService,
     public dialog: MatDialog,
   ) { }
 
   ngOnInit(): void {
-    if (this.userService.userSignedIn)
+    if (this.userService.userSignedIn())
       document.getElementById('addTourneyBtn').style.display = "block";
+    this.api.getTournaments().subscribe((res) => {
+      console.log(res);
+    });
   }
 
   navigateToTeamPage(teamID: number, teamName: string) {
@@ -81,6 +85,7 @@ export class AddTournaDialog implements OnInit {
   ngOnInit() {
     this.api.getAllTeams().subscribe((res) => {
       if (res.status == "success") {
+        console.log(res);
         this.teams = res.teams;
         this.teams.forEach(team => {
           this.options.push(team.teamName);
@@ -120,7 +125,7 @@ export class AddTournaDialog implements OnInit {
 
       actualLineups.push(tempLineup);
     });
-    
+
     console.log(this.lineups);
     this.dialogRef.close(this.data);
   }

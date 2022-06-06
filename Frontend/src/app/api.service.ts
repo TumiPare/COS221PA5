@@ -45,11 +45,20 @@ export class APIService {
     let body = {
       type: "user",
       operation: "add",
-      data: {
+      data: [{
         username: Username,
         email: Email,
         password: Password,
-      }
+      }]
+    };
+    return this.http.post(this.apiURL, body, this.httpOptions);
+  }
+
+  getTournaments(): Observable<any> {
+    let body = {
+      apiKey: this.apiKey,
+      type: "tournament",
+      operation: "get",
     };
     return this.http.post(this.apiURL, body, this.httpOptions);
   }
@@ -63,7 +72,6 @@ export class APIService {
         password: Password
       }]
     };
-    console.log(body);
     return this.http.post(this.apiURL, body, this.httpOptions);
   }
 
