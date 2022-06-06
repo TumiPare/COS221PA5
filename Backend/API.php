@@ -258,7 +258,12 @@ class API {
 // API INSTANCE TO HANDLE INCOMING REQUESTS
 // ======================================================================================
 
-header('Access-Control-Allow-Origin: *');
+$http_origin = $_SERVER['HTTP_ORIGIN'];
+if ($http_origin == 'localhost:4200' || $http_origin == 'faade.co.za') {
+    header("Access-Control-Allow-Origin: $http_origin");
+} else {
+    header('Access-Control-Allow-Origin: *');
+}
 $api = new API();
 try {
     $api->handleRequest();
