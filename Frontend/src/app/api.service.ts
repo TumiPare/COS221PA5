@@ -10,7 +10,7 @@ export class APIService {
   private httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
-      'OUR-OWN-ORIGIN': environment.production ? 'faade.co.za' : 'localhost:4200',
+      'OUR-OWN-ORIGIN': environment.production ? 'https://faade.co.za' : 'http://localhost:4200',
     })
   };
   private apiURL = 'https://api.faade.co.za/API.php';
