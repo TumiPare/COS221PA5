@@ -3,6 +3,7 @@
     border-radius: 30px;
     border-color: grey;
     position: relative;
+    cursor: pointer;
 }
 
 .editMember {

@@ -1,5 +1,6 @@
-<div fxLayout="column" fxLayoutAlign="center center" class="memberContainer" (mouseenter)="displayEdit()" (mouseleave)="displayEdit()">
-    <div #editButton class="editMember" style="display: none;" (click)="editMember()">
+<div fxLayout="column" fxLayoutAlign="center center" class="memberContainer" (mouseenter)="displayEdit()"
+    (mouseleave)="displayEdit()" (click)="navigateToPlayerPage()">
+    <div #editButton class="editMember" style="display: none;" (click)="editMember();$event.stopPropagation()">
         <mat-icon class="editIcon">edit</mat-icon>
     </div>
     <p>member name</p>

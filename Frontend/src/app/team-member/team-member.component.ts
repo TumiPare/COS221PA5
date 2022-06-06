@@ -1,5 +1,6 @@
 import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { APIService } from '../api.service';
 import { UserService } from '../user.service';
 
@@ -12,12 +13,21 @@ export class TeamMemberComponent implements OnInit {
   @Input('memberID') memberID: number;
   @ViewChild('editButton') editButton;
 
-  constructor(private userService: UserService,
-    public dialog: MatDialog) { }
+  constructor(
+    private userService: UserService,
+    public dialog: MatDialog,
+    private router: Router,
+  ) { }
 
   ngOnInit(): void {
     // after all the data is fetched from the api
     // use userService to see if one can edit the team logo/name
+  }
+
+  navigateToPlayerPage() {
+    //replace player_Name with actual player_name
+    console.log("navigate clicked");
+    this.router.navigate([`player/${this.memberID}/Player_name`]);
   }
 
   displayEdit() {
@@ -30,6 +40,7 @@ export class TeamMemberComponent implements OnInit {
   }
 
   editMember() {
+    console.log("edit clicked");
     const dialogRef = this.dialog.open(EditMemberDialog, {
       width: '300px',
       data: { memberID: this.memberID }
