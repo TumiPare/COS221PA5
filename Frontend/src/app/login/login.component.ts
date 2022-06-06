@@ -42,8 +42,8 @@ export class LoginComponent implements OnInit {
         if (res.status == "success") { // Login succesfull
           sessionStorage.setItem('username', res.data[0].username);
           sessionStorage.setItem('email', res.data[0].email);
-          sessionStorage.setItem('apiKey', res.data[0].key);
-          this.api.setAPIKey(res.data[0].key);
+          sessionStorage.setItem('apiKey', res.data[0].apiKey);
+          this.api.setAPIKey(res.data[0].apiKey);
           //Transistion to home page
           this.router.navigate([``]);
         } else { // FAILED

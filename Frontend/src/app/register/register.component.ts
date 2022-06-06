@@ -40,7 +40,7 @@ export class RegisterComponent implements OnInit {
       // All validations passed
       this.api.signUpUser(username, userEmail, userPassword).subscribe((res) => {
         if (res.status == "success") {
-          this.api.setAPIKey(res.data.apiKey, 3);
+          this.api.setAPIKey(res.data[0].apiKey, 3);
           this.router.navigate([``]);
         } else {
           // Bad Email
