@@ -280,9 +280,7 @@ class API
 // ======================================================================================
 
 
-$origin = $_SERVER['HTTP_ORIGIN'];
-header("Access-Control-Allow-Origin: $origin");
-header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization");
+header("Access-Control-Allow-Origin: *");
 $api = new API();
 try {
     $api->handleRequest();
