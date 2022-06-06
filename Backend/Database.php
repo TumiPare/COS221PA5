@@ -84,6 +84,12 @@ class Database {
         return intval($id);
     }
 
+    /**
+     * Returns the SQL error code for a specific statement
+     * 
+     * @param $stmt A PDOStatement
+     * @return integer|NULL Returns NULL id no error occurred
+     */
     public function getErrorCode($stmt) {
         return $stmt->errorInfo()[1];
     }
@@ -168,6 +174,15 @@ class Database {
         $stmt = $this->executeQuery($query, [$result["username"], $result["email"], $result["password"], $apiKey]);
 
         return array(["apiKey" => $apiKey, "username" => $result["username"], "email" => $result["email"]]);
+    }
+
+    public function deleteUser($data) {
+        $query = "DELETE FROM users WHERE apiKey = ?";
+        $stmt = $this->executeQuery($query, [$data["apiKey"]]);
+
+        if ($stmt->rowCount() === 0) {
+            throw new ApiException(404, "user_not_found", "No user matching provided API key was found.");
+        }
     }
 
     /** Used to validate wether a incoming API request is valid

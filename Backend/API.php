@@ -107,6 +107,12 @@ class API
         }
     }
 
+    function validateDataField() {
+        if (!array_key_exists("data", $this->request)) {
+            throw new ApiException(400, "data_missing", "The data field is missing.");
+        }
+    }
+
     // ======================================================================================
     // REQUEST HANDLER FUNCTIONS
     // ======================================================================================
@@ -139,6 +145,7 @@ class API
                 $this->handlePlayer();
                 break;
             case "team":
+                throw new ApiException(400, "not_implemented", "Still has to be implemented."); // Remove if implemented
                 $this->handleTeam();
                 break;
             case "user":
@@ -168,7 +175,9 @@ class API
     }
 
     private function handleUser()
-    {
+    {   
+        $this->validateDataField();
+
         if ($this->request["operation"] == "add") {
             $this->addUser($this->request["data"]);
         } else if ($this->request["operation"] == "set") {
@@ -176,6 +185,8 @@ class API
             $this->setUser($this->request);
         } else if ($this->request["operation"] == "login") {
             $this->loginUser($this->request["data"]);
+        } else if ($this->request["operation"] == "delete") {
+            $this->deleteUser($this->request["data"]);
         }
     }
 
@@ -256,6 +267,12 @@ class API
         $this->response = $this->database->setUser($user, $data["apiKey"]);
     }
 
+    function deleteUser($data) {
+        $requiredUserInfo = ["apiKey"];
+        $this->validateRequiredFields($data[0], $requiredUserInfo);
+        $this->response = $this->database->deleteUser($data[0]);
+    }
+
     function validateEmail($email)
     {
         $regex = '/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/';
@@ -264,7 +281,7 @@ class API
 
     function validatePassword($password)
     {
-        $regex = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/";
+        $regex = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/";
         return (preg_match($regex, $password) == false) ? false : true;
     }
 }
