@@ -275,11 +275,12 @@ class API
 
 
 // header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Origin: http://localhost:4200");
+$ownOrigin = $_SERVER['HTTP_OUR_OWN_ORIGIN'];
+header("Access-Control-Allow-Origin: $ownOrigin");
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods: POST, DELETE, OPTIONS");
 header("Access-Control-Max-Age: 3600");
-header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With, OUR-OWN-ORIGIN");
 
 if ($_SERVER['REQUEST_METHOD'] !== 'OPTIONS') {    
     $api = new API();
