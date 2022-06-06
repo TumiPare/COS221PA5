@@ -1,7 +1,8 @@
 <?php
 require_once("Database.php");
 require_once("APIException.php");
-class API {
+class API
+{
     // Stores the response to be sent. This will be an associative array.
     // Example: $this->response = $this->database->getPlayers();
     private $response;
@@ -10,7 +11,8 @@ class API {
     // Database connection.
     private $database;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->database = Database::getInstance();
     }
 
@@ -18,7 +20,8 @@ class API {
     // UTILITY FUNCTIONS
     // ======================================================================================
 
-    private function validateJSON($string) {
+    private function validateJSON($string)
+    {
         json_decode($string);
         if (json_last_error() == JSON_ERROR_NONE) {
             return true;
@@ -26,7 +29,8 @@ class API {
         return false;
     }
 
-    private function authorizeRequest() {
+    private function authorizeRequest()
+    {
         if (!array_key_exists("apiKey", $this->request)) {
             throw new ApiException(401, "unauthorized", "User key has to be provided.");
         }
@@ -38,7 +42,8 @@ class API {
         }
     }
 
-    function sendResponse() {
+    function sendResponse()
+    {
         header("200 OK");
         header("Content-Type: application/json");
 
@@ -61,7 +66,8 @@ class API {
      * @param $data A associative array containing the request data
      * @param $fields An associative array with all the required fields
      */
-    function validateRequiredFields($data, $fields) {
+    function validateRequiredFields($data, $fields)
+    {
         foreach ($fields as $field) {
             $fieldFound = false;
 
@@ -83,7 +89,8 @@ class API {
      * @param $data A associative array containing the request data
      * @param $fields An associative array with all the optional fields
      */
-    function validateOptionalFields(&$data, $fields) {
+    function validateOptionalFields(&$data, $fields)
+    {
         foreach ($fields as $field) {
             $fieldFound = false;
 
@@ -105,20 +112,27 @@ class API {
     // ======================================================================================
 
     // modifys the values of a user.
-    private function ModifyUser() {
-	// set a password if it needs setting.
-	if (isset($this->request["set"]["pass"])) {
-	    $this->database->changeUserPassword($this->request["set"]["pass"],
-		$this->request["apiKey"]);
-	}
-	if (isset($this->request["set"]["email"])) {
-	    $this->database->changeUserEmail($this->request["set"]["email"],
-		$this->request["apiKey"]);
-	}
-	if (isset($this->request["set"]["profilePic"])) {
-	    $this->database->changeUserProfilePicture($this->request["set"]["profilePic"],
-		$this->request["apiKey"]);
-	}
+    private function ModifyUser()
+    {
+        // set a password if it needs setting.
+        if (isset($this->request["set"]["pass"])) {
+            $this->database->changeUserPassword(
+                $this->request["set"]["pass"],
+                $this->request["apiKey"]
+            );
+        }
+        if (isset($this->request["set"]["email"])) {
+            $this->database->changeUserEmail(
+                $this->request["set"]["email"],
+                $this->request["apiKey"]
+            );
+        }
+        if (isset($this->request["set"]["profilePic"])) {
+            $this->database->changeUserProfilePicture(
+                $this->request["set"]["profilePic"],
+                $this->request["apiKey"]
+            );
+        }
         $this->response["data"]["message"] = "User successfully updated.";
         return true;
     }
@@ -127,7 +141,8 @@ class API {
     // REQUEST HANDLER FUNCTIONS
     // ======================================================================================
 
-    public function handleRequest() {
+    public function handleRequest()
+    {
         if ($_SERVER["REQUEST_METHOD"] !== "POST") {
             throw new ApiException(400, "wrong_request_method", "Only POST requests are allowed.");
         }
@@ -140,22 +155,22 @@ class API {
             throw new ApiException(400, "malformed_request", "JSON request could not be decoded, make sure syntax is correct.");
         }
 
-        
+
         if (!array_key_exists("type", $this->request)) {
             throw new ApiException(400, "invalid_type", "Type is not specified.");
         }
-        
+
         if (!array_key_exists("operation", $this->request)) {
             throw new ApiException(400, "invalid_operation", "Operation is not specified.");
         }
-        
+
         switch ($this->request["type"]) {
             case "player":
-                    $this->handlePlayer();
-                    break;
-                case "team":
-                    $this->handleTeam();
-                    break;
+                $this->handlePlayer();
+                break;
+            case "team":
+                $this->handleTeam();
+                break;
             case "user":
                 $this->handleUser();
                 break;
@@ -168,13 +183,13 @@ class API {
         $this->sendResponse();
     }
 
-    private function handlePlayer() {
+    private function handlePlayer()
+    {
         $this->authorizeRequest();
 
         if ($this->request["operation"] == "set") {
-            
         } else if ($this->request["operation"] == "get") {
-           $this->response = $this->database->getPlayers();
+            $this->response = $this->database->getPlayers();
         } else if ($this->request["operation"] == "add") {
             $this->addPlayers($this->request["data"]);
         } else {
@@ -182,7 +197,8 @@ class API {
         }
     }
 
-    private function handleUser() {
+    private function handleUser()
+    {
         if ($this->request["operation"] == "add") {
             $this->addUser($this->request["data"]);
         } else if ($this->request["operation"] == "set") {
@@ -190,11 +206,11 @@ class API {
             $this->ModifyUser();
         } else if ($this->request["operation"] == "login") {
             $this->loginUser($this->request["data"]);
-	    }
+        }
     }
 
-    private function handleTeam() {
-
+    private function handleTeam()
+    {
     }
 
 
@@ -203,7 +219,8 @@ class API {
     // ======================================================================================
 
     // ==================PLAYERS==================
-    function addPlayers($data) {
+    function addPlayers($data)
+    {
         $requiredPersonInfo = ["firstName", "lastName", "gender", "DOB", "personKey", "birthAddr"];
         $requiredAddressInfo = ["streetNo", "street", "city", "postalCode", "country", "countryCode"];
 
@@ -217,7 +234,8 @@ class API {
 
 
     // ===================USERS===================
-    function addUser($data) {
+    function addUser($data)
+    {
         $requiredUserInfo = ["username", "email", "password"];
 
         foreach ($data as $user) {
@@ -237,18 +255,21 @@ class API {
         $this->response = $this->database->addUser($this->request["data"]);
     }
 
-    function loginUser($data) {
+    function loginUser($data)
+    {
         $requiredUserInfo = ["email", "password"];
         $this->validateRequiredFields($data[0], $requiredUserInfo);
         $this->response = $this->database->loginUser($data[0]);
     }
 
-    function validateEmail($email) {
+    function validateEmail($email)
+    {
         $regex = '/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/';
         return (preg_match($regex, $email) == false) ? false : true;
     }
 
-    function validatePassword($password) {
+    function validatePassword($password)
+    {
         $regex = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/";
         return (preg_match($regex, $password) == false) ? false : true;
     }
@@ -259,7 +280,7 @@ class API {
 // ======================================================================================
 
 
-$origin = $_SERVER['REMOTE_ADDR'] . ":" . $_SERVER['REMOTE_PORT'];
+$origin = $_SERVER['HTTP_ORIGIN'];
 header("Access-Control-Allow-Origin: $origin");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization");
 $api = new API();
