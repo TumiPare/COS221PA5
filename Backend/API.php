@@ -203,10 +203,12 @@ class API
     function addPlayers($data)
     {
         $requiredPersonInfo = ["firstName", "lastName", "gender", "DOB", "personKey", "birthAddr"];
+        $optionalPersonInfo = ["image"];
         $requiredAddressInfo = ["streetNo", "street", "city", "postalCode", "country", "countryCode"];
 
         foreach ($data as $object) {
             $this->validateRequiredFields($object, $requiredPersonInfo);
+            $this->validateOptionalFields($object, $optionalPersonInfo);
             $this->validateRequiredFields($object["birthAddr"], $requiredAddressInfo);
         }
 

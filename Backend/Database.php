@@ -206,21 +206,32 @@ class Database {
     function addPlayers($data) {
         foreach ($data as $object) {
             $birthAddr = $object["birthAddr"];
-
+            
             $query = "INSERT INTO locations (city, country, country_code) VALUES (?, ?, ?)";
             $locationStmt = $this->executeQuery($query, [$birthAddr["city"], $birthAddr["country"], $birthAddr["countryCode"]]);
             $locationId = $this->getLastGeneratedID();
-
+            
             $query = "INSERT INTO addresses (location_id, street_number, street, postal_code, country) VALUES (?, ?, ?, ?, ?)";
             $addressStmt = $this->executeQuery($query, [$locationId, $birthAddr["streetNo"], $birthAddr["street"], $birthAddr["postalCode"], $birthAddr["country"]]);
-    
+            
             $query = "INSERT INTO persons (person_key, publisher_id, gender, birth_date, birth_location_id) VALUES (?, ?, ?, ?, ?)";
             $personStmt = $this->executeQuery($query, [$object["personKey"], $this->publisher, $object["gender"], $object["DOB"], $locationId]);
             $personId = $this->getLastGeneratedID();
-
+            
             $query = "INSERT INTO display_names (language, entity_type, entity_id, full_name, first_name, last_name) VALUES (?, ?, ?, ?, ?, ?)";
             $fullName = $object["firstName"] . " " . $object["lastName"];
             $displayNameStmt = $this->executeQuery($query, ["en-US", "persons", $personId, $fullName, $object["firstName"], $object["lastName"]]);
+
+            if ($object["image"] == NULL) {
+                continue;
+            }
+            
+            $query = "INSERT INTO media (b64_image, publisher_id) VALUES (?, ?)";
+            $mediaStmt = $this->executeQuery($query, [$object["image"], $this->publisher]);
+            $mediaId = $this->getLastGeneratedID();
+
+            $query = "INSERT INTO persons_media (person_id, media_id) VALUES (?, ?)";
+            $mediaPersonStmt = $this->executeQuery($query, [$personId, $mediaId]);
         }
     }
 
