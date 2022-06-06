@@ -41,28 +41,29 @@ export class APIService {
     return null;
   }
 
-  signUpUser(username: string, email: string, password: string): Observable<any> {
+  signUpUser(Username: string, Email: string, Password: string): Observable<any> {
     let body = {
       type: "user",
       operation: "add",
       data: {
-        username: username,
-        email: email,
-        password: password,
+        username: Username,
+        email: Email,
+        password: Password,
       }
     };
     return this.http.post(this.apiURL, body, this.httpOptions);
   }
 
-  ValidateUser(email: string, password: string): Observable<any> {
+  ValidateUser(Email: string, Password: string): Observable<any> {
     let body = {
       type: "user",
       operation: "login",
-      data: {
-        email: email,
-        password: password,
-      }
+      data: [{
+        email: Email,
+        password: Password
+      }]
     };
+    console.log(body);
     return this.http.post(this.apiURL, body, this.httpOptions);
   }
 
@@ -88,4 +89,64 @@ export class APIService {
     };
     return this.http.post(this.apiURL, body, this.httpOptions);
   }
+  UpdateUser(Email: string, Username: string, Password: string, Key: string): Observable<any> {
+
+
+    interface ExampleObject {
+      [key: string]: any
+    }
+    let jan: ExampleObject = {};
+
+    //Above is just to allow new attribures to be added to typescript json object. 
+
+
+    // update email
+    if (Email != "") jan.email = Email;
+
+    // update Username
+    if (Username != "") jan.username = Username;
+
+    // update Password
+    if (Password != "") jan.password = Password;
+
+    // wont include an attribute if its value stayed the same
+
+    let body = {
+      apiKey: Key,
+      type: "user",
+      operation: "set",
+      data: [jan]   // jan is a json object
+    };
+
+    console.log(body);
+    return this.http.post(this.apiURL, body, this.httpOptions);
+  }
+
+  DeleteUser(Key: string): Observable<any> {
+    let body = {
+      type: "user",
+      operation: "delete",
+      data: [{
+        apiKey: Key
+      }]
+    };
+    console.log(body);
+    return this.http.post(this.apiURL, body, this.httpOptions);
+  }
+
+
+  GetPlayer(Key: string, PlayerId: number): Observable<any> {
+    let body = {
+      type: "player",
+      operation: "get",
+      data: [{
+        playerid: PlayerId
+      }]
+    };
+    console.log(body);
+    return this.http.post(this.apiURL, body, this.httpOptions);
+  }
+
 }
+
+

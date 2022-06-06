@@ -21,7 +21,6 @@ export class LoginComponent implements OnInit {
 
   validate(): void {  // Validate that give input is valid
     let userEmail = (<HTMLInputElement>document.getElementById("email")).value;
-    let username = userEmail; //change this
     let userPassword = (<HTMLInputElement>document.getElementById("password")).value;
 
     console.log("here");
@@ -43,19 +42,19 @@ export class LoginComponent implements OnInit {
         {
            sessionStorage.setItem('username',res.data[0].username);
            sessionStorage.setItem('email',res.data[0].email);
-           sessionStorage.setItem('key',res.data[0].key);
+           sessionStorage.setItem('apiKey',res.data[0].key);
            //Transistion to home page
            window.location.replace("https://faade.co.za/");
         }
         else  // Failed
         {
-          if(res.code=="invalid_email")  // email
+          if(res.error.code=="invalid_email")  // email
           {
             this.print("Please ensure that your email is valid ")
             document.getElementById("email").focus();
           } 
           else
-          if(res.code=="invalid_password")  // password
+          if(res.error.code=="invalid_password")  // password
           {
             this.print("Please ensure that your password is valid")
             document.getElementById("password").focus();
