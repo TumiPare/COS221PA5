@@ -52,7 +52,7 @@ export class LoginComponent implements OnInit {
             document.getElementById("email").focus();
           }
           else if (res.error.code == "invalid_password") {  // password
-            this.print("Please ensure that your password is valid")
+            this.print("Please ensure that your password is correct")
             document.getElementById("password").focus();
           }
           else

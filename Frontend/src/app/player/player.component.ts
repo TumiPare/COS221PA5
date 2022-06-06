@@ -23,6 +23,8 @@ export class PlayerComponent implements OnInit {
     let Key = sessionStorage.getItem("apiKey");
     this.api.GetPlayer(Key,this.playerID).subscribe((res) => {
       console.log(res);
+
+      
   
 
     });
