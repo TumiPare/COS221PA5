@@ -65,4 +65,27 @@ export class APIService {
     };
     return this.http.post(this.apiURL, body, this.httpOptions);
   }
+
+  addTournament(tournName: string, lineupArr: Array<any>[8]): Observable<any> {
+    let body = {
+      type: "tournament",
+      operation: "add",
+      data: [
+        {
+          tournamentName: tournName,
+          lineups: lineupArr,
+        },
+      ]
+    };
+    return this.http.post(this.apiURL, body, this.httpOptions);
+  }
+
+  getAllTeams(): Observable<any> {
+    let body = {
+      apiKey: this.apiKey,
+      type: "team",
+      operation: "getAll"
+    };
+    return this.http.post(this.apiURL, body, this.httpOptions);
+  }
 }
