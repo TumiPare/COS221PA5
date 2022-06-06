@@ -7,7 +7,8 @@
     </div>
     <p style="font-size: 30pt; width: 80%">Members</p>
     <div class="teamMembersCont">
-        <app-team-member *ngFor="let i of [0, 1, 2, 3, 4, 5, 6]" [memberID]="i"></app-team-member>
+        <app-team-member *ngFor="let i of [0, 1, 2, 3, 4, 5, 6]" [memberID]="i"
+            [routerLink]="'/player/' + i + '/' + 'player_name'"></app-team-member>
         <button mat-raised-button (click)="addPlayer()">Add Player</button>
     </div>
 </div>
