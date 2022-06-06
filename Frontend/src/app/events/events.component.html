@@ -4,10 +4,10 @@
         *ngFor="let tournement of tournements; index as i">
         <p class="tourneyName">{{tournement.tournementName}}</p>
         <div fxFlex fxLayout="row" fxLayoutGap="10px" class="tourneyParticipants">
-            <app-team-card (click)="navigateToTeamPage(0, 'Fredric')" fxFlex="25%" [teamID]=[i]></app-team-card>
-            <app-team-card (click)="navigateToTeamPage(1, 'James')" fxFlex="25%" [teamID]=[i]></app-team-card>
-            <app-team-card (click)="navigateToTeamPage(2, 'Joshua')" fxFlex="25%" [teamID]=[i]></app-team-card>
-            <app-team-card (click)="navigateToTeamPage(3, 'BuffleMan')" fxFlex="25%" [teamID]=[i]></app-team-card>
+            <app-team-card (click)="navigateToTeamPage(0, 'Fredric')" fxFlex="25%" [teamID]="i"></app-team-card>
+            <app-team-card (click)="navigateToTeamPage(1, 'James')" fxFlex="25%" [teamID]="i"></app-team-card>
+            <app-team-card (click)="navigateToTeamPage(2, 'Joshua')" fxFlex="25%" [teamID]="i"></app-team-card>
+            <app-team-card (click)="navigateToTeamPage(3, 'BuffleMan')" fxFlex="25%" [teamID]="i"></app-team-card>
         </div>
     </div>
     <div id="addTourneyBtn" class="addTournement" (click)="addTourney()" style="display: none;">Add Tournement</div>
