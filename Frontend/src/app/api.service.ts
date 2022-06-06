@@ -63,6 +63,22 @@ export class APIService {
     return this.http.post(this.apiURL, body, this.httpOptions);
   }
 
+  editPlayer(playerID: number, name: string, surname: string, DOB: string, playerPic: string): Observable<any> {
+    let body = {
+      apiKey: this.apiKey,
+      type: "player",
+      operation: "set",
+      data: [{
+        "playerID": playerID,
+        "firstName": name,
+        "surname": surname,
+        "DOB": DOB,
+        "pic": playerPic,
+      }]
+    };
+    return this.http.post(this.apiURL, body, this.httpOptions);
+  }
+
   ValidateUser(Email: string, Password: string): Observable<any> {
     let body = {
       type: "user",

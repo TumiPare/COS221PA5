@@ -1,5 +1,5 @@
 <h1 mat-dialog-title>Edit Player</h1>
-<div mat-dialog-content>
+<div mat-dialog-content id="dialogContent">
     <mat-form-field>
         <mat-label>Name</mat-label>
         <input #playerName matInput placeholder="Enter Player Name" value="Mpappe">
@@ -14,7 +14,9 @@
         <input #DOB matInput placeholder="dd/mm/yyyy" value="03/08/2002">
     </mat-form-field>
     <!-- Still Need to impliment -->
-    <button mat-raised-button color="primary">Select new Photo</button>
+    <input #csvInput hidden="true" type="file" onclick="this.value=null" (change)="csvInputChange($event)"
+        accept="image/*" />
+    <button mat-raised-button color="primary" (click)="csvInput.click()">Select new Photo</button>
 </div>
 <div mat-dialog-actions>
     <button mat-button (click)="onNoClick()">No Thanks</button>
