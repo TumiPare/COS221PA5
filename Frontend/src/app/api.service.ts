@@ -159,15 +159,15 @@ export class APIService {
   }
 
 
-  GetPlayer(Key: string, PlayerId: number): Observable<any> {
+  getPlayer(playerId: number): Observable<any> {
     let body = {
+      apiKey: this.apiKey,
       type: "player",
       operation: "get",
       data: [{
-        playerid: PlayerId
+        playerID: playerId
       }]
     };
-    console.log(body);
     return this.http.post(this.apiURL, body, this.httpOptions);
   }
 

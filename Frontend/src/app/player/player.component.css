@@ -1,10 +1,14 @@
 .playerInfo {
     width: 40%;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
 }
 
 .playerPic {
     width: 50%;
     height: 7rem;
+    background-size: cover;
+    background-position: center;
 }
 
 .stats {
@@ -12,9 +16,10 @@
 }
 
 .statistic {
-    height: 19rem;
+    height: 20.5rem;
 }
 
-#middle{
-    text-align: center;
+.actualStat {
+    margin-left: 1.3rem;
+    margin-right: 1.3rem;
 }

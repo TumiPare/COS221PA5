@@ -1,37 +1,25 @@
 <div fxFlex fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="40px" class="container"
     style="padding-top: 6rem;">
-    <h1>{{playerName}}</h1>
+    <h1 style="font-size: 37pt;">{{playerName}}</h1>
     <div class="outline playerInfo" fxFlex fxLayout="column" fxLayoutAlign="center center">
-        <p class="outline playerPic">pic
-            <img id="playerimg" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAUA
-            AAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO
-                9TXL0Y4OHwAAAABJRU5ErkJggg==" alt="Red dot">
-        </p>
-        <p >Life Description</p>
-        <p id="FN">Tiger Woods</p>
+        <div class="playerPic outline" style="background-image: url('https://picsum.photos/200');"></div>
+        <p>Life Description</p>
         <p id="birth">13/1/2006</p>
         <p id="gender">male</p>
 
         <p id="Nationality">South Africa</p>
     </div>
     <div class="stats" fxFlex fxLayoutAlign="space-around">
-        <div class="outline statistic" fxFlex fxFlex="30%" fxLayoutAlign="center">
-            <div id="middle">
-                <p>Fouls:</p>
-                <br>
-
-                <p id="turnovers">Turnovers: 5</p>
-                <br>
-                <p id="exclusions">Exclusions: 6</p>
-                <br>
-                <p id="penaltyshotsT">Penalty shots Taken: 7</p>
-                <br>
-                <p id="penaltyshotsG">Penalty shots Given: 8</p>
-
-                
+        <div class="outline statistic" fxFlex fxLayout="column" fxFlex="30%" fxLayoutAlign="center"
+            fxLayoutGap="0.5rem">
+            <p class="mat-h1" style="text-align: center;">Fouls</p>
+            <div *ngFor="let i of [1, 2, 3, 4, 5];last as last" class="actualStat">
+                <div fxLayout="row" fxLayoutAlign="space-between">
+                    <p>Stat</p>
+                    <p>37</p>
+                </div>
+                <hr *ngIf="!last" style="opacity: 50%;">
             </div>
-
-            
         </div>
         <div class="outline statistic" fxFlex fxFlex="30%" fxLayoutAlign="center">
             <div id="middle">
@@ -45,7 +33,7 @@
                 <br>
                 <p id="passesMade">Passes Made: 36%</p>
             </div>
-            
+
         </div>
         <div class="outline statistic" fxFlex fxFlex="30%" fxLayoutAlign="center">
             <div id="middle">

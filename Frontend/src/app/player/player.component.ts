@@ -11,6 +11,28 @@ import { APIService } from '../api.service';
 export class PlayerComponent implements OnInit {
   playerName: string;
   playerID: number;
+  player: {
+    "playerID": 3453545,
+    fullName: string,
+    gender: string,
+    DOB: string,
+    country: string,
+    countryCode: string,
+    image: string,
+    stats: any
+  };
+  offenseStats: Array<{
+    statistic: string,
+    value: number | string
+  }> = [];
+  defenceStats: Array<{
+    statistic: string,
+    value: number | string
+  }> = [];
+  foulStats: Array<{
+    statistic: string,
+    value: number | string
+  }> = [];
 
   constructor(private route: ActivatedRoute,
     private api: APIService) {
@@ -19,13 +41,9 @@ export class PlayerComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
-    let Key = sessionStorage.getItem("apiKey");
-    this.api.GetPlayer(Key,this.playerID).subscribe((res) => {
+    this.api.getPlayer(this.playerID).subscribe((res) => {
       console.log(res);
-
-
-        //IS SO PRETTY
+      //IS SO PRETTY // TRUUUE
       let Name = res.data[0].fullName;
       let Gender = res.data[0].gender;
       let Birth = res.data[0].DOB;
@@ -68,7 +86,7 @@ export class PlayerComponent implements OnInit {
       (<HTMLInputElement>document.getElementById("successfulPasses")).value = SuccessfulPasses;
 
       // let Name = (<HTMLInputElement>document.getElementById("email")).value;
-  
+
 
     });
   }
