@@ -1,0 +1,7 @@
+.navBar {
+    position: absolute;
+    top: 4rem;
+    left: 4rem;
+    display: flex;
+    flex-direction: column;
+}
