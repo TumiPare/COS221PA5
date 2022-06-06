@@ -24,6 +24,7 @@ import { ManageComponent } from './manage/manage.component';
 import { UserService } from './user.service';
 import { APIService } from './api.service';
 import { LocationsComponent } from './locations/locations.component';
+import { TournamentGroupsComponent } from './tournament-groups/tournament-groups.component';
 
 
 @NgModule({
@@ -41,7 +42,7 @@ import { LocationsComponent } from './locations/locations.component';
     TournementComponent,
     ManageComponent,
     TournamentCardComponent,   
-    LocationsComponent,
+    LocationsComponent, TournamentGroupsComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),

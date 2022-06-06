@@ -17,83 +17,48 @@
         <div id="left-column1" class="column">
 
             <div class="a4eventsTop">
-                <tournament-card teama="{{tournament.roundof16[0].teamA}}" teamb="{{tournament.roundof16[0].teamA}}" scorea="{{tournament.roundof16[0].scoreA}}" scoreb="{{tournament.roundof16[0].scoreB}}" eventnumber="{{tournament.roundof16[0].eventNumber}" pica="{{tournament.roundof16[0].picA}"
-                    picb="{{tournament.roundof16[0].picB}">
-                </tournament-card>
-                <tournament-card teama="{{tournament.roundof16[1].teamA}}" teamb="{{tournament.roundof16[1].teamA}}" scorea="{{tournament.roundof16[1].scoreA}}" scoreb="{{tournament.roundof16[1].scoreB}}" eventnumber="{{tournament.roundof16[1].eventNumber}" pica="{{tournament.roundof16[0].picA}"
-                    picb="{{tournament.roundof16[0].picB}">
-                </tournament-card>
+                <tournament-card event="{{tournament.roundof16[0]}}"></tournament-card>
+                <tournament-card event="{{tournament.roundof16[1]}}"></tournament-card>
             </div>
             <div class="a4eventsBottom">
-                <tournament-card teama="{{tournament.roundof16[2].teamA}}" teamb="{{tournament.roundof16[2].teamA}}" scorea="{{tournament.roundof16[2].scoreA}}" scoreb="{{tournament.roundof16[2].scoreB}}" eventnumber="{{tournament.roundof16[2].eventNumber}" pica="{{tournament.roundof16[2].picA}"
-                    picb="{{tournament.roundof16[2].picB}">
-                </tournament-card>
-                <tournament-card teama="{{tournament.roundof16[3].teamA}}" teamb="{{tournament.roundof16[3].teamA}}" scorea="{{tournament.roundof16[3].scoreA}}" scoreb="{{tournament.roundof16[3].scoreB}}" eventnumber="{{tournament.roundof16[3].eventNumber}" pica="{{tournament.roundof16[3].picA}"
-                    picb="{{tournament.roundof16[3].picB}">
-                </tournament-card>
+                <tournament-card event="{{tournament.roundof16[2]}}"></tournament-card>
+                <tournament-card event="{{tournament.roundof16[3]}}"></tournament-card>
             </div>
         </div>
         <div id="left-column2" class="column">
-
-            <tournament-card teama="{{tournament.quarterFinals[0].teamA}}" teamb="{{tournament.quarterFinals[0].teamA}}" scorea="{{tournament.quarterFinals[0].scoreA}}" scoreb="{{tournament.quarterFinals[0].scoreB}}" eventnumber="{{tournament.quarterFinals[0].eventNumber}"
-                pica="{{tournament.quarterFinals[0].picA}" picb="{{tournament.quarterFinals[0].picB}">
-            </tournament-card>
-            <tournament-card teama="{{tournament.quarterFinals[1].teamA}}" teamb="{{tournament.quarterFinals[1].teamA}}" scorea="{{tournament.quarterFinals[1].scoreA}}" scoreb="{{tournament.quarterFinals[1].scoreB}}" eventnumber="{{tournament.quarterFinals[1].eventNumber}"
-                pica="{{tournament.quarterFinals[1].picA}" picb="{{tournament.quarterFinals[1].picB}">
-            </tournament-card>
+            <tournament-card event="{{tournament.quarterFinals[0]}}"></tournament-card>
+            <tournament-card event="{{tournament.quarterFinals[1]}}"></tournament-card>
         </div>
         <div id="left-column3" class="column">
-
-            <tournament-card teama="{{tournament.semiFinals[0].teamA}}" teamb="{{tournament.semiFinals[0].teamA}}" scorea="{{tournament.semiFinals[0].scoreA}}" scoreb="{{tournament.semiFinals[0].scoreB}}" eventnumber="{{tournament.semiFinals[0].eventNumber}" pica="{{tournament.semiFinals[0].picA}"
-                picb="{{tournament.semiFinals[0].picB}">
-            </tournament-card>
+            <tournament-card event="{{tournament.semiFinals[0]}}"></tournament-card>
         </div>
     </div>
     <div id="center" class="column">
         <div id="roundfor3">
             <p>Match for third place </p>
-            <tournament-card teama="{{tournament.fightFor3.teamA}}" teamb="{{tournament.fightFor3.teamA}}" scorea="{{tournament.fightFor3.scoreA}}" scoreb="{{tournament.fightFor3.scoreB}}" eventnumber="{{tournament.fightFor3.eventNumber}" pica="{{tournament.fightFor3.picA}"
-                picb="{{tournament.fightFor3.picB}">
-            </tournament-card>
+            <tournament-card event="{{tournament.fightFor3}}"></tournament-card>
         </div>
         <div class="final">
             <p>Final</p>
-            <tournament-card teama="{{tournament.final.teamA}}" teamb="{{tournament.final.teamA}}" scorea="{{tournament.final.scoreA}}" scoreb="{{tournament.final.scoreB}}" eventnumber="{{tournament.final.eventNumber}" pica="{{tournament.final.picA}" picb="{{tournament.final.picB}">
-            </tournament-card>
+            <tournament-card event="{{tournament.final}}"></tournament-card>
         </div>
     </div>
     <div id="right">
         <div id="right-column1" class="column">
-
-            <tournament-card teama="{{tournament.semiFinals[1].teamA}}" teamb="{{tournament.semiFinals[1].teamA}}" scorea="{{tournament.semiFinals[1].scoreA}}" scoreb="{{tournament.semiFinals[1].scoreB}}" eventnumber="{{tournament.semiFinals[1].eventNumber}" pica="{{tournament.semiFinals[1].picA}"
-                picb="{{tournament.semiFinals[1].picB}">
-            </tournament-card>
+            <tournament-card event="{{tournament.semiFinals[1]}}"></tournament-card>
         </div>
         <div id="right-column2" class="column">
-
-            <tournament-card teama="{{tournament.quarterFinals[2].teamA}}" teamb="{{tournament.quarterFinals[2].teamA}}" scorea="{{tournament.quarterFinals[2].scoreA}}" scoreb="{{tournament.quarterFinals[2].scoreB}}" eventnumber="{{tournament.quarterFinals[2].eventNumber}"
-                pica="{{tournament.quarterFinals[2].picA}" picb="{{tournament.quarterFinals[2].picB}">
-            </tournament-card>
-            <tournament-card teama="{{tournament.quarterFinals[3].teamA}}" teamb="{{tournament.quarterFinals[3].teamA}}" scorea="{{tournament.quarterFinals[3].scoreA}}" scoreb="{{tournament.quarterFinals[3].scoreB}}" eventnumber="{{tournament.quarterFinals[3].eventNumber}"
-                pica="{{tournament.quarterFinals[3].picA}" picb="{{tournament.quarterFinals[3].picB}">
-            </tournament-card>
+            <tournament-card event="{{tournament.quarterFinals[2]}}"></tournament-card>
+            <tournament-card event="{{tournament.quarterFinals[3]}}"></tournament-card>
         </div>
         <div id="right-column3" class="column">
             <div class="a4eventsTop">
-                <tournament-card teama="{{tournament.roundof16[4].teamA}}" teamb="{{tournament.roundof16[4].teamA}}" scorea="{{tournament.roundof16[4].scoreA}}" scoreb="{{tournament.roundof16[4].scoreB}}" eventnumber="{{tournament.roundof16[4].eventNumber}" pica="{{tournament.roundof16[4].picA}"
-                    picb="{{tournament.roundof16[4].picB}">
-                </tournament-card>
-                <tournament-card teama="{{tournament.roundof16[5].teamA}}" teamb="{{tournament.roundof16[5].teamA}}" scorea="{{tournament.roundof16[5].scoreA}}" scoreb="{{tournament.roundof16[5].scoreB}}" eventnumber="{{tournament.roundof16[5].eventNumber}" pica="{{tournament.roundof16[5].picA}"
-                    picb="{{tournament.roundof16[5].picB}">
-                </tournament-card>
+                <tournament-card event="{{tournament.roundof16[4]}}"></tournament-card>
+                <tournament-card event="{{tournament.roundof16[5]}}"></tournament-card>
             </div>
             <div class="a4eventsBottom">
-                <tournament-card teama="{{tournament.roundof16[6].teamA}}" teamb="{{tournament.roundof16[6].teamA}}" scorea="{{tournament.roundof16[6].scoreA}}" scoreb="{{tournament.roundof16[6].scoreB}}" eventnumber="{{tournament.roundof16[6].eventNumber}" pica="{{tournament.roundof16[6].picA}"
-                    picb="{{tournament.roundof16[6].picB}">
-                </tournament-card>
-                <tournament-card teama="{{tournament.roundof16[7].teamA}}" teamb="{{tournament.roundof16[7].teamA}}" scorea="{{tournament.roundof16[7].scoreA}}" scoreb="{{tournament.roundof16[7].scoreB}}" eventnumber="{{tournament.roundof16[7].eventNumber}" pica="{{tournament.roundof16[7].picA}"
-                    picb="{{tournament.roundof16[7].picB}">
-                </tournament-card>
+                <tournament-card event="{{tournament.roundof16[6]}}"></tournament-card>
+                <tournament-card event="{{tournament.roundof16[7]}}"></tournament-card>
             </div>
         </div>
     </div>
