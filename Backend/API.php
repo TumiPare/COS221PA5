@@ -258,7 +258,9 @@ class API {
 // API INSTANCE TO HANDLE INCOMING REQUESTS
 // ======================================================================================
 
-header("Access-Control-Allow-Origin: localhost:4200 faade.co.za");
+
+$origin = $_SERVER['REMOTE_ADDR'] . ":" . $_SERVER['REMOTE_PORT'];
+header("Access-Control-Allow-Origin: $origin");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization");
 $api = new API();
 try {
