@@ -34,25 +34,13 @@ export class ManageComponent implements OnInit {
     let Key = sessionStorage.getItem("apiKey");
 
     //Check for is empty
-  {  // Entire bracket to check if user just deletes values because oxygen commit no reach lungs
-    if(Email=="")
-    {
-      this.print("You must have an email");
-      return;
-    }
 
-    if(Password=="")
-    {
-      this.print("Please enter your current or new password");
-      return;
-    }
 
     if(Username=="")
     {
       this.print("Please enter your username");
       return;
     }
-  }
 
   //Did not change email
   if(Email == sessionStorage.getItem("email")) Email = "";  //Refer to UpdateUser in api.service
@@ -79,15 +67,26 @@ export class ManageComponent implements OnInit {
 
     if(res.status=="success")
     {
-      sessionStorage.setItem("username",res.username);
-      sessionStorage.setItem("email",res.email);
-      sessionStorage.setItem("apiKey",res.apiKey);
+      sessionStorage.setItem("username",res.data[0].username);
+      sessionStorage.setItem("email",res.data[0].email);
+      sessionStorage.setItem("apiKey",res.data[0].apiKey);
       this.print("Account succesfully updated");
     }
     else
       if(res.status=="failed")
       {
         // do something
+        if(res.error.code = "invalid_email")
+        {
+          this.print(res.error.message);
+          (<HTMLInputElement>document.getElementById("email")).focus;
+        }
+
+        if(res.error.code = "invalid_password")
+        {
+          this.print(res.error.message);
+          (<HTMLInputElement>document.getElementById("password")).focus;
+        }
       }
     else
     this.print("Something went wrong");

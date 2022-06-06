@@ -111,6 +111,20 @@ export class APIService {
     console.log(body);
     return this.http.post(this.apiURL, body, this.httpOptions);
   }
+
+
+  GetPlayer( Key: string, PlayerId: number): Observable<any> {
+    let body = {
+      type: "player",
+      operation: "get",
+      data: [{
+        playerid: PlayerId
+      }]
+    };
+    console.log(body);
+    return this.http.post(this.apiURL, body, this.httpOptions);
+  }
+
 }
 
 

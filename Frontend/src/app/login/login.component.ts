@@ -48,13 +48,13 @@ export class LoginComponent implements OnInit {
         }
         else  // Failed
         {
-          if(res.code=="invalid_email")  // email
+          if(res.error.code=="invalid_email")  // email
           {
             this.print("Please ensure that your email is valid ")
             document.getElementById("email").focus();
           } 
           else
-          if(res.code=="invalid_password")  // password
+          if(res.error.code=="invalid_password")  // password
           {
             this.print("Please ensure that your password is valid")
             document.getElementById("password").focus();
