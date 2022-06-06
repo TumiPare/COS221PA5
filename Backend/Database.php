@@ -114,7 +114,7 @@ class Database {
             
             if ($this->getErrorCode($stmt) == 1062) {
                 if (count($data) == 1) {
-                    throw new ApiException(454, "email_taken", "The account with provided email is already taken.");
+                    throw new ApiException(200, "email_taken", "The account with provided email is already taken.");
                 } else {
                     continue;
                 }
@@ -142,13 +142,13 @@ class Database {
         $result = $this->select($query, [$data["email"]]);
 
         if ($result == []) {
-            throw new ApiException(401, "invalid_email", "Account with this email does not exist.");
+            throw new ApiException(200, "invalid_email", "Account with this email does not exist.");
         }
 
         $result = $result[0];
 
         if (!password_verify($data["password"], $result["password"])) {
-            throw new ApiException(401, "invalid_password", "Provided password is invalid.");
+            throw new ApiException(200, "invalid_password", "Provided password is invalid.");
         }
 
         return array(["apiKey" => $result["apiKey"], "username" => $result["username"], "email" => $result["email"]]);
@@ -181,7 +181,7 @@ class Database {
         $stmt = $this->executeQuery($query, [$data["apiKey"]]);
 
         if ($stmt->rowCount() === 0) {
-            throw new ApiException(404, "user_not_found", "No user matching provided API key was found.");
+            throw new ApiException(200, "user_not_found", "No user matching provided API key was found.");
         }
     }
 

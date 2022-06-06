@@ -32,13 +32,13 @@ class API
     private function authorizeRequest()
     {
         if (!array_key_exists("apiKey", $this->request)) {
-            throw new ApiException(401, "unauthorized", "User key has to be provided.");
+            throw new ApiException(200, "unauthorized", "User key has to be provided.");
         }
 
         $authorized = $this->database->authorizeUser($this->request["apiKey"]);
 
         if (!$authorized) {
-            throw new ApiException(401, "unauthorized", "User key is invalid.");
+            throw new ApiException(200, "unauthorized", "User key is invalid.");
         }
     }
 
@@ -79,7 +79,7 @@ class API
             }
 
             if (!$fieldFound) {
-                throw new ApiException(400, "required_field_missing", "The $field field is missing from one of the objects.");
+                throw new ApiException(200, "required_field_missing", "The $field field is missing from one of the objects.");
             }
         }
     }
@@ -109,7 +109,7 @@ class API
 
     function validateDataField() {
         if (!array_key_exists("data", $this->request)) {
-            throw new ApiException(400, "data_missing", "The data field is missing.");
+            throw new ApiException(200, "data_missing", "The data field is missing.");
         }
     }
 
@@ -120,7 +120,7 @@ class API
     public function handleRequest()
     {
         if ($_SERVER["REQUEST_METHOD"] !== "POST") {
-            throw new ApiException(400, "wrong_request_method", "Only POST requests are allowed.");
+            throw new ApiException(200, "wrong_request_method", "Only POST requests are allowed.");
         }
 
         // Validate user JSON request
@@ -128,16 +128,16 @@ class API
         if ($this->validateJSON($request)) {
             $this->request = json_decode($request, true);
         } else {
-            throw new ApiException(400, "malformed_request", "JSON request could not be decoded, make sure syntax is correct.");
+            throw new ApiException(200, "malformed_request", "JSON request could not be decoded, make sure syntax is correct.");
         }
 
 
         if (!array_key_exists("type", $this->request)) {
-            throw new ApiException(400, "invalid_type", "Type is not specified.");
+            throw new ApiException(200, "invalid_type", "Type is not specified.");
         }
 
         if (!array_key_exists("operation", $this->request)) {
-            throw new ApiException(400, "invalid_operation", "Operation is not specified.");
+            throw new ApiException(200, "invalid_operation", "Operation is not specified.");
         }
 
         switch ($this->request["type"]) {
@@ -145,14 +145,14 @@ class API
                 $this->handlePlayer();
                 break;
             case "team":
-                throw new ApiException(400, "not_implemented", "Still has to be implemented."); // Remove if implemented
+                throw new ApiException(200, "not_implemented", "Still has to be implemented."); // Remove if implemented
                 $this->handleTeam();
                 break;
             case "user":
                 $this->handleUser();
                 break;
             default:
-                throw new ApiException(400, "invalid_type", "The specified type is not valid.");
+                throw new ApiException(200, "invalid_type", "The specified type is not valid.");
                 break;
         }
 
@@ -170,7 +170,7 @@ class API
         } else if ($this->request["operation"] == "add") {
             $this->addPlayers($this->request["data"]);
         } else {
-            throw new ApiException(400, "invalid_operation", "Invalid operation, only set, get and add is allowed.");
+            throw new ApiException(200, "invalid_operation", "Invalid operation, only set, get and add is allowed.");
         }
     }
 
@@ -226,11 +226,11 @@ class API
 
             if (count($data) == 1) {
                 if (!$this->validateEmail($user["email"])) {
-                    throw new ApiException(400, "invalid_email", "Provided email is invalid.");
+                    throw new ApiException(200, "invalid_email", "Provided email is invalid.");
                 }
 
                 if (!$this->validatePassword($user["password"])) {
-                    throw new ApiException(400, "invalid_password", "Provided password is invalid.");
+                    throw new ApiException(200, "invalid_password", "Provided password is invalid.");
                 }
             }
         }
@@ -251,18 +251,18 @@ class API
         $this->validateOptionalFields($user, $optionalUserInfo);
 
         if ($user["username"] == NULL && $user["password"] == NULL && $user["email"] == NULL) {
-            throw new ApiException(400, "malformed_request", "New username, email, and password is missing.");
+            throw new ApiException(200, "malformed_request", "New username, email, and password is missing.");
         }
 
         if ($user["email"] != NULL) {
             if (!$this->validateEmail($user["email"])) {
-                throw new ApiException(400, "invalid_email", "Provided email is invalid.");
+                throw new ApiException(200, "invalid_email", "Provided email is invalid.");
             }
         }
 
         if ($user["password"] != NULL) {
             if (!$this->validatePassword($user["password"])) {
-                throw new ApiException(400, "invalid_password", "Provided password is invalid.");
+                throw new ApiException(200, "invalid_password", "Provided password is invalid.");
             }
         }
         
