@@ -20,6 +20,7 @@ import { ManageComponent } from './manage/manage.component';
 
 import { UserService } from './user.service';
 import { APIService } from './api.service';
+import { LocationsComponent } from './locations/locations.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { APIService } from './api.service';
     RegisterComponent,
     PlayerComponent,
     TournementComponent,
+    LocationsComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),

@@ -15,28 +15,60 @@ export class APIService {
 
   constructor(private http: HttpClient) { }
 
-  signUpUser(username: string, email: string, password: string): Observable<any> {
+  signUpUser(Username: string, Email: string, Password: string): Observable<any> {
     let body = {
       type: "user",
       operation: "add",
       data: {
-        username: username,
-        email: email,
-        password: password,
+        username: Username,
+        email: Email,
+        password: Password,
       }
     };
     return this.http.post(this.apiURL, body, this.httpOptions);
   }
 
-  ValidateUser( email: string, password: string): Observable<any> {
+  ValidateUser( Email: string, Password: string): Observable<any> {
     let body = {
       type: "user",
       operation: "login",
-      data: {
-        email: email,
-        password: password,
-      }
+      data: [{
+        email: Email,
+        password: Password
+      }]
     };
+    console.log(body);
+    return this.http.post(this.apiURL, body, this.httpOptions);
+  }
+
+  UpdateUser( Email: string,Username:string, Password: string,Key: string): Observable<any> {
+    
+
+    interface ExampleObject {
+      [key: string]: any
+  }
+  let jan: ExampleObject = {};
+
+  //Above is just to allow new attribures to be added to typescript json object. 
+
+    
+    // update email
+    if(Email!="") jan.email = Email;
+
+    if(Username!="") jan.username = Username;
+
+    if(Password!="") jan.password = Password;
+
+    let body = {
+      apiKey: Key,
+      type: "user",
+      operation: "login",
+      data: [jan]   // jan is a json object
+    };
+
+    console.log(body);
     return this.http.post(this.apiURL, body, this.httpOptions);
   }
 }
+
+
