@@ -1,0 +1,247 @@
+{
+    "apiKey": "asdf",
+    "type": "player",
+    "operation": "add",
+    "data": [
+        {
+            "firstName": "Nelle",
+            "surname": "Kendro",
+            "personKey": "w.polo.com-x.7173",
+            "gender": "female",
+            "DOB": "27/7/2012",
+            "pic": "/9j/4AAQSkZJRgABAQAAAQABAAD/4QDeRXhpZgAASUkqAAgAAAAGABIBAwABAAAAAQAAABoBBQABAAAAVgAAABsBBQABAAAAXgAAACgBAwABAAAAAgAAABMCAwABAAAAAQAAAGmHBAABAAAAZgAAAAAAAAA4YwAA6AMAADhjAADoAwAABwAAkAcABAAAADAyMTABkQcABAAAAAECAwCGkgcAFgAAAMAAAAAAoAcABAAAADAxMDABoAMAAQAAAP//AAACoAQAAQAAACAAAAADoAQAAQAAACAAAAAAAAAAQVNDSUkAAABQaWNzdW0gSUQ6IDY1Of/bAEMACAYGBwYFCAcHBwkJCAoMFA0MCwsMGRITDxQdGh8eHRocHCAkLicgIiwjHBwoNyksMDE0NDQfJzk9ODI8LjM0Mv/bAEMBCQkJDAsMGA0NGDIhHCEyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMv/CABEIACAAIAMBIgACEQEDEQH/xAAYAAADAQEAAAAAAAAAAAAAAAACBAUGAP/EABYBAQEBAAAAAAAAAAAAAAAAAAABAv/aAAwDAQACEAMQAAABRPODZQ4SzqO0nTh6Voc2f//EAB0QAAIDAAIDAAAAAAAAAAAAAAECAAMEERIhIjH/2gAIAQEAAQUCTXGcdmsBt5JiOZbYXOPgtefcHrKlZ42HXSvkz7Misz799hRjP//EABYRAQEBAAAAAAAAAAAAAAAAAAABEf/aAAgBAwEBPwHGIr//xAAXEQEBAQEAAAAAAAAAAAAAAAAAARES/9oACAECAQE/Aemqj//EACIQAAEDBAAHAAAAAAAAAAAAAAEAAhEQEiExAxMiMkFRgf/aAAgBAQAGPwLIwg7wrWdUqThYhbhvpFruHcZVpaAW4xQQB9RcWWgZuBU03pcjU91P/8QAHRAAAwACAwEBAAAAAAAAAAAAAAERITFBYYFRcf/aAAgBAQABPyGrviI3vsoOsvRwbCTSL4rfpCJmsZ6mk1v5CeURqvOL2O0b8GyM3HYgFPQmxiphLawelrSiu0+HAj//2gAMAwEAAgADAAAAEMzs/wD/xAAYEQADAQEAAAAAAAAAAAAAAAAAAREhQf/aAAgBAwEBPxBrwiCVww4f/8QAGBEAAwEBAAAAAAAAAAAAAAAAAAERMUH/2gAIAQIBAT8QT9KbGipin//EAB8QAQACAgICAwAAAAAAAAAAAAEAESExQWFRsXGBkf/aAAgBAQABPxAd5atqNSAETiu2GSY5zVuIQPTPh5/RPqcpUqieoaYULYKxb7mB/g6oCreMjUQ0eS0mVmShuvM1yHCKrO4TE1aWee+4xC2CQGeMzMZbVV8w0ifMRQEwL1L41FdLWddCysEWy0n/2Q==",
+            "birthAddr": {
+                "streetNo": 9,
+                "street": "Economics St.",
+                "city": "Washington",
+                "postalCode": 8207,
+                "country": "United States",
+                "countryCode": "us"
+            },
+            "residenceAddr": {
+                "streetNo": 86,
+                "street": "Perception St.",
+                "city": "Moscow",
+                "postalCode": 7381,
+                "country": "Russia",
+                "countryCode": "ru"
+            }
+        },
+        {
+            "firstName": "Lura",
+            "surname": "Grapperhaus",
+            "personKey": "w.polo.com-x.3225",
+            "gender": "female",
+            "DOB": "19/11/1964",
+            "pic": "/9j/4AAQSkZJRgABAQAAAQABAAD/4QDeRXhpZgAASUkqAAgAAAAGABIBAwABAAAAAQAAABoBBQABAAAAVgAAABsBBQABAAAAXgAAACgBAwABAAAAAgAAABMCAwABAAAAAQAAAGmHBAABAAAAZgAAAAAAAAA4YwAA6AMAADhjAADoAwAABwAAkAcABAAAADAyMTABkQcABAAAAAECAwCGkgcAFgAAAMAAAAAAoAcABAAAADAxMDABoAMAAQAAAP//AAACoAQAAQAAACAAAAADoAQAAQAAACAAAAAAAAAAQVNDSUkAAABQaWNzdW0gSUQ6IDY1Of/bAEMACAYGBwYFCAcHBwkJCAoMFA0MCwsMGRITDxQdGh8eHRocHCAkLicgIiwjHBwoNyksMDE0NDQfJzk9ODI8LjM0Mv/bAEMBCQkJDAsMGA0NGDIhHCEyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMv/CABEIACAAIAMBIgACEQEDEQH/xAAYAAADAQEAAAAAAAAAAAAAAAACBAUGAP/EABYBAQEBAAAAAAAAAAAAAAAAAAABAv/aAAwDAQACEAMQAAABRPODZQ4SzqO0nTh6Voc2f//EAB0QAAIDAAIDAAAAAAAAAAAAAAECAAMEERIhIjH/2gAIAQEAAQUCTXGcdmsBt5JiOZbYXOPgtefcHrKlZ42HXSvkz7Misz799hRjP//EABYRAQEBAAAAAAAAAAAAAAAAAAABEf/aAAgBAwEBPwHGIr//xAAXEQEBAQEAAAAAAAAAAAAAAAAAARES/9oACAECAQE/Aemqj//EACIQAAEDBAAHAAAAAAAAAAAAAAEAAhEQEiExAxMiMkFRgf/aAAgBAQAGPwLIwg7wrWdUqThYhbhvpFruHcZVpaAW4xQQB9RcWWgZuBU03pcjU91P/8QAHRAAAwACAwEBAAAAAAAAAAAAAAERITFBYYFRcf/aAAgBAQABPyGrviI3vsoOsvRwbCTSL4rfpCJmsZ6mk1v5CeURqvOL2O0b8GyM3HYgFPQmxiphLawelrSiu0+HAj//2gAMAwEAAgADAAAAEMzs/wD/xAAYEQADAQEAAAAAAAAAAAAAAAAAAREhQf/aAAgBAwEBPxBrwiCVww4f/8QAGBEAAwEBAAAAAAAAAAAAAAAAAAERMUH/2gAIAQIBAT8QT9KbGipin//EAB8QAQACAgICAwAAAAAAAAAAAAEAESExQWFRsXGBkf/aAAgBAQABPxAd5atqNSAETiu2GSY5zVuIQPTPh5/RPqcpUqieoaYULYKxb7mB/g6oCreMjUQ0eS0mVmShuvM1yHCKrO4TE1aWee+4xC2CQGeMzMZbVV8w0ifMRQEwL1L41FdLWddCysEWy0n/2Q==",
+            "birthAddr": {
+                "streetNo": 80,
+                "street": "Sample Ave.",
+                "city": "New York",
+                "postalCode": 6902,
+                "country": "United States",
+                "countryCode": "us"
+            },
+            "residenceAddr": {
+                "streetNo": 82,
+                "street": "Apple Ln.",
+                "city": "Johannesburg",
+                "postalCode": 1234,
+                "country": "South Africa",
+                "countryCode": "za"
+            }
+        },
+        {
+            "firstName": "Eddie",
+            "surname": "Dimora",
+            "personKey": "w.polo.com-x.9573",
+            "gender": "male",
+            "DOB": "6/10/1968",
+            "pic": "/9j/4AAQSkZJRgABAQAAAQABAAD/4QDeRXhpZgAASUkqAAgAAAAGABIBAwABAAAAAQAAABoBBQABAAAAVgAAABsBBQABAAAAXgAAACgBAwABAAAAAgAAABMCAwABAAAAAQAAAGmHBAABAAAAZgAAAAAAAAA4YwAA6AMAADhjAADoAwAABwAAkAcABAAAADAyMTABkQcABAAAAAECAwCGkgcAFgAAAMAAAAAAoAcABAAAADAxMDABoAMAAQAAAP//AAACoAQAAQAAACAAAAADoAQAAQAAACAAAAAAAAAAQVNDSUkAAABQaWNzdW0gSUQ6IDY1Of/bAEMACAYGBwYFCAcHBwkJCAoMFA0MCwsMGRITDxQdGh8eHRocHCAkLicgIiwjHBwoNyksMDE0NDQfJzk9ODI8LjM0Mv/bAEMBCQkJDAsMGA0NGDIhHCEyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMv/CABEIACAAIAMBIgACEQEDEQH/xAAYAAADAQEAAAAAAAAAAAAAAAACBAUGAP/EABYBAQEBAAAAAAAAAAAAAAAAAAABAv/aAAwDAQACEAMQAAABRPODZQ4SzqO0nTh6Voc2f//EAB0QAAIDAAIDAAAAAAAAAAAAAAECAAMEERIhIjH/2gAIAQEAAQUCTXGcdmsBt5JiOZbYXOPgtefcHrKlZ42HXSvkz7Misz799hRjP//EABYRAQEBAAAAAAAAAAAAAAAAAAABEf/aAAgBAwEBPwHGIr//xAAXEQEBAQEAAAAAAAAAAAAAAAAAARES/9oACAECAQE/Aemqj//EACIQAAEDBAAHAAAAAAAAAAAAAAEAAhEQEiExAxMiMkFRgf/aAAgBAQAGPwLIwg7wrWdUqThYhbhvpFruHcZVpaAW4xQQB9RcWWgZuBU03pcjU91P/8QAHRAAAwACAwEBAAAAAAAAAAAAAAERITFBYYFRcf/aAAgBAQABPyGrviI3vsoOsvRwbCTSL4rfpCJmsZ6mk1v5CeURqvOL2O0b8GyM3HYgFPQmxiphLawelrSiu0+HAj//2gAMAwEAAgADAAAAEMzs/wD/xAAYEQADAQEAAAAAAAAAAAAAAAAAAREhQf/aAAgBAwEBPxBrwiCVww4f/8QAGBEAAwEBAAAAAAAAAAAAAAAAAAERMUH/2gAIAQIBAT8QT9KbGipin//EAB8QAQACAgICAwAAAAAAAAAAAAEAESExQWFRsXGBkf/aAAgBAQABPxAd5atqNSAETiu2GSY5zVuIQPTPh5/RPqcpUqieoaYULYKxb7mB/g6oCreMjUQ0eS0mVmShuvM1yHCKrO4TE1aWee+4xC2CQGeMzMZbVV8w0ifMRQEwL1L41FdLWddCysEWy0n/2Q==",
+            "birthAddr": {
+                "streetNo": 59,
+                "street": "Historian Ln.",
+                "city": "Hong Kong",
+                "postalCode": 1903,
+                "country": "China",
+                "countryCode": "ch"
+            },
+            "residenceAddr": {
+                "streetNo": 11,
+                "street": "Success Ln.",
+                "city": "Pretoria",
+                "postalCode": 7712,
+                "country": "South Africa",
+                "countryCode": "za"
+            }
+        },
+        {
+            "firstName": "Jeremy",
+            "surname": "Strausberg",
+            "personKey": "w.polo.com-x.2241",
+            "gender": "male",
+            "DOB": "25/10/1954",
+            "pic": "/9j/4AAQSkZJRgABAQAAAQABAAD/4QDeRXhpZgAASUkqAAgAAAAGABIBAwABAAAAAQAAABoBBQABAAAAVgAAABsBBQABAAAAXgAAACgBAwABAAAAAgAAABMCAwABAAAAAQAAAGmHBAABAAAAZgAAAAAAAAA4YwAA6AMAADhjAADoAwAABwAAkAcABAAAADAyMTABkQcABAAAAAECAwCGkgcAFgAAAMAAAAAAoAcABAAAADAxMDABoAMAAQAAAP//AAACoAQAAQAAACAAAAADoAQAAQAAACAAAAAAAAAAQVNDSUkAAABQaWNzdW0gSUQ6IDY1Of/bAEMACAYGBwYFCAcHBwkJCAoMFA0MCwsMGRITDxQdGh8eHRocHCAkLicgIiwjHBwoNyksMDE0NDQfJzk9ODI8LjM0Mv/bAEMBCQkJDAsMGA0NGDIhHCEyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMv/CABEIACAAIAMBIgACEQEDEQH/xAAYAAADAQEAAAAAAAAAAAAAAAACBAUGAP/EABYBAQEBAAAAAAAAAAAAAAAAAAABAv/aAAwDAQACEAMQAAABRPODZQ4SzqO0nTh6Voc2f//EAB0QAAIDAAIDAAAAAAAAAAAAAAECAAMEERIhIjH/2gAIAQEAAQUCTXGcdmsBt5JiOZbYXOPgtefcHrKlZ42HXSvkz7Misz799hRjP//EABYRAQEBAAAAAAAAAAAAAAAAAAABEf/aAAgBAwEBPwHGIr//xAAXEQEBAQEAAAAAAAAAAAAAAAAAARES/9oACAECAQE/Aemqj//EACIQAAEDBAAHAAAAAAAAAAAAAAEAAhEQEiExAxMiMkFRgf/aAAgBAQAGPwLIwg7wrWdUqThYhbhvpFruHcZVpaAW4xQQB9RcWWgZuBU03pcjU91P/8QAHRAAAwACAwEBAAAAAAAAAAAAAAERITFBYYFRcf/aAAgBAQABPyGrviI3vsoOsvRwbCTSL4rfpCJmsZ6mk1v5CeURqvOL2O0b8GyM3HYgFPQmxiphLawelrSiu0+HAj//2gAMAwEAAgADAAAAEMzs/wD/xAAYEQADAQEAAAAAAAAAAAAAAAAAAREhQf/aAAgBAwEBPxBrwiCVww4f/8QAGBEAAwEBAAAAAAAAAAAAAAAAAAERMUH/2gAIAQIBAT8QT9KbGipin//EAB8QAQACAgICAwAAAAAAAAAAAAEAESExQWFRsXGBkf/aAAgBAQABPxAd5atqNSAETiu2GSY5zVuIQPTPh5/RPqcpUqieoaYULYKxb7mB/g6oCreMjUQ0eS0mVmShuvM1yHCKrO4TE1aWee+4xC2CQGeMzMZbVV8w0ifMRQEwL1L41FdLWddCysEWy0n/2Q==",
+            "birthAddr": {
+                "streetNo": 79,
+                "street": "Homework St.",
+                "city": "Pretoria",
+                "postalCode": 6181,
+                "country": "South Africa",
+                "countryCode": "za"
+            },
+            "residenceAddr": {
+                "streetNo": 76,
+                "street": "Family St.",
+                "city": "Kyiv",
+                "postalCode": 6961,
+                "country": "Ukraine",
+                "countryCode": "ua"
+            }
+        },
+        {
+            "firstName": "Roberto",
+            "surname": "Brandhorst",
+            "personKey": "w.polo.com-x.1360",
+            "gender": "male",
+            "DOB": "18/3/1987",
+            "pic": "/9j/4AAQSkZJRgABAQAAAQABAAD/4QDeRXhpZgAASUkqAAgAAAAGABIBAwABAAAAAQAAABoBBQABAAAAVgAAABsBBQABAAAAXgAAACgBAwABAAAAAgAAABMCAwABAAAAAQAAAGmHBAABAAAAZgAAAAAAAAA4YwAA6AMAADhjAADoAwAABwAAkAcABAAAADAyMTABkQcABAAAAAECAwCGkgcAFgAAAMAAAAAAoAcABAAAADAxMDABoAMAAQAAAP//AAACoAQAAQAAACAAAAADoAQAAQAAACAAAAAAAAAAQVNDSUkAAABQaWNzdW0gSUQ6IDY1Of/bAEMACAYGBwYFCAcHBwkJCAoMFA0MCwsMGRITDxQdGh8eHRocHCAkLicgIiwjHBwoNyksMDE0NDQfJzk9ODI8LjM0Mv/bAEMBCQkJDAsMGA0NGDIhHCEyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMv/CABEIACAAIAMBIgACEQEDEQH/xAAYAAADAQEAAAAAAAAAAAAAAAACBAUGAP/EABYBAQEBAAAAAAAAAAAAAAAAAAABAv/aAAwDAQACEAMQAAABRPODZQ4SzqO0nTh6Voc2f//EAB0QAAIDAAIDAAAAAAAAAAAAAAECAAMEERIhIjH/2gAIAQEAAQUCTXGcdmsBt5JiOZbYXOPgtefcHrKlZ42HXSvkz7Misz799hRjP//EABYRAQEBAAAAAAAAAAAAAAAAAAABEf/aAAgBAwEBPwHGIr//xAAXEQEBAQEAAAAAAAAAAAAAAAAAARES/9oACAECAQE/Aemqj//EACIQAAEDBAAHAAAAAAAAAAAAAAEAAhEQEiExAxMiMkFRgf/aAAgBAQAGPwLIwg7wrWdUqThYhbhvpFruHcZVpaAW4xQQB9RcWWgZuBU03pcjU91P/8QAHRAAAwACAwEBAAAAAAAAAAAAAAERITFBYYFRcf/aAAgBAQABPyGrviI3vsoOsvRwbCTSL4rfpCJmsZ6mk1v5CeURqvOL2O0b8GyM3HYgFPQmxiphLawelrSiu0+HAj//2gAMAwEAAgADAAAAEMzs/wD/xAAYEQADAQEAAAAAAAAAAAAAAAAAAREhQf/aAAgBAwEBPxBrwiCVww4f/8QAGBEAAwEBAAAAAAAAAAAAAAAAAAERMUH/2gAIAQIBAT8QT9KbGipin//EAB8QAQACAgICAwAAAAAAAAAAAAEAESExQWFRsXGBkf/aAAgBAQABPxAd5atqNSAETiu2GSY5zVuIQPTPh5/RPqcpUqieoaYULYKxb7mB/g6oCreMjUQ0eS0mVmShuvM1yHCKrO4TE1aWee+4xC2CQGeMzMZbVV8w0ifMRQEwL1L41FdLWddCysEWy0n/2Q==",
+            "birthAddr": {
+                "streetNo": 27,
+                "street": "Topic St.",
+                "city": "New York",
+                "postalCode": 7382,
+                "country": "United States",
+                "countryCode": "us"
+            },
+            "residenceAddr": {
+                "streetNo": 78,
+                "street": "Homework Ln.",
+                "city": "Pretoria",
+                "postalCode": 4538,
+                "country": "South Africa",
+                "countryCode": "za"
+            }
+        },
+        {
+            "firstName": "Hugo",
+            "surname": "Eyman",
+            "personKey": "w.polo.com-x.1157",
+            "gender": "male",
+            "DOB": "22/10/1978",
+            "pic": "/9j/4AAQSkZJRgABAQAAAQABAAD/4QDeRXhpZgAASUkqAAgAAAAGABIBAwABAAAAAQAAABoBBQABAAAAVgAAABsBBQABAAAAXgAAACgBAwABAAAAAgAAABMCAwABAAAAAQAAAGmHBAABAAAAZgAAAAAAAAA4YwAA6AMAADhjAADoAwAABwAAkAcABAAAADAyMTABkQcABAAAAAECAwCGkgcAFgAAAMAAAAAAoAcABAAAADAxMDABoAMAAQAAAP//AAACoAQAAQAAACAAAAADoAQAAQAAACAAAAAAAAAAQVNDSUkAAABQaWNzdW0gSUQ6IDY1Of/bAEMACAYGBwYFCAcHBwkJCAoMFA0MCwsMGRITDxQdGh8eHRocHCAkLicgIiwjHBwoNyksMDE0NDQfJzk9ODI8LjM0Mv/bAEMBCQkJDAsMGA0NGDIhHCEyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMv/CABEIACAAIAMBIgACEQEDEQH/xAAYAAADAQEAAAAAAAAAAAAAAAACBAUGAP/EABYBAQEBAAAAAAAAAAAAAAAAAAABAv/aAAwDAQACEAMQAAABRPODZQ4SzqO0nTh6Voc2f//EAB0QAAIDAAIDAAAAAAAAAAAAAAECAAMEERIhIjH/2gAIAQEAAQUCTXGcdmsBt5JiOZbYXOPgtefcHrKlZ42HXSvkz7Misz799hRjP//EABYRAQEBAAAAAAAAAAAAAAAAAAABEf/aAAgBAwEBPwHGIr//xAAXEQEBAQEAAAAAAAAAAAAAAAAAARES/9oACAECAQE/Aemqj//EACIQAAEDBAAHAAAAAAAAAAAAAAEAAhEQEiExAxMiMkFRgf/aAAgBAQAGPwLIwg7wrWdUqThYhbhvpFruHcZVpaAW4xQQB9RcWWgZuBU03pcjU91P/8QAHRAAAwACAwEBAAAAAAAAAAAAAAERITFBYYFRcf/aAAgBAQABPyGrviI3vsoOsvRwbCTSL4rfpCJmsZ6mk1v5CeURqvOL2O0b8GyM3HYgFPQmxiphLawelrSiu0+HAj//2gAMAwEAAgADAAAAEMzs/wD/xAAYEQADAQEAAAAAAAAAAAAAAAAAAREhQf/aAAgBAwEBPxBrwiCVww4f/8QAGBEAAwEBAAAAAAAAAAAAAAAAAAERMUH/2gAIAQIBAT8QT9KbGipin//EAB8QAQACAgICAwAAAAAAAAAAAAEAESExQWFRsXGBkf/aAAgBAQABPxAd5atqNSAETiu2GSY5zVuIQPTPh5/RPqcpUqieoaYULYKxb7mB/g6oCreMjUQ0eS0mVmShuvM1yHCKrO4TE1aWee+4xC2CQGeMzMZbVV8w0ifMRQEwL1L41FdLWddCysEWy0n/2Q==",
+            "birthAddr": {
+                "streetNo": 13,
+                "street": "Effort St.",
+                "city": "Washington",
+                "postalCode": 9849,
+                "country": "United States",
+                "countryCode": "us"
+            },
+            "residenceAddr": {
+                "streetNo": 31,
+                "street": "Session Ln.",
+                "city": "Washington",
+                "postalCode": 2338,
+                "country": "United States",
+                "countryCode": "us"
+            }
+        },
+        {
+            "firstName": "Charlie",
+            "surname": "Messiah",
+            "personKey": "w.polo.com-x.4050",
+            "gender": "male",
+            "DOB": "2/8/2011",
+            "pic": "/9j/4AAQSkZJRgABAQAAAQABAAD/4QDeRXhpZgAASUkqAAgAAAAGABIBAwABAAAAAQAAABoBBQABAAAAVgAAABsBBQABAAAAXgAAACgBAwABAAAAAgAAABMCAwABAAAAAQAAAGmHBAABAAAAZgAAAAAAAAA4YwAA6AMAADhjAADoAwAABwAAkAcABAAAADAyMTABkQcABAAAAAECAwCGkgcAFgAAAMAAAAAAoAcABAAAADAxMDABoAMAAQAAAP//AAACoAQAAQAAACAAAAADoAQAAQAAACAAAAAAAAAAQVNDSUkAAABQaWNzdW0gSUQ6IDY1Of/bAEMACAYGBwYFCAcHBwkJCAoMFA0MCwsMGRITDxQdGh8eHRocHCAkLicgIiwjHBwoNyksMDE0NDQfJzk9ODI8LjM0Mv/bAEMBCQkJDAsMGA0NGDIhHCEyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMv/CABEIACAAIAMBIgACEQEDEQH/xAAYAAADAQEAAAAAAAAAAAAAAAACBAUGAP/EABYBAQEBAAAAAAAAAAAAAAAAAAABAv/aAAwDAQACEAMQAAABRPODZQ4SzqO0nTh6Voc2f//EAB0QAAIDAAIDAAAAAAAAAAAAAAECAAMEERIhIjH/2gAIAQEAAQUCTXGcdmsBt5JiOZbYXOPgtefcHrKlZ42HXSvkz7Misz799hRjP//EABYRAQEBAAAAAAAAAAAAAAAAAAABEf/aAAgBAwEBPwHGIr//xAAXEQEBAQEAAAAAAAAAAAAAAAAAARES/9oACAECAQE/Aemqj//EACIQAAEDBAAHAAAAAAAAAAAAAAEAAhEQEiExAxMiMkFRgf/aAAgBAQAGPwLIwg7wrWdUqThYhbhvpFruHcZVpaAW4xQQB9RcWWgZuBU03pcjU91P/8QAHRAAAwACAwEBAAAAAAAAAAAAAAERITFBYYFRcf/aAAgBAQABPyGrviI3vsoOsvRwbCTSL4rfpCJmsZ6mk1v5CeURqvOL2O0b8GyM3HYgFPQmxiphLawelrSiu0+HAj//2gAMAwEAAgADAAAAEMzs/wD/xAAYEQADAQEAAAAAAAAAAAAAAAAAAREhQf/aAAgBAwEBPxBrwiCVww4f/8QAGBEAAwEBAAAAAAAAAAAAAAAAAAERMUH/2gAIAQIBAT8QT9KbGipin//EAB8QAQACAgICAwAAAAAAAAAAAAEAESExQWFRsXGBkf/aAAgBAQABPxAd5atqNSAETiu2GSY5zVuIQPTPh5/RPqcpUqieoaYULYKxb7mB/g6oCreMjUQ0eS0mVmShuvM1yHCKrO4TE1aWee+4xC2CQGeMzMZbVV8w0ifMRQEwL1L41FdLWddCysEWy0n/2Q==",
+            "birthAddr": {
+                "streetNo": 5,
+                "street": "Recording Ln.",
+                "city": "Johannesburg",
+                "postalCode": 7953,
+                "country": "South Africa",
+                "countryCode": "za"
+            },
+            "residenceAddr": {
+                "streetNo": 20,
+                "street": "History Ln.",
+                "city": "Kyiv",
+                "postalCode": 2475,
+                "country": "Ukraine",
+                "countryCode": "ua"
+            }
+        },
+        {
+            "firstName": "Tomas",
+            "surname": "Grile",
+            "personKey": "w.polo.com-x.2959",
+            "gender": "male",
+            "DOB": "15/9/1980",
+            "pic": "/9j/4AAQSkZJRgABAQAAAQABAAD/4QDeRXhpZgAASUkqAAgAAAAGABIBAwABAAAAAQAAABoBBQABAAAAVgAAABsBBQABAAAAXgAAACgBAwABAAAAAgAAABMCAwABAAAAAQAAAGmHBAABAAAAZgAAAAAAAAA4YwAA6AMAADhjAADoAwAABwAAkAcABAAAADAyMTABkQcABAAAAAECAwCGkgcAFgAAAMAAAAAAoAcABAAAADAxMDABoAMAAQAAAP//AAACoAQAAQAAACAAAAADoAQAAQAAACAAAAAAAAAAQVNDSUkAAABQaWNzdW0gSUQ6IDY1Of/bAEMACAYGBwYFCAcHBwkJCAoMFA0MCwsMGRITDxQdGh8eHRocHCAkLicgIiwjHBwoNyksMDE0NDQfJzk9ODI8LjM0Mv/bAEMBCQkJDAsMGA0NGDIhHCEyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMv/CABEIACAAIAMBIgACEQEDEQH/xAAYAAADAQEAAAAAAAAAAAAAAAACBAUGAP/EABYBAQEBAAAAAAAAAAAAAAAAAAABAv/aAAwDAQACEAMQAAABRPODZQ4SzqO0nTh6Voc2f//EAB0QAAIDAAIDAAAAAAAAAAAAAAECAAMEERIhIjH/2gAIAQEAAQUCTXGcdmsBt5JiOZbYXOPgtefcHrKlZ42HXSvkz7Misz799hRjP//EABYRAQEBAAAAAAAAAAAAAAAAAAABEf/aAAgBAwEBPwHGIr//xAAXEQEBAQEAAAAAAAAAAAAAAAAAARES/9oACAECAQE/Aemqj//EACIQAAEDBAAHAAAAAAAAAAAAAAEAAhEQEiExAxMiMkFRgf/aAAgBAQAGPwLIwg7wrWdUqThYhbhvpFruHcZVpaAW4xQQB9RcWWgZuBU03pcjU91P/8QAHRAAAwACAwEBAAAAAAAAAAAAAAERITFBYYFRcf/aAAgBAQABPyGrviI3vsoOsvRwbCTSL4rfpCJmsZ6mk1v5CeURqvOL2O0b8GyM3HYgFPQmxiphLawelrSiu0+HAj//2gAMAwEAAgADAAAAEMzs/wD/xAAYEQADAQEAAAAAAAAAAAAAAAAAAREhQf/aAAgBAwEBPxBrwiCVww4f/8QAGBEAAwEBAAAAAAAAAAAAAAAAAAERMUH/2gAIAQIBAT8QT9KbGipin//EAB8QAQACAgICAwAAAAAAAAAAAAEAESExQWFRsXGBkf/aAAgBAQABPxAd5atqNSAETiu2GSY5zVuIQPTPh5/RPqcpUqieoaYULYKxb7mB/g6oCreMjUQ0eS0mVmShuvM1yHCKrO4TE1aWee+4xC2CQGeMzMZbVV8w0ifMRQEwL1L41FdLWddCysEWy0n/2Q==",
+            "birthAddr": {
+                "streetNo": 80,
+                "street": "Buyer St.",
+                "city": "Cape Town",
+                "postalCode": 1478,
+                "country": "South Africa",
+                "countryCode": "za"
+            },
+            "residenceAddr": {
+                "streetNo": 58,
+                "street": "Economics St.",
+                "city": "Cape Town",
+                "postalCode": 2972,
+                "country": "South Africa",
+                "countryCode": "za"
+            }
+        },
+        {
+            "firstName": "Addie",
+            "surname": "Kotak",
+            "personKey": "w.polo.com-x.2494",
+            "gender": "female",
+            "DOB": "23/5/1982",
+            "pic": "/9j/4AAQSkZJRgABAQAAAQABAAD/4QDeRXhpZgAASUkqAAgAAAAGABIBAwABAAAAAQAAABoBBQABAAAAVgAAABsBBQABAAAAXgAAACgBAwABAAAAAgAAABMCAwABAAAAAQAAAGmHBAABAAAAZgAAAAAAAAA4YwAA6AMAADhjAADoAwAABwAAkAcABAAAADAyMTABkQcABAAAAAECAwCGkgcAFgAAAMAAAAAAoAcABAAAADAxMDABoAMAAQAAAP//AAACoAQAAQAAACAAAAADoAQAAQAAACAAAAAAAAAAQVNDSUkAAABQaWNzdW0gSUQ6IDY1Of/bAEMACAYGBwYFCAcHBwkJCAoMFA0MCwsMGRITDxQdGh8eHRocHCAkLicgIiwjHBwoNyksMDE0NDQfJzk9ODI8LjM0Mv/bAEMBCQkJDAsMGA0NGDIhHCEyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMv/CABEIACAAIAMBIgACEQEDEQH/xAAYAAADAQEAAAAAAAAAAAAAAAACBAUGAP/EABYBAQEBAAAAAAAAAAAAAAAAAAABAv/aAAwDAQACEAMQAAABRPODZQ4SzqO0nTh6Voc2f//EAB0QAAIDAAIDAAAAAAAAAAAAAAECAAMEERIhIjH/2gAIAQEAAQUCTXGcdmsBt5JiOZbYXOPgtefcHrKlZ42HXSvkz7Misz799hRjP//EABYRAQEBAAAAAAAAAAAAAAAAAAABEf/aAAgBAwEBPwHGIr//xAAXEQEBAQEAAAAAAAAAAAAAAAAAARES/9oACAECAQE/Aemqj//EACIQAAEDBAAHAAAAAAAAAAAAAAEAAhEQEiExAxMiMkFRgf/aAAgBAQAGPwLIwg7wrWdUqThYhbhvpFruHcZVpaAW4xQQB9RcWWgZuBU03pcjU91P/8QAHRAAAwACAwEBAAAAAAAAAAAAAAERITFBYYFRcf/aAAgBAQABPyGrviI3vsoOsvRwbCTSL4rfpCJmsZ6mk1v5CeURqvOL2O0b8GyM3HYgFPQmxiphLawelrSiu0+HAj//2gAMAwEAAgADAAAAEMzs/wD/xAAYEQADAQEAAAAAAAAAAAAAAAAAAREhQf/aAAgBAwEBPxBrwiCVww4f/8QAGBEAAwEBAAAAAAAAAAAAAAAAAAERMUH/2gAIAQIBAT8QT9KbGipin//EAB8QAQACAgICAwAAAAAAAAAAAAEAESExQWFRsXGBkf/aAAgBAQABPxAd5atqNSAETiu2GSY5zVuIQPTPh5/RPqcpUqieoaYULYKxb7mB/g6oCreMjUQ0eS0mVmShuvM1yHCKrO4TE1aWee+4xC2CQGeMzMZbVV8w0ifMRQEwL1L41FdLWddCysEWy0n/2Q==",
+            "birthAddr": {
+                "streetNo": 74,
+                "street": "Depression Ave.",
+                "city": "Kimberley",
+                "postalCode": 7614,
+                "country": "South Africa",
+                "countryCode": "za"
+            },
+            "residenceAddr": {
+                "streetNo": 48,
+                "street": "Birthday Ave.",
+                "city": "Moscow",
+                "postalCode": 6690,
+                "country": "Russia",
+                "countryCode": "ru"
+            }
+        },
+        {
+            "firstName": "Mark",
+            "surname": "Yaghoubi",
+            "personKey": "w.polo.com-x.3126",
+            "gender": "female",
+            "DOB": "5/5/2009",
+            "pic": "/9j/4AAQSkZJRgABAQAAAQABAAD/4QDeRXhpZgAASUkqAAgAAAAGABIBAwABAAAAAQAAABoBBQABAAAAVgAAABsBBQABAAAAXgAAACgBAwABAAAAAgAAABMCAwABAAAAAQAAAGmHBAABAAAAZgAAAAAAAAA4YwAA6AMAADhjAADoAwAABwAAkAcABAAAADAyMTABkQcABAAAAAECAwCGkgcAFgAAAMAAAAAAoAcABAAAADAxMDABoAMAAQAAAP//AAACoAQAAQAAACAAAAADoAQAAQAAACAAAAAAAAAAQVNDSUkAAABQaWNzdW0gSUQ6IDY1Of/bAEMACAYGBwYFCAcHBwkJCAoMFA0MCwsMGRITDxQdGh8eHRocHCAkLicgIiwjHBwoNyksMDE0NDQfJzk9ODI8LjM0Mv/bAEMBCQkJDAsMGA0NGDIhHCEyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMv/CABEIACAAIAMBIgACEQEDEQH/xAAYAAADAQEAAAAAAAAAAAAAAAACBAUGAP/EABYBAQEBAAAAAAAAAAAAAAAAAAABAv/aAAwDAQACEAMQAAABRPODZQ4SzqO0nTh6Voc2f//EAB0QAAIDAAIDAAAAAAAAAAAAAAECAAMEERIhIjH/2gAIAQEAAQUCTXGcdmsBt5JiOZbYXOPgtefcHrKlZ42HXSvkz7Misz799hRjP//EABYRAQEBAAAAAAAAAAAAAAAAAAABEf/aAAgBAwEBPwHGIr//xAAXEQEBAQEAAAAAAAAAAAAAAAAAARES/9oACAECAQE/Aemqj//EACIQAAEDBAAHAAAAAAAAAAAAAAEAAhEQEiExAxMiMkFRgf/aAAgBAQAGPwLIwg7wrWdUqThYhbhvpFruHcZVpaAW4xQQB9RcWWgZuBU03pcjU91P/8QAHRAAAwACAwEBAAAAAAAAAAAAAAERITFBYYFRcf/aAAgBAQABPyGrviI3vsoOsvRwbCTSL4rfpCJmsZ6mk1v5CeURqvOL2O0b8GyM3HYgFPQmxiphLawelrSiu0+HAj//2gAMAwEAAgADAAAAEMzs/wD/xAAYEQADAQEAAAAAAAAAAAAAAAAAAREhQf/aAAgBAwEBPxBrwiCVww4f/8QAGBEAAwEBAAAAAAAAAAAAAAAAAAERMUH/2gAIAQIBAT8QT9KbGipin//EAB8QAQACAgICAwAAAAAAAAAAAAEAESExQWFRsXGBkf/aAAgBAQABPxAd5atqNSAETiu2GSY5zVuIQPTPh5/RPqcpUqieoaYULYKxb7mB/g6oCreMjUQ0eS0mVmShuvM1yHCKrO4TE1aWee+4xC2CQGeMzMZbVV8w0ifMRQEwL1L41FdLWddCysEWy0n/2Q==",
+            "birthAddr": {
+                "streetNo": 18,
+                "street": "Player Ln.",
+                "city": "Hong Kong",
+                "postalCode": 9220,
+                "country": "China",
+                "countryCode": "ch"
+            },
+            "residenceAddr": {
+                "streetNo": 74,
+                "street": "Winner Ave.",
+                "city": "Cape Town",
+                "postalCode": 2158,
+                "country": "South Africa",
+                "countryCode": "za"
+            }
+        }
+    ]
+}

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { APIService } from '../api.service';
 
 @Component({
   selector: 'app-login',
@@ -7,62 +8,69 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private api: APIService
+  ) { }
 
-  Print(jan):void
-  {
-     document.getElementById("mess").style.visibility = 'visible';
-     document.getElementById("mess").innerHTML = "<p>"+jan+"</p>";
-   }
+  ngOnInit(): void { }
 
-   Validate() :void  // Validate that give input is valid
-  {
-    let  Regex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-
-
-    let mailD = (document.getElementById("email") as HTMLInputElement).value;
-    if (mailD.match(Regex)) {
-    // Good job :)
-      }
-    else {
-        document.getElementById("email").focus();
-        this.Print("Please check that your email is valid");
-        return;
-      }
-
-    //   Email validated
-
-
-     Regex = /^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?\d)(?=.*?[!@#$%^&*-]).{9,}$/;   // longer than 8, upper and lower case. 
-
-
-    let passwordD = document.getElementById("Password") as HTMLInputElement;
-    let password = passwordD.value;  
-
-    if (password.match(Regex)) {
-      // Good job :)
-        }
-      else {
-
-          document.getElementById("Password").focus();
-          this.Print("Please ensure that your Password is valid and correct");
-          return;
-        }
-    // Password validated.
+  print(jan: string): void {
+    document.getElementById("mess").style.visibility = 'visible';
+    document.getElementById("mess").innerHTML = "<p>" + jan + "</p>";
   }
 
- 
+  validate(): void {  // Validate that give input is valid
+    let userEmail = (<HTMLInputElement>document.getElementById("email")).value;
+    let userPassword = (<HTMLInputElement>document.getElementById("password")).value;
 
-  ngOnInit(): void {
+    console.log("here");
+    if (!/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(userEmail)) {
+      // Bad email
+      document.getElementById("email").focus();
+      this.print("Please check that your email is valid");
+    } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/gm.test(userPassword)) {
+      // Bad Password
+      document.getElementById("password").focus();
+      this.print("Please ensure that your Password is valid and correct");
+    } else {
+      // All validations passed
+      // TODO do the login here
+      this.api.ValidateUser( userEmail, userPassword).subscribe((res) => {
+        console.log(res);
 
-    document.getElementById("Helpimg").onclick = function()
-    {
-      document.getElementsByClassName("bar")[0].innerHTML= "<br><p>Please enter your email and password. Ensure your password has a digit and special character</p>"
-      let jan = document.getElementsByClassName("bar") as HTMLCollectionOf<HTMLElement>;
-      jan[0].style.visibility = "visible";
+        if(res.status=="success")   // Login succesfull
+        {
+           sessionStorage.setItem('username',res.data[0].username);
+           sessionStorage.setItem('email',res.data[0].email);
+           sessionStorage.setItem('apikey',res.data[0].key);
+           //Transistion to home page
+           window.location.replace("https://faade.co.za/");
+        }
+        else  // Failed
+        {
+          if(res.code=="invalid_email")  // email
+          {
+            this.print("Please ensure that your email is valid ")
+            document.getElementById("email").focus();
+          } 
+          else
+          if(res.code=="invalid_password")  // password
+          {
+            this.print("Please ensure that your password is valid")
+            document.getElementById("password").focus();
+          } 
+          else
+          this.print("Something went wrong, please try again");  
+        }
+        
+      });
     }
   }
 
-
+  displayTooltip(): void {
+    document.getElementsByClassName("bar")[0].innerHTML = "<br><p>Please enter your email and password. Ensure your password has a digit and special character</p>"
+    let jan = document.getElementsByClassName("bar") as HTMLCollectionOf<HTMLElement>;
+    jan[0].style.visibility = "visible";
+  }
 
 }

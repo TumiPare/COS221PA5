@@ -6,5 +6,8 @@ $GLOBALS["config"] = [
 		"user" => "u21630276",
 		"password" => "eREIKnMeAckJWY6C",
 		"name" => "u21630276_sdb"
+	],
+	"publisher" => [
+		"publisher_id" => 1
 	]
 ];
