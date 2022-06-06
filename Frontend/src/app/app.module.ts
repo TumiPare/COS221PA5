@@ -10,7 +10,7 @@ import { MaterialModule } from './material/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { TeamCardComponent } from './team-card/team-card.component';
-import { TeamComponent } from './team/team.component';
+import { AddMemberDialog, TeamComponent } from './team/team.component';
 import { EditMemberDialog, TeamMemberComponent } from './team-member/team-member.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
@@ -42,7 +42,9 @@ import { TournamentGroupsComponent } from './tournament-groups/tournament-groups
     TournementComponent,
     ManageComponent,
     TournamentCardComponent,   
-    LocationsComponent, TournamentGroupsComponent,
+    LocationsComponent,
+    TournamentGroupsComponent,
+    AddMemberDialog,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
