@@ -148,59 +148,26 @@ class Database {
         return array(["apiKey" => $result["apiKey"], "username" => $result["username"], "email" => $result["email"]]);
     }
 
-    public function changeUserPassword($newpassword, $apiKey) {
-        // Check if a user exists
-        // TODO: Replace Query
-        $query = "SELECT THE apiKey";
-        $results = $this->select($query, "s", [$apiKey]);
+    public function setUser($data, $apiKey) {
+        $query = "SELECT * FROM users WHERE apiKey = ?";
+        $result = $this->select($query, [$apiKey])[0];
 
-        // if the email exists then throw a error.
-        if ($results[0]["apiKey"] == $apiKey) {
-	    // Register the user. TODO: Change this according to the database.
-	    $query = "Update SOME THING IDFK";
-	    // Hashing and salting.
-	    $password = password_hash($newpassword, PASSWORD_DEFAULT);
+        if ($data["username"] != NULL) {
+            $result["username"] = $data["username"];
+        }
 
-	    // TODO Check  paramter order
-	    $this->executeQuery($query, "ss", [$password, $apiKey]);
+        if ($data["email"] != NULL) {
+            $result["email"] = $data["email"];
+        }
 
-	    return $apiKey;
-	} else {
-            throw new APIException(454, "user_error", "This user does not exist. Please login or re-log.");
-	}
+        if ($data["password"] != NULL) {
+            $result["password"] = password_hash($data["password"], PASSWORD_DEFAULT);
+        }
 
-    }
+        $query = "UPDATE users SET username = ?, email = ?, password = ? WHERE apiKey = ?";
+        $stmt = $this->executeQuery($query, [$result["username"], $result["email"], $result["password"], $apiKey]);
 
-    public function changeUserEmail($newEmail, $apiKey) {
-        $query = "SELECT THE apiKey";
-        $results = $this->select($query, "s", [$apiKey]);
-
-        // if the email exists then throw a error.
-        if ($results[0]["apiKey"] == $apiKey) {
-	    // Register the user. TODO: Change this according to the database.
-	    $query = "update SOME THING IDFK";
-	    // TODO Check parameter order
-	    $this->executeQuery($query, "ss", [$newEmail, $apiKey]);
-	    return $apiKey;
-	} else {
-            throw new APIException(454, "user_error", "This user does not exist. Please login or re-log.");
-	}
-    }
-
-    public function changeUserProfilePicture($picture, $apiKey) {
-        $query = "SELECT THE apiKey";
-        $results = $this->select($query, "s", [$apiKey]);
-
-        // if the email exists then throw a error.
-        if ($results[0]["apiKey"] == $apiKey) {
-	    // Register the user. TODO: Change this according to the database.
-	    $query = "update SOME THING IDFK";
-	    // TODO Check parameter order
-	    $this->executeQuery($query, "ss", [$picture, $apiKey]);
-	    return $apiKey;
-	} else {
-            throw new APIException(454, "user_error", "This user does not exist. Please login or re-log.");
-	}
+        return array(["apiKey" => $apiKey, "username" => $result["username"], "email" => $result["email"]]);
     }
 
     /** Used to validate wether a incoming API request is valid

@@ -16,11 +16,15 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { PlayerComponent } from './player/player.component';
 import { TournementComponent } from './tournement/tournement.component';
+
+import { TournamentCardComponent } from './tournament-card/tournament-card.component';
+
 import { ManageComponent } from './manage/manage.component';
 
 import { UserService } from './user.service';
 import { APIService } from './api.service';
 import { LocationsComponent } from './locations/locations.component';
+
 
 @NgModule({
   declarations: [
@@ -34,6 +38,7 @@ import { LocationsComponent } from './locations/locations.component';
     RegisterComponent,
     PlayerComponent,
     TournementComponent,
+    TournamentCardComponent,   
     LocationsComponent,
   ],
   imports: [

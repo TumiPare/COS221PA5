@@ -1,0 +1,85 @@
+#winner {
+    text-align: center;
+}
+
+#tournament {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+}
+
+.column {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 600px;
+    width: 200px;
+    /* background-color: blueviolet; */
+    flex-direction: column;
+    margin-right: 20px;
+}
+
+#left,
+#right {
+    display: flex;
+    /* justify-content: center; */
+    flex-direction: row;
+}
+
+.a4eventsTop,
+.a4eventsBottom {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.a4eventsTop {
+    margin-bottom: 50px;
+}
+
+#center {
+    display: fixed;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    /* background-color: pink; */
+    z-index: 100;
+}
+
+#left,
+#ch1 {
+    margin-right: -50px;
+}
+
+#right,
+#ch2 {
+    margin-left: -50px;
+}
+
+.round-header {
+    /* align-self: flex-star; */
+    /* margin-bottom: auto; */
+    /* margin-top: auto; */
+    /* dirs */
+    width: 200px;
+    margin-right: 20px;
+    text-align: center;
+    margin-left: 0;
+}
+
+#round-headers {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    /* text-align: center; */
+    /* align-self: flex-star; */
+    /* margin-bottom: auto; */
+    /* margin-top: auto; */
+    /* dirs */
+}
+
+#center p {
+    text-align: center;
+}
