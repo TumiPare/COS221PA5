@@ -66,6 +66,18 @@ export class APIService {
     return this.http.post(this.apiURL, body, this.httpOptions);
   }
 
+  getSubSeasons(leagueID: number): Observable<any> {
+    let body = {
+      apiKey: this.apiKey,
+      type: "subseason",
+      operation: "get",
+      data: {
+        leagueID: leagueID,
+      }
+    };
+    return this.http.post(this.apiURL, body, this.httpOptions);
+  }
+
   getTournaments(): Observable<any> {
     let body = {
       apiKey: this.apiKey,
@@ -126,7 +138,7 @@ export class APIService {
     return this.http.post(this.apiURL, body, this.httpOptions);
   }
 
-  get2Teams(team1: number,team2 :number): Observable<any> {
+  get2Teams(team1: number, team2: number): Observable<any> {
     let body = {
       apiKey: this.apiKey,
       type: "team",
@@ -236,7 +248,7 @@ export class APIService {
     return this.http.post(this.apiURL, body, this.httpOptions);
   }
 
-  
+
 
 }
 

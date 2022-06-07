@@ -14,7 +14,9 @@ export class TournementComponent implements OnInit {
   tournament: Tournament;
   tournamentName: string;
   tournamentID: number;
-  constructor(private route: ActivatedRoute,
+  
+  constructor(
+    private route: ActivatedRoute,
     private api: APIService
   ) {
     this.tournamentName = this.route.snapshot.paramMap.get('tournementName');

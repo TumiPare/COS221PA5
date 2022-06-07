@@ -10,6 +10,7 @@ import { NgxMatDatetimePickerModule, NgxMatTimepickerModule, NgxMatNativeDateMod
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 @NgModule({
   exports: [
@@ -24,6 +25,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     MatIconModule,
     MatDialogModule,
     MatAutocompleteModule,
+    MatExpansionModule,
   ]
 })
 export class MaterialModule { }

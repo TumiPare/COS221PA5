@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { APIService } from '../api.service';
@@ -13,6 +13,10 @@ import { UserService } from '../user.service';
   styleUrls: ['./events.component.css']
 })
 export class EventsComponent implements OnInit {
+  leagueName: string;
+  leagueID: number;
+
+  selectedSubSeason: string;
   events: any;
   tournements = [{
     tournementName: "Clash of mandems",
@@ -26,17 +30,24 @@ export class EventsComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private userService: UserService,
     private api: APIService,
     public dialog: MatDialog,
+    private route: ActivatedRoute,
   ) { }
 
   ngOnInit(): void {
-    if (this.userService.userSignedIn())
-      document.getElementById('addTourneyBtn').style.display = "block";
-    this.api.getTournaments().subscribe((res) => {
+    this.leagueName = this.route.snapshot.paramMap.get('leagueName');
+    this.leagueID = Number(this.route.snapshot.paramMap.get('leagueID'));
+
+    this.api.getSubSeasons(this.leagueID).subscribe((res) => {
       console.log(res);
     });
+  }
+
+  selectSubSeason(selectedSubSeason: string) {
+    this.selectedSubSeason = selectedSubSeason;
+    alert("make request for subseasons");
+    // make request with selected subSeason
   }
 
   navigateToTeamPage(teamID: number, teamName: string) {

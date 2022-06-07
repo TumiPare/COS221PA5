@@ -11,7 +11,7 @@ import { LeaguesComponent } from './leagues/leagues.component';
 
 const routes: Routes = [
   { path: '', component: LeaguesComponent },
-  { path: 'league/:leagueID', component: EventsComponent },
+  { path: 'league/:leagueID/:leagueName', component: EventsComponent },
   { path: 'team/:teamID/:teamName', component: TeamComponent },
   { path: 'player/:playerID/:playerName', component: PlayerComponent },
   { path: 'tournament/:tournementID/:tournementName', component: TournementComponent },
