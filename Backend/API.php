@@ -144,6 +144,8 @@ class API {
                 break;
             case "tournament":
                 $this->handleTournament();
+            case "league":
+                $this->handleLeague();
                 break;
             default:
                 throw new ApiException(200, "invalid_type", "The specified type is not valid.");
@@ -186,18 +188,10 @@ class API {
         $this->authorizeRequest();
         switch ($this->request["operation"]) {
                 // case "add": $this->addTeam($this->request["data"]); break;
-            case "add":
-                $this->addTeam($this->request["data"]);
-                break;
-            case "set":
-                $this->modifyTeam($this->request["data"]);
-                break;
-            case "get":
-                $this->getTeam($this->request["data"]);
-                break;
-            case "getAll":
-                $this->response = $this->database->getTeams();
-                break;
+            case "add": $this->addTeam($this->request["data"]); break;
+            case "get": $this->getTeam($this->request["data"]); break;
+            case "getAll": $this->response = $this->database->getTeams(); break;
+            case "delete": $this->deleteTeam($this->request["data"]); break;
         }
     }
 
@@ -208,6 +202,15 @@ class API {
             $this->getTournament($this->request["data"]);
         } else {
             throw new ApiException(400, "invalid_operation", "Invalid operation, only set, get and add is allowed.");
+        }
+    }
+
+    private function handleLeague()
+    {
+        $this->authorizeRequest();
+        switch($this->request["operation"])
+        {
+            case "get": $this->getLeague($this->request["data"]); break;
         }
     }
 
@@ -323,7 +326,14 @@ class API {
         $this->response = $this->database->getTeamData($this->request["data"]);
     }
 
-    function modifyTeam($data) {
+    function deleteTeam($data)
+    {
+        $requiredTeamInfo = ["teamID"];
+        foreach($data as $team)
+        {
+            $this->validateRequiredFields($team, $requiredTeamInfo);
+        }
+        $this->response = $this->database->deleteTeam($this->request["data"]);
     }
 
     // =====================Tournaments=====================
@@ -371,6 +381,20 @@ class API {
         $this->validateRequiredFields($data[0], ["tournamentID"]);
         $this->response = $this->database->getTournament($data[0]["tournamentID"]);
     }
+
+    // ===================LEAGUES===================
+
+    function getLeague($data)
+    {
+        $requiredLeagueInfo = ["leagueID"];
+        foreach($data as $league)
+        {
+            $this->validateRequiredFields($league, $requiredLeagueInfo);
+        }
+
+        $this->response = $this->database->getLeagueData($this->request["data"]);
+    }
+
 }
 
 // ======================================================================================

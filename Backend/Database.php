@@ -352,6 +352,17 @@ class Database {
         return $response;
     }
 
+    function deleteTeam($data) {
+        $queries = [
+            "DELETE FROM display_names WHERE entity_id IN (<?>) AND entity_type='teams'",
+            "DELETE FROM teams_media WHERE team_id IN (<?>)",
+            "DELETE FROM teams WHERE `id` IN (<?>)"
+        ];
+        foreach($queries as $query) { $this->multiExecuteQuery($query, $data); }
+
+        return ["Teams deleted"];
+    }
+
     // ======================================================================================
     // Tournament FUNCTIONS
     // ======================================================================================
@@ -430,6 +441,22 @@ class Database {
         }
         return $return;
     }
+    // LEAGUE FUNCTIONS
+    // ======================================================================================
+
+    function getLeagueData($data) {
+        $query = "SELECT id AS leagueID, affiliation_key as leagueKey FROM affiliations ORDER BY id";
+        $response = $this->multiSelect($query, $data);
+
+        $query = "SELECT id AS seasonID, start_date_time AS startDate, end_date_time AS endDate FROM seasons s WHERE s.league_id = ?";
+        for($i = 0; $i < count($response); $i++)
+        {
+            $seasons = $this->select($query, [$response[$i]["leagueID"]]);
+            $response[$i]["seasons"] = $seasons;
+        }
+
+        return $response;
+    }
 
     // ======================================================================================
     // SMALL UTILITY FUNCTIONS
@@ -460,6 +487,14 @@ class Database {
         $query = str_replace("<?>", $commas, $query);
 
         return $this->select($query, $data);
+    }
+
+    private function multiExecuteQuery($query, $data) {
+        $data = $this->convertArrayOfObjects($data);
+        $commas = $this->createCommaString(count($data));
+        $query = str_replace("<?>", $commas, $query);
+
+        return $this->executeQuery($query, $data);
     }
 
     /**
