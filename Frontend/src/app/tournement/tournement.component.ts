@@ -23,20 +23,4 @@ export class TournementComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  setTournament(tournament: Tournament){
-    this.tournament = tournament;
-
-
-    this.api.getTournament(this.tournamentID).subscribe((res) => {
-      console.log(res);
-
-      for(let i = 0; i<4;i++)
-      {
-        res.data[0].tournament.rounds[i].round
-      }
-
-
-    });
-    
-  }
 }
