@@ -284,6 +284,41 @@ class Database {
         return $response;
     }
 
+    function setPlayers($data) {
+        foreach ($data as $player) {
+            $query = "UPDATE persons SET birth_date = ? WHERE id = ?";
+            $dateStmt = $this->executeQuery($query, [$player["DOB"], $player["playerID"]]);
+            if ($dateStmt->rowCount() == 0) {
+                continue;
+            }
+
+            $query = "UPDATE display_names SET full_name = ?, first_name = ?, last_name = ? 
+                        WHERE entity_type = 'persons' AND entity_id = ?";
+            $fullName = $player["firstName"] . " " . $player["lastName"];
+            $nameStmt = $this->executeQuery($query, [$fullName, $player["firstName"], $player["lastName"], $player["playerID"]]);
+
+            if ($player["image"] == NULL) {
+                continue;
+            }
+
+            $query = "SELECT media_id WHERE person_id = ?";
+            $result = $this->select($query, [$player["playerID"]]);
+
+            if ($result == []) {
+                $query = "INSERT INTO media (b64_image, publisher_id) VALUES (?, ?)";
+                $mediaStmt = $this->executeQuery($query, [$player["image"], $this->publisher]);
+                $mediaId = $this->getLastGeneratedID();
+
+                $query = "INSERT INTO persons_media (person_id, media_id) VALUES (?, ?)";
+                $mediaPersonStmt = $this->executeQuery($query, [$player["playerID"], $mediaId]);
+            } else {
+                $mediaId = $result[0]["media_id"];
+                $query = "UPDATE media SET b64_image = ? WHERE id = ?";
+                $mediaStmt = $this->executeQuery($query, [$player["image"], $mediaId]);
+            }
+        }
+    }
+
     // ======================================================================================
     // TEAM FUNCTIONS
     // ======================================================================================

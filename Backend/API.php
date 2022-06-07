@@ -162,8 +162,11 @@ class API {
 
     private function handlePlayer() {
         $this->authorizeRequest();
+        $requiredField = ["data"];
+        $this->validateRequiredFields($this->request, $requiredField);
 
         if ($this->request["operation"] == "set") {
+            $this->setPlayers($this->request["data"]);
         } else if ($this->request["operation"] == "get") {
             $this->response = $this->database->getPlayers($this->request);
         } else if ($this->request["operation"] == "add") {
@@ -244,6 +247,17 @@ class API {
         $this->database->addPlayers($data);
     }
 
+    function setPlayers($data) {
+        $requiredPersonInfo = ["playerID", "firstName", "lastName", "DOB"];
+        $optionalPersonInfo = ["image"];
+
+        foreach ($data as $object) {
+            $this->validateRequiredFields($object, $requiredPersonInfo);
+            $this->validateOptionalFields($object, $optionalPersonInfo);
+        }
+
+        $this->database->setPlayers($data);
+    }
 
     // ===================USERS===================
     function addUser($data) {
