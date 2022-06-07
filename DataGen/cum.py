@@ -129,6 +129,45 @@ def addPlayers(n):
     print(JSON.dumps(json))
     qAPI(json)
 
+#=====STATS=====
+def addStats(playerID, matchID):
+    {
+    "apiKey": API_KEY,
+    "type": "stats",
+    "operation": "add",
+    "data": [
+        {
+            "playerID": playerID,
+            "matchID": matchID,
+            "stats": {
+                "offensive": {
+                    "assists": randrange(20),
+                    "successfulPasses": randrange(40),
+                    "unsuccessfulPasses": randrange(30),
+                    "sprintsWon": randrange(20),
+                    "sprintsLost": randrange(15),
+                    "goals": randrange(10),
+                    "misses": randrange(15),
+                },
+                "defensive": {
+                    "steals": randrange(20),
+                    "saves": randrange(3),
+                    "failedBlocks": randrange(4),
+                    "successfulBlocks": randrange(20)
+                },
+                "fouls": {
+                    "turnovers": randrange(10),
+                    "exclusions": randrange(10),
+                    "minorFouls": randrange(4),
+                    "majorFouls" : randrange(3),
+                    "penaltyShotsTaken": randrange(5),
+                    "penaltyShotsGiven": randrange(5)
+                }
+            }
+        }
+    ]
+}
+
 #=====USERS=====
 def getEmail():
     name = getFullName()
