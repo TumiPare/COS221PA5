@@ -32,13 +32,13 @@ class API
     private function authorizeRequest()
     {
         if (!array_key_exists("apiKey", $this->request)) {
-            throw new ApiException(200, "unauthorized", "User key has to be provided.");
+            throw new ApiException(401, "unauthorized", "User key has to be provided.");
         }
 
         $authorized = $this->database->authorizeUser($this->request["apiKey"]);
 
         if (!$authorized) {
-            throw new ApiException(200, "unauthorized", "User key is invalid.");
+            throw new ApiException(401, "unauthorized", "User key is invalid.");
         }
     }
 
@@ -79,7 +79,7 @@ class API
             }
 
             if (!$fieldFound) {
-                throw new ApiException(200, "required_field_missing", "The $field field is missing from one of the objects.");
+                throw new ApiException(400, "required_field_missing", "The $field field is missing from one of the objects.");
             }
         }
     }
@@ -107,12 +107,6 @@ class API
         }
     }
 
-    function validateDataField() {
-        if (!array_key_exists("data", $this->request)) {
-            throw new ApiException(200, "data_missing", "The data field is missing.");
-        }
-    }
-
     // ======================================================================================
     // REQUEST HANDLER FUNCTIONS
     // ======================================================================================
@@ -120,7 +114,7 @@ class API
     public function handleRequest()
     {
         if ($_SERVER["REQUEST_METHOD"] !== "POST") {
-            throw new ApiException(200, "wrong_request_method", "Only POST requests are allowed.");
+            throw new ApiException(400, "wrong_request_method", "Only POST requests are allowed.");
         }
 
         // Validate user JSON request
@@ -128,16 +122,16 @@ class API
         if ($this->validateJSON($request)) {
             $this->request = json_decode($request, true);
         } else {
-            throw new ApiException(200, "malformed_request", "JSON request could not be decoded, make sure syntax is correct.");
+            throw new ApiException(400, "malformed_request", "JSON request could not be decoded, make sure syntax is correct.");
         }
 
 
         if (!array_key_exists("type", $this->request)) {
-            throw new ApiException(200, "invalid_type", "Type is not specified.");
+            throw new ApiException(400, "invalid_type", "Type is not specified.");
         }
 
         if (!array_key_exists("operation", $this->request)) {
-            throw new ApiException(200, "invalid_operation", "Operation is not specified.");
+            throw new ApiException(400, "invalid_operation", "Operation is not specified.");
         }
 
         switch ($this->request["type"]) {
@@ -150,8 +144,11 @@ class API
             case "user":
                 $this->handleUser();
                 break;
+	    case "tournament":
+		$this->handleTournament();
+		break;
             default:
-                throw new ApiException(200, "invalid_type", "The specified type is not valid.");
+                throw new ApiException(400, "invalid_type", "The specified type is not valid.");
                 break;
         }
 
@@ -169,14 +166,12 @@ class API
         } else if ($this->request["operation"] == "add") {
             $this->addPlayers($this->request["data"]);
         } else {
-            throw new ApiException(200, "invalid_operation", "Invalid operation, only set, get and add is allowed.");
+            throw new ApiException(400, "invalid_operation", "Invalid operation, only set, get and add is allowed.");
         }
     }
 
     private function handleUser()
-    {   
-        $this->validateDataField();
-
+    {
         if ($this->request["operation"] == "add") {
             $this->addUser($this->request["data"]);
         } else if ($this->request["operation"] == "set") {
@@ -184,8 +179,6 @@ class API
             $this->setUser($this->request);
         } else if ($this->request["operation"] == "login") {
             $this->loginUser($this->request["data"]);
-        } else if ($this->request["operation"] == "delete") {
-            $this->deleteUser($this->request["data"]);
         }
     }
 
@@ -202,6 +195,17 @@ class API
         }
     }
 
+    private function handleTournament() {
+	if($this->request["operation"] == "add") {
+	    $this->addTournament($this->request["data"]);
+	} else if($this->request["operation"] == "get") {
+	    $this->getTournament($this->request["data"]);
+	} else {
+	    throw new ApiException(400, "invalid_operation", "Invalid operation, only set, get and add is allowed.");
+        }
+
+    }
+
 
     // ======================================================================================
     // OPERATION FUNCTIONS
@@ -211,12 +215,10 @@ class API
     function addPlayers($data)
     {
         $requiredPersonInfo = ["firstName", "lastName", "gender", "DOB", "personKey", "birthAddr"];
-        $optionalPersonInfo = ["image"];
         $requiredAddressInfo = ["streetNo", "street", "city", "postalCode", "country", "countryCode"];
 
         foreach ($data as $object) {
             $this->validateRequiredFields($object, $requiredPersonInfo);
-            $this->validateOptionalFields($object, $optionalPersonInfo);
             $this->validateRequiredFields($object["birthAddr"], $requiredAddressInfo);
         }
 
@@ -234,11 +236,11 @@ class API
 
             if (count($data) == 1) {
                 if (!$this->validateEmail($user["email"])) {
-                    throw new ApiException(200, "invalid_email", "Provided email is invalid.");
+                    throw new ApiException(400, "invalid_email", "Provided email is invalid.");
                 }
 
                 if (!$this->validatePassword($user["password"])) {
-                    throw new ApiException(200, "invalid_password", "Provided password is invalid.");
+                    throw new ApiException(400, "invalid_password", "Provided password is invalid.");
                 }
             }
         }
@@ -259,28 +261,22 @@ class API
         $this->validateOptionalFields($user, $optionalUserInfo);
 
         if ($user["username"] == NULL && $user["password"] == NULL && $user["email"] == NULL) {
-            throw new ApiException(200, "malformed_request", "New username, email, and password is missing.");
+            throw new ApiException(400, "malformed_request", "New username, email, and password is missing.");
         }
 
         if ($user["email"] != NULL) {
             if (!$this->validateEmail($user["email"])) {
-                throw new ApiException(200, "invalid_email", "Provided email is invalid.");
+                throw new ApiException(400, "invalid_email", "Provided email is invalid.");
             }
         }
 
         if ($user["password"] != NULL) {
             if (!$this->validatePassword($user["password"])) {
-                throw new ApiException(200, "invalid_password", "Provided password is invalid.");
+                throw new ApiException(400, "invalid_password", "Provided password is invalid.");
             }
         }
-        
-        $this->response = $this->database->setUser($user, $data["apiKey"]);
-    }
 
-    function deleteUser($data) {
-        $requiredUserInfo = ["apiKey"];
-        $this->validateRequiredFields($data[0], $requiredUserInfo);
-        $this->response = $this->database->deleteUser($data[0]);
+        $this->response = $this->database->setUser($user, $data["apiKey"]);
     }
 
     function validateEmail($email)
@@ -291,7 +287,7 @@ class API
 
     function validatePassword($password)
     {
-        $regex = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/";
+        $regex = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/";
         return (preg_match($regex, $password) == false) ? false : true;
     }
 
@@ -333,27 +329,60 @@ class API
         }
         $this->response = $this->database->deleteTeam($this->request["data"]);
     }
-}
+
+// =====================Tournaments=====================
+    private function addTournament($data) {
+	// normal validation of the required data
+	$requiredUserInfo = ["tournamentName","lineups", "rounds"];
+	$this->validateRequiredFields($data, $requiredUserInfo);
+
+	// checking that the data has what it needs
+	if (sizeof($data["lineups"]) != 8) {
+	    throw new ApiException(400, "invalid_parameters", "A invalid amout of lineups was specified. (" .
+		sizeof($data["lineups"]) . "was specified, should be 8");
+	}
+	// validating the lineups parameters
+	$count = 0;
+	foreach ($data["lineups"] as $lineup) {
+	    if (!(array_key_exists("teamA", $lineup))) {
+		throw new ApiException(400, "invalid_parameters", "teamA was not specified for the " .
+		   $count . "th lineup.");
+	    }
+	    if (!(array_key_exists("teamB", $lineup))) { throw new ApiException(400, "invalid_parameters", "teamB was not specified for the " .
+		   $count . "th lineup.");
+	    }
+	    $count++;
+	}
+	// TODO
+	// validating the rounds
+	if (sizeof($data["rounds"]) != 4) {
+	    throw new ApiException(400, "invalid_parameters", "A invalid amout of rounds was specified. (" .
+		sizeof($data["rounds"]) . "was specified, should be 4");
+	}
+
+	if (sizeof($data["rounds"][0]["matches"]) != 8) {}
+	if (sizeof($data["rounds"][1]["matches"]) != 4) {}
+	if (sizeof($data["rounds"][2]["matches"]) != 2) {}
+	if (sizeof($data["rounds"][3]["matches"]) != 1) {}
+
+    }
+
+    private function getTournament($data) {
+	$this->validateRequiredFields($data[0],["tournamentID"]);
+	$this->response = $this->database->getTournament($data[0]["tournamentID"]);
+    }
 
 // ======================================================================================
 // API INSTANCE TO HANDLE INCOMING REQUESTS
 // ======================================================================================
+}
 
 
-// $ownOrigin = $_SERVER['HTTP_OUR_OWN_ORIGIN'];
-// header("Access-Control-Allow-Origin: $ownOrigin");
-header("Access-Control-Allow-Origin: " . $_SERVER['HTTP_ORIGIN']);
-header("Content-Type: application/json; charset=UTF-8");
-header("Access-Control-Allow-Methods: POST, DELETE, OPTIONS");
-header("Access-Control-Max-Age: 3600");
-header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With, OUR-OWN-ORIGIN");
-
-if ($_SERVER['REQUEST_METHOD'] !== 'OPTIONS') {    
-    $api = new API();
-    try {
-        $api->handleRequest();
-    } catch (ApiException $e) {
-        error_log($e->getTraceAsString());
-        $e->sendJsonResponse();
-    }
+header("Access-Control-Allow-Origin: *");
+$api = new API();
+try {
+    $api->handleRequest();
+} catch (ApiException $e) {
+    error_log($e->getTraceAsString());
+    $e->sendJsonResponse();
 }

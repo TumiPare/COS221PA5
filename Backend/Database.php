@@ -45,13 +45,13 @@ class Database {
     public function executeQuery($query = "", $params = []) {
         try {
             $stmt = $this->connection->prepare($query);
-            
+
             if ($stmt === false) {
                 throw new ApiException(500, "server_error", "Error while trying to execute a database query.");
             }
 
             !$stmt->execute($params);
-            
+
         } catch (PDOException $e) {
             error_log($e->getMessage());
             throw new ApiException(500, "server_error", "Error while trying to execute a database query.");
@@ -86,7 +86,7 @@ class Database {
 
     /**
      * Returns the SQL error code for a specific statement
-     * 
+     *
      * @param $stmt A PDOStatement
      * @return integer|NULL Returns NULL id no error occurred
      */
@@ -100,7 +100,7 @@ class Database {
 
     /**
      * Register a new user/users to the the database
-     * 
+     *
      * @param $data Associative array with all the user objects
      * @return array Associative array with all the newly registered user info
      */
@@ -111,7 +111,7 @@ class Database {
             $query = "INSERT INTO users (email, username, password) VALUES (?, ?, ?)";
             $password = password_hash($user["password"], PASSWORD_DEFAULT);
             $stmt = $this->executeQuery($query, [$user["email"], $user["username"], $password]);
-            
+
             if ($this->getErrorCode($stmt) == 1062) {
                 if (count($data) == 1) {
                     throw new ApiException(200, "email_taken", "The account with provided email is already taken.");
@@ -119,9 +119,9 @@ class Database {
                     continue;
                 }
             }
-            
+
             $query = "UPDATE users SET apiKey = ? WHERE email = ?";
-            
+
             while (true) {
                 $apiKey = $this->generateAPIKey();
                 $stmt = $this->executeQuery($query, [$apiKey, $user["email"]]);
@@ -208,11 +208,11 @@ class Database {
             $birthAddr = $object["birthAddr"];
 
             $locAddrIDs = $this->addAddress($birthAddr);
-    
+
             $query = "INSERT INTO persons (person_key, publisher_id, gender, birth_date, birth_location_id) VALUES (?, ?, ?, ?, ?)";
             $personStmt = $this->executeQuery($query, [$object["personKey"], $this->publisher, $object["gender"], $object["DOB"], $locAddrIDs["locationID"]]);
             $personId = $this->getLastGeneratedID();
-            
+
             $query = "INSERT INTO display_names (language, entity_type, entity_id, full_name, first_name, last_name) VALUES (?, ?, ?, ?, ?, ?)";
             $fullName = $object["firstName"] . " " . $object["lastName"];
             $displayNameStmt = $this->executeQuery($query, ["en-US", "persons", $personId, $fullName, $object["firstName"], $object["lastName"]]);
@@ -220,7 +220,7 @@ class Database {
             if ($object["image"] == NULL) {
                 continue;
             }
-            
+
             $query = "INSERT INTO media (b64_image, publisher_id) VALUES (?, ?)";
             $mediaStmt = $this->executeQuery($query, [$object["image"], $this->publisher]);
             $mediaId = $this->getLastGeneratedID();
@@ -235,15 +235,52 @@ class Database {
         $response = [];
 
         if ($data["scope"] == "lifetime") {
-            $query = "SELECT * FROM player_statistics WHERE player_id IN (<?>)";
+            
+            $query = "SELECT * FROM player_data WHERE playerID IN (<?>)";
             $result = $this->multiSelect($query, $data["data"]);
-            return $result;
+            $playerIds = [];
+
+            foreach ($result as $player) {
+                $playerStats = [];
+
+                foreach($player as $key => $value) {
+                    $playerStats[$key] = $value;
+                }
+
+                $playerStats["stats"] = [];
+                array_push($playerIds, $playerStats["playerID"]);
+                array_push($response, $playerStats);
+            }
+
+            $query = "SELECT * FROM player_offensive_stats WHERE playerID IN (<?>)";
+            $result = $this->multiSelectValues($query, $playerIds);
+
+            for ($i = 0; $i < count($response); $i++) {
+                $playerStats = array_slice($result[$i], 1, count($result[$i]) - 1);
+                $response[$i]["stats"]["offensive"] = $playerStats;
+            }
+
+            $query = "SELECT * FROM player_defensive_stats WHERE playerID IN (<?>)";
+            $result = $this->multiSelectValues($query, $playerIds);
+
+            for ($i = 0; $i < count($response); $i++) {
+                $playerStats = array_slice($result[$i], 1, count($result[$i]) - 1);
+                $response[$i]["stats"]["defensive"] = $playerStats;
+            }
+
+            $query = "SELECT * FROM player_foul_stats WHERE playerID IN (<?>)";
+            $result = $this->multiSelectValues($query, $playerIds);
+
+            for ($i = 0; $i < count($response); $i++) {
+                $playerStats = array_slice($result[$i], 1, count($result[$i]) - 1);
+                $response[$i]["stats"]["fouls"] = $playerStats;
+            }
+
+            return $response;
         } else {
             throw new ApiException(200, "invalid_scope", "Invalid player statistics scope.");
         }
 
-        $query = "SELECT * FROM player_data";
-        $response = $this->select($query);
         return $response;
     }
 
@@ -328,6 +365,86 @@ class Database {
         return $response;
     }
 
+
+    // ======================================================================================
+    // Tournament FUNCTIONS
+    // ======================================================================================
+    // TODO
+    public function CreateTourament($affiliation_key=null, $season_key,) {
+	// check for a affiliation
+	$query = "SELECT id FROM affiliations WHERE affiliation_key = ?;";
+	$affiliation_id = $this->select($query, [$affiliation_key]);
+
+        if ($affiliation_id == []) {
+            throw new ApiException(401, "invalid_affiliation", "The affiliation that you have specified does not exist.");
+        }
+	// check for a season add if not
+	$query = "SELECT id FROM seasons WHERE league_id = ?;";
+	$season_id = $this->select($query, [$affiliation_key]);
+
+        if ($affiliation_id == []) {
+            throw new ApiException(401, "invalid_affiliation", "The affiliation that you have specified does not exist.");
+        }
+	// make tournament
+	$query = "INSERT INTO sub_seasons (sub_season_key,season_id,sub_season_type,start_date_time,end_date_time)" .
+	    "(?,?,?,?,?)";
+	// make events
+	// 		if no site make one
+	// link teams to events
+	// link players to events
+    }
+
+
+    public function getTournament($tournamentID) {
+	#TODO Change teams to team
+	$query = "SELECT s.event_id, sub_season_id, event_number as match_number, round_number, participant_id as team_id, score FROM
+(SELECT * FROM events_sub_seasons) s,
+(SELECT events.id, events.event_number, events.round_number FROM events)e,
+(SELECT participants_events.event_id, participants_events.participant_id, participants_events.score FROM participants_events
+WHERE participants_events.participant_type = 'team')pe
+WHERE pe.event_id = e.id AND s.event_id = e.id AND s.sub_season_id = ?;";
+	$result = $this->select($query, [$tournamentID]);
+	if ($result == []) {
+	    throw new ApiException(401, "invalid_tournamentid", "The specified tournament does not have any data accociated wiht it.");
+	}
+	// the counters for the seperate rounds
+	$counters = array(0,0,0,0);
+	$matchpaircounter = 0;
+	$counters[0]++;
+	$team = "teamB";
+	$return["tournament"]["tournamentID"] = $tournamentID;
+	// adding all the data from the query
+	foreach ($result as $value) {
+	    if ($team == "teamB") {
+		$team = "teamA";
+	    } else {
+		$team == "teamB";
+	    }
+
+	    $roundNo = $value["round_number"]-1;
+	    $return["tournament"]["rounds"][$roundNo]["matches"][$counters[$roundNo]]["matchID"] = $value["event_id"];
+	    $return["tournament"]["rounds"][$roundNo]["roundNo"] = $value["round_number"];
+	    if ($matchpaircounter === 0) {
+		$return["tournament"]["rounds"][$roundNo]["matches"][$counters[$roundNo]]["teamA"]["teamID"] = $value["team_id"];
+		$return["tournament"]["rounds"][$roundNo]["matches"][$counters[$roundNo]]["teamA"]["points"] = $value["score"];
+		$matchpaircounter++;
+	    } else {
+		$return["tournament"]["rounds"][$roundNo]["matches"][$counters[$roundNo]]["teamB"]["teamID"] = $value["team_id"];
+		$return["tournament"]["rounds"][$value["round_number"]-1]["matches"][$counters[$value["round_number"]-1]]["teamB"]["points"] = $value["score"];
+		$matchpaircounter = 0;
+	    }
+	}
+
+	$query = "SELECT full_name FROM display_names WHERE entity_type = 'tournament' AND entity_id = ?;";
+	$result = $this->select($query, [$tournamentID]);
+	if ($result == []) {
+	    $return["tournament"]["tournamentName"] = "No Name";
+	} else {
+	    $return["tournament"]["tournamentName"] = $result["full_name"];
+	}
+	return $return;
+    }
+
     // ======================================================================================
     // SMALL UTILITY FUNCTIONS
     // ======================================================================================
@@ -346,7 +463,7 @@ class Database {
 
     /**
      * Converts an array with objects to an array of values
-     * 
+     *
      * @param $query e.g. SELECT * FROM table WHERE column IN (<?>)
      * @param $data array of JSON objects
      * @return array
@@ -368,8 +485,22 @@ class Database {
     }
 
     /**
-     * Converts an array with objects to an array of values
+     * Takes an array of values
      * 
+     * @param $query e.g. SELECT * FROM table WHERE column IN (<?>)
+     * @param $data array of values
+     * @return array
+     */
+    private function multiSelectValues($query, $data) {
+        $commas = $this->createCommaString(count($data));
+        $query = str_replace("<?>", $commas, $query);
+
+        return $this->select($query, $data);
+    }
+
+    /**
+     * Converts an array with objects to an array of values
+     *
      * @param $data associative array of key values
      * @return array
      */
@@ -405,5 +536,4 @@ class Database {
 
         return ["locationID"=>$locationId, "addressID"=>$addressId];
     }
-    
 }
