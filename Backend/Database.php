@@ -206,16 +206,11 @@ class Database {
     function addPlayers($data) {
         foreach ($data as $object) {
             $birthAddr = $object["birthAddr"];
-            
-            $query = "INSERT INTO locations (city, country, country_code) VALUES (?, ?, ?)";
-            $locationStmt = $this->executeQuery($query, [$birthAddr["city"], $birthAddr["country"], $birthAddr["countryCode"]]);
-            $locationId = $this->getLastGeneratedID();
-            
-            $query = "INSERT INTO addresses (location_id, street_number, street, postal_code, country) VALUES (?, ?, ?, ?, ?)";
-            $addressStmt = $this->executeQuery($query, [$locationId, $birthAddr["streetNo"], $birthAddr["street"], $birthAddr["postalCode"], $birthAddr["country"]]);
-            
+
+            $locAddrIDs = $this->addAddress($birthAddr);
+    
             $query = "INSERT INTO persons (person_key, publisher_id, gender, birth_date, birth_location_id) VALUES (?, ?, ?, ?, ?)";
-            $personStmt = $this->executeQuery($query, [$object["personKey"], $this->publisher, $object["gender"], $object["DOB"], $locationId]);
+            $personStmt = $this->executeQuery($query, [$object["personKey"], $this->publisher, $object["gender"], $object["DOB"], $locAddrIDs["locationID"]]);
             $personId = $this->getLastGeneratedID();
             
             $query = "INSERT INTO display_names (language, entity_type, entity_id, full_name, first_name, last_name) VALUES (?, ?, ?, ?, ?, ?)";
@@ -237,9 +232,12 @@ class Database {
 
     function getPlayers($data) {
         $data["scope"] = "lifetime";
+        $response = [];
 
         if ($data["scope"] == "lifetime") {
-            
+            $query = "SELECT * FROM player_statistics WHERE player_id IN (<?>)";
+            $result = $this->multiSelect($query, $data["data"]);
+            return $result;
         } else {
             throw new ApiException(200, "invalid_scope", "Invalid player statistics scope.");
         }
@@ -253,6 +251,71 @@ class Database {
     // TEAM FUNCTIONS
     // ======================================================================================
 
+    function generateTeamKey($teamName) {
+        return strToLower(implode(".", preg_split('/\s+/', $teamName)));
+    }
+
+    function generateSiteKey($street, $city, $addrID)
+    {
+        return strToLower(preg_split('/\s+/', $street)[0] . ", $city ($addrID)");
+    }
+
+    function addTeams($data) {
+        $response = [];
+
+        foreach ($data as $team) {
+            $teamName = $team["teamName"];
+            $teamKey = $this->generateTeamKey($teamName);
+
+            $siteID = null;
+            if($team["homeSite"] != null)
+            {
+                //Add location and address
+                $locAddrIDs = $this->addAddress($team["homeSite"]);
+
+                //Add site
+                $query = "INSERT INTO sites (site_key, publisher_id, location_id) VALUES (?, ?, ?)";
+                $siteKey = $this->generateSiteKey($team["homeSite"]["street"], $team["homeSite"]["city"], $locAddrIDs["locationID"]);
+                $siteStmt = $this->executeQuery($query, [$siteKey, $this->publisher, $locAddrIDs["locationID"]]);
+                $siteID = $this->getLastGeneratedID();
+            }
+
+            $query = "INSERT INTO teams (team_key, publisher_id, home_site_id) VALUES (?, ?, ?)";
+            $teamStmt = $this->executeQuery($query, [$teamKey, $this->publisher, $siteID]);
+            $teamId = $this->getLastGeneratedID();
+
+            $query = "INSERT INTO display_names (language, entity_type, entity_id, full_name) VALUES (?, ?, ?, ?)";
+            $displayNameStmt = $this->executeQuery($query, ["en-US", "teams", $teamId, $teamName]);
+
+            //Add team logo
+            $query = "INSERT INTO media (b64_image, publisher_id) VALUES (?, ?)";
+            $mediaStmt = $this->executeQuery($query, [$team["teamLogo"], $this->publisher]);
+            $mediaId = $this->getLastGeneratedID();
+
+            $query = "INSERT INTO teams_media (team_id, media_id) VALUES (?, ?)";
+            $mediaPersonStmt = $this->executeQuery($query, [$teamId, $mediaId]);
+
+            array_push($response, ["teamID" => $teamId, "teamKey" => $teamKey]);
+        }
+
+        return $response;
+    }
+
+    //Returns the id, team_key, and display_names(full_name) of ALL teams in the DB
+    function getTeams() {
+        // $query = "SELECT t.id, t.team_key, d.full_name FROM teams t, display_names d WHERE d.entity_type = 'teams' AND d.entity_id = t.id";
+        $query = "SELECT t.id, t.team_key, d.full_name FROM display_names d RIGHT JOIN teams t ON t.id = d.entity_id AND d.entity_type = 'teams'";
+        $response = $this->select($query);
+        return $response;
+    }
+
+    //Returns all important data on SPECIFIC teams
+    function getTeamData($data) {
+        $query = "SELECT * FROM team_data WHERE team_id IN (<?>)";
+        $response = $this->multiSelect($query, $data);
+
+        return $response;
+    }
 
     // ======================================================================================
     // SMALL UTILITY FUNCTIONS
@@ -269,23 +332,59 @@ class Database {
 
         return $key;
     }
-    
+
     /**
-     * Create a comma delimited string from an array of values
-     * which can be used in an SQL IN clause
+     * Converts an array with objects to an array of values
+     * 
+     * @param $query e.g. SELECT * FROM table WHERE column IN (<?>)
+     * @param $data array of JSON objects
+     * @return array
+     */
+    private function multiSelect($query, $data) {
+        $data = $this->convertArrayOfObjects($data);
+        $commas = $this->createCommaString(count($data));
+        $query = str_replace("<?>", $commas, $query);
+
+        return $this->select($query, $data);
+    }
+
+    /**
+     * Converts an array with objects to an array of values
      * 
      * @param $data associative array of key values
-     * @return string comma delimited string
+     * @return array
      */
-    private function createInString($data) {
-        $string = "";
-        foreach($data as $object) {
-            foreach($object as $key => $value) {
-                $string .= $value . ",";
+    private function convertArrayOfObjects($data) {
+        $array = [];
+        foreach ($data as $object) {
+            foreach ($object as $key => $value) {
+                array_push($array, $value);
                 break;
             }
         }
 
+        return $array;
+    }
+
+    private function createCommaString($count) {
+        $string = str_repeat("?,", $count);
+
         return substr($string, 0, strlen($string) - 1);
     }
+
+    //$addr should contain {"streetNo", "street", "city", "postalCode", "country", "countryCode"}
+    //Generates the address and corresponding location
+    //Returns ("locationID", "addressID") object
+    function addAddress($addr) {
+        $query = "INSERT INTO locations (city, country, country_code) VALUES (?, ?, ?)";
+        $locationStmt = $this->executeQuery($query, [$addr["city"], $addr["country"], $addr["countryCode"]]);
+        $locationId = $this->getLastGeneratedID();
+
+        $query = "INSERT INTO addresses (location_id, street_number, street, postal_code, country) VALUES (?, ?, ?, ?, ?)";
+        $addressStmt = $this->executeQuery($query, [$locationId, $addr["streetNo"], $addr["street"], $addr["postalCode"], $addr["country"]]);
+        $addressId = $this->getLastGeneratedID();
+
+        return ["locationID"=>$locationId, "addressID"=>$addressId];
+    }
+    
 }

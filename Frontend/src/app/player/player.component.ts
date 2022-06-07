@@ -44,6 +44,9 @@ export class PlayerComponent implements OnInit {
     this.api.getPlayer(this.playerID).subscribe((res) => {
       console.log(res);
       //IS SO PRETTY // TRUUUE
+
+
+      
       let Name = res.data[0].fullName;
       let Gender = res.data[0].gender;
       let Birth = res.data[0].DOB;
@@ -84,6 +87,10 @@ export class PlayerComponent implements OnInit {
       (<HTMLInputElement>document.getElementById("saves")).value = Saves;
       (<HTMLInputElement>document.getElementById("failedBlocks")).value = FailedBlocks;
       (<HTMLInputElement>document.getElementById("successfulPasses")).value = SuccessfulPasses;
+      
+
+      (<HTMLInputElement>document.getElementById("playerPic outline")[0]).value = SuccessfulPasses;
+
 
       // let Name = (<HTMLInputElement>document.getElementById("email")).value;
 

@@ -10,7 +10,12 @@ import { UserService } from '../user.service';
   styleUrls: ['./team-member.component.css']
 })
 export class TeamMemberComponent implements OnInit {
-  @Input('memberID') memberID: number;
+  @Input('player') player: {
+    playerID: number,
+    firstName: string,
+    lastName: string,
+    image: string
+  };
   @ViewChild('editButton') editButton;
 
   constructor(
@@ -27,7 +32,7 @@ export class TeamMemberComponent implements OnInit {
   navigateToPlayerPage() {
     //replace player_Name with actual player_name
     console.log("navigate clicked");
-    this.router.navigate([`player/${this.memberID}/Player_name`]);
+    this.router.navigate([`player/${this.player.playerID}/Player_name`]);
   }
 
   displayEdit() {
@@ -43,7 +48,7 @@ export class TeamMemberComponent implements OnInit {
     console.log("edit clicked");
     const dialogRef = this.dialog.open(EditMemberDialog, {
       width: '300px',
-      data: { memberID: this.memberID }
+      data: { memberID: this.player.playerID }
     });
 
     dialogRef.afterClosed().subscribe(result => {
