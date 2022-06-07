@@ -196,9 +196,9 @@ class API
         {
             // case "add": $this->addTeam($this->request["data"]); break;
             case "add": $this->addTeam($this->request["data"]); break;
-            case "set": $this->modifyTeam($this->request["data"]); break;
             case "get": $this->getTeam($this->request["data"]); break;
             case "getAll": $this->response = $this->database->getTeams(); break;
+            case "delete": $this->deleteTeam($this->request["data"]); break;
         }
     }
 
@@ -324,8 +324,14 @@ class API
         $this->response = $this->database->getTeamData($this->request["data"]);
     }
 
-    function modifyTeam($data)
+    function deleteTeam($data)
     {
+        $requiredTeamInfo = ["teamID"];
+        foreach($data as $team)
+        {
+            $this->validateRequiredFields($team, $requiredTeamInfo);
+        }
+        $this->response = $this->database->deleteTeam($this->request["data"]);
     }
 }
 
