@@ -17,10 +17,18 @@ body {
     padding-left: 1rem;
     padding-right: 1rem;
     padding-top: .65rem;
+    margin-bottom: 5rem;
 }
 
 .outline {
     border: 1px solid;
     border-radius: 17px;
     border-color: rgba(128, 128, 128, 0.578);
+}
+
+.sShadow{
+    box-shadow: 5px 5px 5px #3a3037;
+}
+.lShadow {
+    box-shadow: 11px 11px 9px #28212b;
 }
