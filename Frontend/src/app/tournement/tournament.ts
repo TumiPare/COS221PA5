@@ -13,5 +13,5 @@ export class Tournament{
             this.semiFinals = semiFinals;
             this.final = final;
             this.fightFor3 = fightFor3;
-    }
+            }
 }

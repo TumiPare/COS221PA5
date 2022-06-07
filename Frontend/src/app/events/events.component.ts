@@ -16,7 +16,7 @@ export class EventsComponent implements OnInit {
   leagueName: string;
   leagueID: number;
 
-  selectedSubSeason: string;
+  selectedSubSeason: number;
   events: any;
   tournements = [{
     tournementName: "Clash of mandems",
@@ -44,10 +44,17 @@ export class EventsComponent implements OnInit {
     });
   }
 
-  selectSubSeason(selectedSubSeason: string) {
+  selectSubSeason(selectedSubSeason: number) {
     this.selectedSubSeason = selectedSubSeason;
+
     alert("make request for subseasons");
     // make request with selected subSeason
+
+    this.api.getTournaments(this.selectedSubSeason).subscribe((res) => {
+      console.log(res);
+
+
+    });
   }
 
   navigateToTeamPage(teamID: number, teamName: string) {

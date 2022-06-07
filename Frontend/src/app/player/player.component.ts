@@ -43,7 +43,7 @@ export class PlayerComponent implements OnInit {
   ngOnInit(): void {
     this.api.getPlayer(this.playerID).subscribe((res) => {
       if (res.status == "success") {
-        // console.log(res.data[0]);
+         console.log(res.data[0]);
         this.player = res.data[0];
 
         let thissy = this;

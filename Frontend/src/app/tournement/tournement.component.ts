@@ -24,13 +24,11 @@ export class TournementComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.api.getTournament(this.tournamentID).subscribe((res) => {
-      console.log(res);
-    });
+    this.setTournament();
   }
 
-  setTournament(tournament: Tournament) {
-    this.tournament = tournament;
+  setTournament() {
+    
 
     this.api.getTournament(this.tournamentID).subscribe((res) => {
       console.log(res);
@@ -42,22 +40,23 @@ export class TournementComponent implements OnInit {
           console.log(res);
 
           if (res.status == "success") {
+            this.tournament = res.data[0];
             Team1 = res.teams[0].name;
             let Team1pic = res.teams[0].teamLogo;
 
             Team2 = res.teams[1].name;
             let Team2pic = res.teams[1].teamLogo;
 
-            tournament.roundof16[i].teamA = Team1;
-            tournament.roundof16[i].picA = Team1pic;
+            this.tournament.roundof16[i].teamA = Team1;
+            this.tournament.roundof16[i].picA = Team1pic;
 
-            tournament.roundof16[i].scoreA = res.data[0].rounds[0].matches[i].teamA.points;
+            this.tournament.roundof16[i].scoreA = res.data[0].rounds[0].matches[i].teamA.points;
 
 
-            tournament.roundof16[i].teamB = Team2;
-            tournament.roundof16[i].picB = Team2pic;
+            this.tournament.roundof16[i].teamB = Team2;
+            this.tournament.roundof16[i].picB = Team2pic;
 
-            tournament.roundof16[i].scoreB = res.data[0].rounds[0].matches[i].teamB.points;
+            this.tournament.roundof16[i].scoreB = res.data[0].rounds[0].matches[i].teamB.points;
           }
           else
             console.log("Something went wrong with getTeam");
@@ -77,16 +76,16 @@ export class TournementComponent implements OnInit {
             Team2 = res.teams[1].name;
             let Team2pic = res.teams[1].teamLogo;
 
-            tournament.roundof16[i].teamA = Team1;
-            tournament.roundof16[i].picA = Team1pic;
+            this.tournament.roundof16[i].teamA = Team1;
+            this.tournament.roundof16[i].picA = Team1pic;
 
-            tournament.roundof16[i].scoreA = res.data[0].rounds[1].matches[i].teamA.points;
+            this.tournament.roundof16[i].scoreA = res.data[0].rounds[1].matches[i].teamA.points;
 
 
-            tournament.roundof16[i].teamB = Team2;
-            tournament.roundof16[i].picB = Team2pic;
+            this.tournament.roundof16[i].teamB = Team2;
+            this.tournament.roundof16[i].picB = Team2pic;
 
-            tournament.roundof16[i].scoreB = res.data[0].rounds[1].matches[i].teamB.points;
+            this.tournament.roundof16[i].scoreB = res.data[0].rounds[1].matches[i].teamB.points;
           }
           else
             console.log("Something went wrong with getTeam");
@@ -111,16 +110,16 @@ export class TournementComponent implements OnInit {
             Team2 = res.teams[1].name;
             let Team2pic = res.teams[1].teamLogo;
 
-            tournament.roundof16[i].teamA = Team1;
-            tournament.roundof16[i].picA = Team1pic;
+            this.tournament.roundof16[i].teamA = Team1;
+            this.tournament.roundof16[i].picA = Team1pic;
 
-            tournament.roundof16[i].scoreA = res.data[0].rounds[2].matches[i].teamA.points;
+            this.tournament.roundof16[i].scoreA = res.data[0].rounds[2].matches[i].teamA.points;
 
 
-            tournament.roundof16[i].teamB = Team2;
-            tournament.roundof16[i].picB = Team2pic;
+            this.tournament.roundof16[i].teamB = Team2;
+            this.tournament.roundof16[i].picB = Team2pic;
 
-            tournament.roundof16[i].scoreB = res.data[0].rounds[2].matches[i].teamB.points;
+            this.tournament.roundof16[i].scoreB = res.data[0].rounds[2].matches[i].teamB.points;
           }
           else
             console.log("Something went wrong with getTeam");
@@ -146,16 +145,16 @@ export class TournementComponent implements OnInit {
             Team2 = res.teams[1].name;
             let Team2pic = res.teams[1].teamLogo;
 
-            tournament.roundof16[0].teamA = Team1;
-            tournament.roundof16[0].picA = Team1pic;
+            this.tournament.roundof16[0].teamA = Team1;
+            this.tournament.roundof16[0].picA = Team1pic;
 
-            tournament.roundof16[0].scoreA = res.data[0].rounds[3].matches[0].teamA.points
+            this.tournament.roundof16[0].scoreA = res.data[0].rounds[3].matches[0].teamA.points
 
 
-            tournament.roundof16[0].teamB = Team2;
-            tournament.roundof16[0].picB = Team2pic;
+            this.tournament.roundof16[0].teamB = Team2;
+            this.tournament.roundof16[0].picB = Team2pic;
 
-            tournament.roundof16[0].scoreB = res.data[0].rounds[3].matches[0].teamB.points;
+            this.tournament.roundof16[0].scoreB = res.data[0].rounds[3].matches[0].teamB.points;
           }
           else
             console.log("Something went wrong with getTeam");
@@ -165,7 +164,7 @@ export class TournementComponent implements OnInit {
       }
 
 
-
+      //  
 
     });
 

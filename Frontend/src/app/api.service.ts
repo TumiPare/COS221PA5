@@ -78,11 +78,14 @@ export class APIService {
     return this.http.post(this.apiURL, body, this.httpOptions);
   }
 
-  getTournaments(): Observable<any> {
+  getTournaments(Season: number): Observable<any> {
     let body = {
       apiKey: this.apiKey,
       type: "tournament",
-      operation: "get",
+      operation: "get", 
+      data: [{
+        "tournamentID": Season
+      }]
     };
     return this.http.post(this.apiURL, body, this.httpOptions);
   }
@@ -247,6 +250,7 @@ export class APIService {
     };
     return this.http.post(this.apiURL, body, this.httpOptions);
   }
+
 
 
 
