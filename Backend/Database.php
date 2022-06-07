@@ -237,9 +237,12 @@ class Database {
 
     function getPlayers($data) {
         $data["scope"] = "lifetime";
+        $response = [];
 
         if ($data["scope"] == "lifetime") {
-            
+            $query = "SELECT * FROM player_statistics WHERE player_id IN (<?>)";
+            $result = $this->multiSelect($query, $data["data"]);
+            return $result;
         } else {
             throw new ApiException(200, "invalid_scope", "Invalid player statistics scope.");
         }
@@ -269,23 +272,44 @@ class Database {
 
         return $key;
     }
-    
+
     /**
-     * Create a comma delimited string from an array of values
-     * which can be used in an SQL IN clause
+     * Converts an array with objects to an array of values
+     * 
+     * @param $query e.g. SELECT * FROM table WHERE column IN (<?>)
+     * @param $data array of JSON objects
+     * @return array
+     */
+    private function multiSelect($query, $data) {
+        $data = $this->convertArrayOfObjects($data);
+        $commas = $this->createCommaString(count($data));
+        str_replace("<?>", $commas, $query);
+
+        return $this->select($query, $data);
+    }
+
+    /**
+     * Converts an array with objects to an array of values
      * 
      * @param $data associative array of key values
-     * @return string comma delimited string
+     * @return array
      */
-    private function createInString($data) {
-        $string = "";
-        foreach($data as $object) {
-            foreach($object as $key => $value) {
-                $string .= $value . ",";
+    private function convertArrayOfObjects($data) {
+        $array = [];
+        foreach ($data as $object) {
+            foreach ($object as $key => $value) {
+                array_push($array, $value);
                 break;
             }
         }
 
+        return $array;
+    }
+
+    private function createCommaString($count) {
+        $string = str_repeat("?,", $count);
+
         return substr($string, 0, strlen($string) - 1);
     }
+
 }
