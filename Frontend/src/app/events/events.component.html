@@ -1,6 +1,6 @@
 <div fxFlex fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="40px" class="container">
     <p style="padding-top: 4rem; font-size: 50pt;">Tournements</p>
-    <div fxFlex fxLayout="column" fxLayoutAlign="center center" class="tourneyContainer"
+    <div fxFlex fxLayout="column" fxLayoutAlign="center center" class="tourneyContainer outline lShadow"
         *ngFor="let tournement of tournements; index as i" [routerLink]="'/tournament/' + i + '/' + tournement.tournementName">
         <p class="tourneyName">{{tournement.tournementName}}</p>
         <div fxFlex fxLayout="row" fxLayoutGap="10px" class="tourneyParticipants">
@@ -10,5 +10,5 @@
             <app-team-card (click)="navigateToTeamPage(3, 'BuffleMan')" fxFlex="25%" [teamID]="i"></app-team-card>
         </div>
     </div>
-    <div id="addTourneyBtn" class="addTournement" (click)="addTourney()" style="display: none;">Add Tournement</div>
+    <button mat-raised-button color="primary" id="addTourneyBtn" (click)="addTourney()" style="display: none; width: 80%;">Add Tournement</button>
 </div>

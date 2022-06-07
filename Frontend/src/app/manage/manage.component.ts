@@ -38,16 +38,14 @@ export class ManageComponent implements OnInit {
       return;
     }
 
-    //Did not change email
-    if (Email == sessionStorage.getItem("email")) Email = "";  //Refer to UpdateUser in api.service
 
-    if (Username == sessionStorage.getItem("username")) Username = "";  //Refer to UpdateUser in api.service
 
 
 
     if (!/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(Email)) {
       // Bad email
       document.getElementById("email").focus();
+      console.log(Email);
       this.print("Please check that your email is valid");
     } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/gm.test(Password)) {
       // Bad Password
@@ -56,6 +54,10 @@ export class ManageComponent implements OnInit {
     }
 
     else {
+          //Did not change email
+    if (Email == sessionStorage.getItem("email")) Email = "";  //Refer to UpdateUser in api.service
+
+    if (Username == sessionStorage.getItem("username")) Username = "";  //Refer to UpdateUser in api.service
 
       this.api.UpdateUser(Email, Username, Password, Key).subscribe((res) => {
         if (res.status == "success") {
