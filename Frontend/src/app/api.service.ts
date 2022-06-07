@@ -54,6 +54,18 @@ export class APIService {
     return this.http.post(this.apiURL, body, this.httpOptions);
   }
 
+  getLeagues(): Observable<any> {
+    let body = {
+      apiKey: this.apiKey,
+      type: "league",
+      operation: "get",
+      data: {
+        leagueID: ""
+      }
+    };
+    return this.http.post(this.apiURL, body, this.httpOptions);
+  }
+
   getTournaments(): Observable<any> {
     let body = {
       apiKey: this.apiKey,
