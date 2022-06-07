@@ -166,7 +166,7 @@ class API
 
         if ($this->request["operation"] == "set") {
         } else if ($this->request["operation"] == "get") {
-            $this->response = $this->database->getPlayers();
+            $this->response = $this->database->getPlayers($this->request);
         } else if ($this->request["operation"] == "add") {
             $this->addPlayers($this->request["data"]);
         } else {

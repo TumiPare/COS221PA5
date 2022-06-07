@@ -235,7 +235,15 @@ class Database {
         }
     }
 
-    function getPlayers() {
+    function getPlayers($data) {
+        $data["scope"] = "lifetime";
+
+        if ($data["scope"] == "lifetime") {
+            
+        } else {
+            throw new ApiException(200, "invalid_scope", "Invalid player statistics scope.");
+        }
+
         $query = "SELECT * FROM player_data";
         $response = $this->select($query);
         return $response;
@@ -262,4 +270,22 @@ class Database {
         return $key;
     }
     
+    /**
+     * Create a comma delimited string from an array of values
+     * which can be used in an SQL IN clause
+     * 
+     * @param $data associative array of key values
+     * @return string comma delimited string
+     */
+    private function createInString($data) {
+        $string = "";
+        foreach($data as $object) {
+            foreach($object as $key => $value) {
+                $string .= $value . ",";
+                break;
+            }
+        }
+
+        return substr($string, 0, strlen($string) - 1);
+    }
 }
