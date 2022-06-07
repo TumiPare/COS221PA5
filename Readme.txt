@@ -104,6 +104,22 @@ The user can get more information on each match by simpling clicking on it.
 The user can edit each match in similar fashion by simply clicking on the 
 edit icon.
 
+*****************************************************************************
+                          Access the database:
+
+
+To load dump.sql `sdb` database into your MariaDB installation,
+execute the following commands on the command line:
+
+# On Windows (CMD or WSL, mysql.exe must be available in %PATH%):
+
+mysql.exe -u root -p -e "create database sdb"
+mysql.exe -u root -p sdb < C:\path\to\dump.sql
+
+# On Linux:
+
+mysql -u root -p -e "create database sdb"
+mysql -u root -p sdb < /path/to/dump.sql
 
 
 
