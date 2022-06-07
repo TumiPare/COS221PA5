@@ -7,7 +7,7 @@ import {Event} from 'src/app/tournement/event'
   
 })
 export class TournamentCardComponent implements OnInit {
-  @Input('event')teamA: Event;
+  @Input('event')event: Event;
 
   constructor() { }
 
