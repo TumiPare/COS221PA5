@@ -301,6 +301,17 @@ class Database {
         return $response;
     }
 
+    function deleteTeam($data) {
+        $queries = [
+            "DELETE FROM display_names WHERE entity_id IN (<?>) AND entity_type='teams'",
+            "DELETE FROM teams_media WHERE team_id IN (<?>)",
+            "DELETE FROM teams WHERE `id` IN (<?>)"
+        ];
+        foreach($queries as $query) { $this->multiExecuteQuery($query, $data); }
+
+        return ["Teams deleted"];
+    }
+
     //Returns the id, team_key, and display_names(full_name) of ALL teams in the DB
     function getTeams() {
         // $query = "SELECT t.id, t.team_key, d.full_name FROM teams t, display_names d WHERE d.entity_type = 'teams' AND d.entity_id = t.id";
@@ -346,6 +357,14 @@ class Database {
         $query = str_replace("<?>", $commas, $query);
 
         return $this->select($query, $data);
+    }
+
+    private function multiExecuteQuery($query, $data) {
+        $data = $this->convertArrayOfObjects($data);
+        $commas = $this->createCommaString(count($data));
+        $query = str_replace("<?>", $commas, $query);
+
+        return $this->executeQuery($query, $data);
     }
 
     /**
