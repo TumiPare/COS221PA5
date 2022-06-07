@@ -19,7 +19,7 @@ export class PlayerComponent implements OnInit {
     country: string,
     countryCode: string,
     image: string,
-    stats: any
+    stats: Array<{}>,
   };
   offenseStats: Array<{
     statistic: string,
@@ -42,57 +42,73 @@ export class PlayerComponent implements OnInit {
 
   ngOnInit(): void {
     this.api.getPlayer(this.playerID).subscribe((res) => {
-      console.log(res);
-      //IS SO PRETTY // TRUUUE
+      if (res.status == "success") {
+        // console.log(res.data[0]);
+        this.player = res.data[0];
+
+        let thissy = this;
+        // Replace this.player with this.player.stats.appropriateStat
+        Object.keys(res.data[0].stats.offensive).map(function (key, index) {
+          thissy.offenseStats.push({ statistic: key, value: index });
+        });
+        Object.keys(res.data[0].stats.defensive).map(function (key, index) {
+          thissy.defenceStats.push({ statistic: key, value: index });
+        });
+        Object.keys(res.data[0].stats.fouls).map(function (key, index) {
+          thissy.foulStats.push({ statistic: key, value: index });
+        });
+      } else {
+        console.log("Error fetching player")
+      }
 
 
-      
-      let Name = res.data[0].fullName;
-      let Gender = res.data[0].gender;
-      let Birth = res.data[0].DOB;
-      let Country = res.data[0].country;
-      let Image = res.data[0].image;   //B64 encoded
 
-      let Assists = res.data[0].stats.offensive.assists;
-      let SprintsWon = res.data[0].stats.offensive.sprintsWon;
-      let Goals = res.data[0].stats.offensive.goals;
-      let PassesMade = res.data[0].stats.offensive.passesMade;
+      // let Name = res.data[0].fullName;
+      // let Gender = res.data[0].gender;
+      // let Birth = res.data[0].DOB;
+      // let Country = res.data[0].country;
+      // let Image = res.data[0].image;   //B64 encoded
 
-      let Steals = res.data[0].stats.defensive.steals;
-      let Saves = res.data[0].stats.defensive.saves;
-      let FailedBlocks = res.data[0].stats.defensive.failedBlocks;
-      let SuccessfulPasses = res.data[0].stats.defensive.successfulPasses;
+      // let Assists = res.data[0].stats.offensive.assists;
+      // let SprintsWon = res.data[0].stats.offensive.sprintsWon;
+      // let Goals = res.data[0].stats.offensive.goals;
+      // let PassesMade = res.data[0].stats.offensive.passesMade;
 
-      let Turnovers = res.data[0].stats.fouls.turnovers;
-      let Exclusions = res.data[0].stats.fouls.exclusions;
-      let PenaltyShotsTaken = res.data[0].stats.fouls.penaltyShotsTaken;
-      let PenaltyShotsGiven = res.data[0].stats.fouls.penaltyShotsGiven;
+      // let Steals = res.data[0].stats.defensive.steals;
+      // let Saves = res.data[0].stats.defensive.saves;
+      // let FailedBlocks = res.data[0].stats.defensive.failedBlocks;
+      // let SuccessfulPasses = res.data[0].stats.defensive.successfulPasses;
 
-      (<HTMLInputElement>document.getElementById("FN")).value = Name;
-      (<HTMLInputElement>document.getElementById("birth")).value = Birth;
-      (<HTMLInputElement>document.getElementById("gender")).value = Gender;
-      (<HTMLInputElement>document.getElementById("Nationality")).value = Country;
+      // let Turnovers = res.data[0].stats.fouls.turnovers;
+      // let Exclusions = res.data[0].stats.fouls.exclusions;
+      // let PenaltyShotsTaken = res.data[0].stats.fouls.penaltyShotsTaken;
+      // let PenaltyShotsGiven = res.data[0].stats.fouls.penaltyShotsGiven;
 
-      (<HTMLInputElement>document.getElementById("turnovers")).value = Turnovers;
-      (<HTMLInputElement>document.getElementById("exclusions")).value = Exclusions;
-      (<HTMLInputElement>document.getElementById("penaltyShotsT")).value = PenaltyShotsTaken;
-      (<HTMLInputElement>document.getElementById("penaltyShotsG")).value = PenaltyShotsGiven;
+      // (<HTMLInputElement>document.getElementById("FN")).value = Name;
+      // (<HTMLInputElement>document.getElementById("birth")).value = Birth;
+      // (<HTMLInputElement>document.getElementById("gender")).value = Gender;
+      // (<HTMLInputElement>document.getElementById("Nationality")).value = Country;
 
-      (<HTMLInputElement>document.getElementById("assists")).value = Assists;
-      (<HTMLInputElement>document.getElementById("sprintsWon")).value = SprintsWon;
-      (<HTMLInputElement>document.getElementById("goals")).value = Goals;
-      (<HTMLInputElement>document.getElementById("passesMade")).value = PassesMade;
+      // (<HTMLInputElement>document.getElementById("turnovers")).value = Turnovers;
+      // (<HTMLInputElement>document.getElementById("exclusions")).value = Exclusions;
+      // (<HTMLInputElement>document.getElementById("penaltyShotsT")).value = PenaltyShotsTaken;
+      // (<HTMLInputElement>document.getElementById("penaltyShotsG")).value = PenaltyShotsGiven;
 
-      (<HTMLInputElement>document.getElementById("steals")).value = Steals;
-      (<HTMLInputElement>document.getElementById("saves")).value = Saves;
-      (<HTMLInputElement>document.getElementById("failedBlocks")).value = FailedBlocks;
-      (<HTMLInputElement>document.getElementById("successfulPasses")).value = SuccessfulPasses;
-      
+      // (<HTMLInputElement>document.getElementById("assists")).value = Assists;
+      // (<HTMLInputElement>document.getElementById("sprintsWon")).value = SprintsWon;
+      // (<HTMLInputElement>document.getElementById("goals")).value = Goals;
+      // (<HTMLInputElement>document.getElementById("passesMade")).value = PassesMade;
 
-      (<HTMLInputElement>document.getElementById("playerPic outline")[0]).value = SuccessfulPasses;
+      // (<HTMLInputElement>document.getElementById("steals")).value = Steals;
+      // (<HTMLInputElement>document.getElementById("saves")).value = Saves;
+      // (<HTMLInputElement>document.getElementById("failedBlocks")).value = FailedBlocks;
+      // (<HTMLInputElement>document.getElementById("successfulPasses")).value = SuccessfulPasses;
 
 
-      // let Name = (<HTMLInputElement>document.getElementById("email")).value;
+      // (<HTMLInputElement>document.getElementById("playerPic outline")[0]).value = SuccessfulPasses;
+
+
+      // // let Name = (<HTMLInputElement>document.getElementById("email")).value;
 
 
     });

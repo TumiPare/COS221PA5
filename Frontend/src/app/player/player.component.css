@@ -1,11 +1,12 @@
 .playerInfo {
-    width: 40%;
+    width: 37%;
     padding-top: 2rem;
     padding-bottom: 2rem;
+    background-color: #272525;
 }
 
 .playerPic {
-    width: 50%;
+    width: 60%;
     height: 7rem;
     background-size: cover;
     background-position: center;
@@ -14,10 +15,13 @@
 .stats {
     width: 117%;
 }
-
-.statistic {
-    height: 20.5rem;
+.stats>div {
+    background-color: #272525;
 }
+
+/* .statistic {
+    height: 20.5rem;
+} */
 
 .actualStat {
     margin-left: 1.3rem;
