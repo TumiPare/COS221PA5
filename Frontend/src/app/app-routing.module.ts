@@ -7,9 +7,11 @@ import { RegisterComponent } from './register/register.component';
 import { TeamComponent } from './team/team.component';
 import { TournementComponent } from './tournement/tournement.component';
 import { ManageComponent } from './manage/manage.component';
+import { LeaguesComponent } from './leagues/leagues.component';
 
 const routes: Routes = [
-  { path: '', component: EventsComponent },
+  { path: '', component: LeaguesComponent },
+  { path: 'league/:leagueID', component: EventsComponent },
   { path: 'team/:teamID/:teamName', component: TeamComponent },
   { path: 'player/:playerID/:playerName', component: PlayerComponent },
   { path: 'tournament/:tournementID/:tournementName', component: TournementComponent },
