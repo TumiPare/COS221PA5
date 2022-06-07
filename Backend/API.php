@@ -44,7 +44,7 @@ class API
 
     function sendResponse()
     {
-        header("200 OK");
+        header("HTTP/1.1 200 OK");
         header("Content-Type: application/json");
 
         if (!is_array($this->response)) {
@@ -145,7 +145,6 @@ class API
                 $this->handlePlayer();
                 break;
             case "team":
-                throw new ApiException(200, "not_implemented", "Still has to be implemented."); // Remove if implemented
                 $this->handleTeam();
                 break;
             case "user":
@@ -192,6 +191,15 @@ class API
 
     private function handleTeam()
     {
+        $this->authorizeRequest();
+        switch($this->request["operation"])
+        {
+            // case "add": $this->addTeam($this->request["data"]); break;
+            case "add": $this->addTeam($this->request["data"]); break;
+            case "set": $this->modifyTeam($this->request["data"]); break;
+            case "get": $this->getTeam($this->request["data"]); break;
+            case "getAll": $this->response = $this->database->getTeams(); break;
+        }
     }
 
 
@@ -285,6 +293,39 @@ class API
     {
         $regex = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/";
         return (preg_match($regex, $password) == false) ? false : true;
+    }
+
+    // ===================TEAMS===================
+    function addTeam($data)
+    {
+        $requiredTeamInfo = ["teamName"];
+        $optionalTeamInfo = ["homeSite"];
+        $requiredHomeSiteInfo = ["streetNo", "street", "city", "postalCode", "country", "countryCode"];
+        foreach($data as $team) {
+            $this->validateRequiredFields($team, $requiredTeamInfo);
+            $this->validateOptionalFields($team, $optionalTeamInfo);
+            if($team["homeSite"] != null)
+            {
+                //If homeSite is specified, we must have all subfields
+                $this->validateRequiredFields($team["homeSite"], $requiredHomeSiteInfo);
+            }
+        }
+
+        $this->response = $this->database->addTeams($this->request["data"]);
+    }
+    function getTeam($data)
+    {
+        $requiredTeamInfo = ["teamID"];
+        foreach($data as $team)
+        {
+            $this->validateRequiredFields($team, $requiredTeamInfo);
+        }
+
+        $this->response = $this->database->getTeamData($this->request["data"]);
+    }
+
+    function modifyTeam($data)
+    {
     }
 }
 
