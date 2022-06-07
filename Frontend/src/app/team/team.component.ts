@@ -39,7 +39,7 @@ export class TeamComponent implements OnInit {
   selector: 'add-team-member-dialog',
   templateUrl: 'add-team-member-dialog.html',
 })
-export class AddMemberDialog {
+export class AddMemberDialog implements OnInit{
   @ViewChild('playerName') name;
   @ViewChild('playerSurname') surname;
   @ViewChild('DOB') DOB;
@@ -52,6 +52,10 @@ export class AddMemberDialog {
     private api: APIService,
   ) {
     console.log(data);
+  }
+
+  ngOnInit(): void {
+    // TEAM API HERE 
   }
 
   csvInputChange(fileInputEvent: any) {
