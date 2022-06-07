@@ -441,6 +441,7 @@ class Database {
         }
         return $return;
     }
+    // ======================================================================================
     // LEAGUE FUNCTIONS
     // ======================================================================================
 
@@ -455,6 +456,22 @@ class Database {
             $response[$i]["seasons"] = $seasons;
         }
 
+        return $response;
+    }
+    // ======================================================================================
+    // SEASON FUNCTIONS
+    // ======================================================================================
+
+    function getSeasonData($data) {
+        $query = "SELECT id AS seasonID, season_key as seasonKey, start_date_time AS startDate, end_date_time AS endDate FROM seasons WHERE id IN (<?>);";
+        $response = $this->multiSelect($query, $data);
+
+        $query = "SELECT id AS subseasonID, sub_season_key AS subseasonKey, start_date_time AS startDate, end_date_time AS endDate FROM sub_seasons WHERE season_id = ?";
+        for($i = 0; $i < count($response); $i++)
+        {
+            $subseasons = $this->select($query, [$response[$i]["seasonID"]]);
+            $response[$i]["subseasons"] = $subseasons;
+        }
         return $response;
     }
 
