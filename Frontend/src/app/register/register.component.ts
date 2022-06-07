@@ -41,7 +41,8 @@ export class RegisterComponent implements OnInit {
       this.api.signUpUser(username, userEmail, userPassword).subscribe((res) => {
         if (res.status == "success") {
           this.api.setAPIKey(res.data[0].apiKey, 3);
-          this.router.navigate([``]);
+          this.router.navigate([`login`]);
+          alert("Account registered");
         } else {
           // Bad Email
           document.getElementById("email").focus();
@@ -52,7 +53,7 @@ export class RegisterComponent implements OnInit {
   }
 
   displayTooltip(): void {
-    document.getElementsByClassName("bar")[0].innerHTML = "<br><p>Please enter your email and password. Ensure your password has a digit and special character</p>"
+    document.getElementsByClassName("bar")[0].innerHTML = "<br><p>Please enter your email and password. Ensure your password has a digit and special character and is at least 8 chars long</p>"
     let jan = document.getElementsByClassName("bar") as HTMLCollectionOf<HTMLElement>;
     jan[0].style.visibility = "visible";
   }

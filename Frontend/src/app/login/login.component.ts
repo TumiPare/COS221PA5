@@ -63,7 +63,7 @@ export class LoginComponent implements OnInit {
   }
 
   displayTooltip(): void {
-    document.getElementsByClassName("bar")[0].innerHTML = "<br><p>Please enter your email and password. Ensure your password has a digit and special character</p>"
+    document.getElementsByClassName("bar")[0].innerHTML = "<br><p>Please enter your email and password. Ensure your password has a digit and special character and has at least 8 chars</p>"
     let jan = document.getElementsByClassName("bar") as HTMLCollectionOf<HTMLElement>;
     jan[0].style.visibility = "visible";
   }
