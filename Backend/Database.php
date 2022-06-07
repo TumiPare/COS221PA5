@@ -319,6 +319,18 @@ class Database {
         }
     }
 
+    function deletePlayer($data)
+    {
+        $queries = [
+            "DELETE FROM display_names WHERE entity_id IN (<?>) AND entity_type='persons'",
+            "DELETE FROM persons_media WHERE person_id IN (<?>)",
+            "DELETE FROM persons WHERE `id` IN (<?>)"
+        ];
+        foreach($queries as $query) { $this->multiExecuteQuery($query, $data); }
+
+        return ["Teams deleted"];
+    }
+
     // ======================================================================================
     // TEAM FUNCTIONS
     // ======================================================================================
@@ -534,6 +546,32 @@ class Database {
         }
         return $response;
     }
+    // ======================================================================================
+    // EVENT FUNCTIONS
+    // ======================================================================================
+
+    //GUSTAV MIGHT BE IMPLEMENTING THIS SO JUST GONNA LEAVE IT HERE FOR NOW
+    // function addEvent($data) {
+    //     $eventKey = $data["eventKey"];
+    //     $startDate = "";
+    //     $duration = "";
+    //     $query = "INSERT INTO events (event_key, publisher_id, site_id, start_date_time, duration) VALUES ('test match 1', 2, 1, '2020-01-01 00:00:00', '00:30:00')";
+
+    //     $siteID = null;
+    //     if ($team["homeSite"] != null) {
+    //         //Add location and address
+    //         $locAddrIDs = $this->addAddress($team["homeSite"]);
+
+    //         //Add site
+    //         $query = "INSERT INTO sites (site_key, publisher_id, location_id) VALUES (?, ?, ?)";
+    //         $siteKey = $this->generateSiteKey($team["homeSite"]["street"], $team["homeSite"]["city"], $locAddrIDs["locationID"]);
+    //         $siteStmt = $this->executeQuery($query, [$siteKey, $this->publisher, $locAddrIDs["locationID"]]);
+    //         $siteID = $this->getLastGeneratedID();
+    //     }
+
+    //     $query = "INSERT INTO events (event_key, publisher_id, site_id, start_date_time, duration) VALUES (?, ?, ?, ?, ?)";
+    //     $this->executeQuery($query, [$eventKey, $this->publisher, $siteID, $startDate, $duration]);
+    // }
 
     // ======================================================================================
     // SMALL UTILITY FUNCTIONS
