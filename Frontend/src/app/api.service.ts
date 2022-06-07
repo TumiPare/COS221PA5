@@ -113,6 +113,23 @@ export class APIService {
     };
     return this.http.post(this.apiURL, body, this.httpOptions);
   }
+
+  get2Teams(team1: number,team2 :number): Observable<any> {
+    let body = {
+      apiKey: this.apiKey,
+      type: "team",
+      operation: "get",
+      data: [{
+        teamID: team1
+      },
+      {
+        teamID: team2
+      }]
+    };
+    return this.http.post(this.apiURL, body, this.httpOptions);
+  }
+
+
   UpdateUser(Email: string, Username: string, Password: string, Key: string): Observable<any> {
 
 
@@ -182,6 +199,8 @@ export class APIService {
     };
     return this.http.post(this.apiURL, body, this.httpOptions);
   }
+
+  
 
 }
 
