@@ -26,6 +26,9 @@ import { APIService } from './api.service';
 import { LocationsComponent } from './locations/locations.component';
 import { TournamentGroupsComponent } from './tournament-groups/tournament-groups.component';
 import { LeaguesComponent } from './leagues/leagues.component';
+import { StandingsCardComponent } from './standings-card/standings-card.component';
+import { StandingsTableComponent } from './standings-table/standings-table.component';
+import { StandingEventCardComponent } from './standing-event-card/standing-event-card.component';
 
 
 @NgModule({
@@ -47,6 +50,9 @@ import { LeaguesComponent } from './leagues/leagues.component';
     TournamentGroupsComponent,
     AddMemberDialog,
     LeaguesComponent,
+    StandingsCardComponent,
+    StandingsTableComponent,
+    StandingEventCardComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),

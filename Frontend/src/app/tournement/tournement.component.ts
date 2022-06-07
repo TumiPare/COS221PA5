@@ -14,7 +14,7 @@ export class TournementComponent implements OnInit {
   tournament: Tournament;
   tournamentName: string;
   tournamentID: number;
-  
+
   constructor(
     private route: ActivatedRoute,
     private api: APIService
@@ -24,23 +24,21 @@ export class TournementComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.api.getTournament(this.tournamentID).subscribe((res) => {
+      console.log(res);
+    });
   }
 
   setTournament(tournament: Tournament) {
     this.tournament = tournament;
 
-
     this.api.getTournament(this.tournamentID).subscribe((res) => {
       console.log(res);
-
-
-
       for (let i = 0; i < 8; i++) {
         let Team1 = res.data[0].tournament.rounds[0].matches[i].teamA.teamID;
         let Team2 = res.data[0].tournament.rounds[0].matches[i].teamB.teamID;
 
-
-        this.api.get2Teams(Team1, Team2).subscribe((res) => {                 //Get the teams
+        this.api.get2Teams(Team1, Team2).subscribe((res) => {  // Get the teams
           console.log(res);
 
           if (res.status == "success") {
@@ -63,18 +61,13 @@ export class TournementComponent implements OnInit {
           }
           else
             console.log("Something went wrong with getTeam");
-
         });
       }
-
-
       for (let i = 0; i < 4; i++) {
-
         let Team1 = res.data[0].tournament.rounds[1].matches[i].teamA.teamID;
         let Team2 = res.data[0].tournament.rounds[1].matches[i].teamB.teamID;
 
-
-        this.api.get2Teams(Team1, Team2).subscribe((res) => {                 //Get the teams
+        this.api.get2Teams(Team1, Team2).subscribe((res) => { // Get the teams
           console.log(res);
 
           if (res.status == "success") {
