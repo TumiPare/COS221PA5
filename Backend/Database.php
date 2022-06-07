@@ -85,7 +85,7 @@ class Database {
 
     /**
      * Returns the SQL error code for a specific statement
-     * 
+     *
      * @param $stmt A PDOStatement
      * @return integer|NULL Returns NULL id no error occurred
      */
@@ -99,7 +99,7 @@ class Database {
 
     /**
      * Register a new user/users to the the database
-     * 
+     *
      * @param $data Associative array with all the user objects
      * @return array Associative array with all the newly registered user info
      */
@@ -367,28 +367,53 @@ class Database {
     // Tournament FUNCTIONS
     // ======================================================================================
     // TODO
-    public function CreateTournament($affiliation_key = null, $season_key) {
-        // check for a affiliation
-        $query = "SELECT id FROM affiliations WHERE affiliation_key = ?;";
-        $affiliation_id = $this->select($query, [$affiliation_key]);
-
-        if ($affiliation_id == []) {
-            throw new ApiException(401, "invalid_affiliation", "The affiliation that you have specified does not exist.");
-        }
-        // check for a season add if not
-        $query = "SELECT id FROM seasons WHERE league_id = ?;";
-        $season_id = $this->select($query, [$affiliation_key]);
-
-        if ($affiliation_id == []) {
-            throw new ApiException(401, "invalid_affiliation", "The affiliation that you have specified does not exist.");
-        }
+    public function addTournament($season_id, $start, $end, $events) {
         // make tournament
-        $query = "INSERT INTO sub_seasons (sub_season_key,season_id,sub_season_type,start_date_time,end_date_time)" .
-            "(?,?,?,?,?)";
+	// TODO Check date time format.
+        $query = "INSERT INTO sub_seasons (season_id,sub_season_type,start_date_time,end_date_time)" .
+            "VALUES (?,'season-regular',?,?)";
+	$this->executeQuery($query, [$season_id, $start, $end]);
+	$tournamentID = $this->getLastGeneratedID();
+
+	// check that all the teams exist
+	foreach ($events as $event) {
+	    $query = "SELECT id FROM teams WHERE id = ?";
+	    $results = $this->select($query, [$event["teamA"]]);
+	    if ($results == []) {
+		throw new ApiException(200, "invalid_teamcode", "The team that you wanted to add does not exist in the database.");
+	    }
+	    $results = $this->select($query, [$event["teamB"]]);
+	    if ($results == []) {
+		throw new ApiException(200, "invalid_teamcode", "The team that you wanted to add does not exist in the database.");
+	    }
+	}
         // make events
-        // 		if no site make one
+	$query = "INSERT INTO events (publisher_id, event_status, duration, event_number, round_number) VALUES (2,'pre-event', '00:32:00', ?, ?)";
+	$roundCounters = array(0,0,0,0);
+	$counter = 0;
+	$breakpoint = 8;
+	$index = 0;
+	while ($roundCounters[3] != 2) {
+	    $roundCounters[$index]++;
+	    $counter++;
+	    if (!($roundCounters[$index] <= $breakpoint)) {
+		$breakpoint = $breakpoint/2;
+		$index++;
+	    }
+	    if ($breakpoint == 1) {
+		$index--;
+	    }
+	    $this->executeQuery($query, [$counter, $index+1]);
+	    $this->executeQuery(
+		"INSERT INTO events_sub_seasons (event_id, sub_season_id) VALUES (?,?)",
+		[$this->getLastGeneratedID(), $tournamentID]);
+	}
         // link teams to events
-        // link players to events
+
+	$query = "SELECT id FROM
+	(SELECT event_id FROM events_sub_seasons WHERE sub_season_id = ?) a,
+	(select id FROM events)b
+	Where a.event_id = b.id;";
     }
 
 
@@ -493,7 +518,7 @@ class Database {
 
     /**
      * Converts an array with objects to an array of values
-     * 
+     *
      * @param $query e.g. SELECT * FROM table WHERE column IN (<?>)
      * @param $data array of JSON objects
      * @return array
@@ -516,7 +541,7 @@ class Database {
 
     /**
      * Takes an array of values
-     * 
+     *
      * @param $query e.g. SELECT * FROM table WHERE column IN (<?>)
      * @param $data array of values
      * @return array
@@ -530,7 +555,7 @@ class Database {
 
     /**
      * Converts an array with objects to an array of values
-     * 
+     *
      * @param $data associative array of key values
      * @return array
      */
