@@ -235,15 +235,52 @@ class Database {
         $response = [];
 
         if ($data["scope"] == "lifetime") {
-            $query = "SELECT * FROM player_statistics WHERE player_id IN (<?>)";
+            
+            $query = "SELECT * FROM player_data WHERE playerID IN (<?>)";
             $result = $this->multiSelect($query, $data["data"]);
-            return $result;
+            $playerIds = [];
+
+            foreach ($result as $player) {
+                $playerStats = [];
+
+                foreach($player as $key => $value) {
+                    $playerStats[$key] = $value;
+                }
+
+                $playerStats["stats"] = [];
+                array_push($playerIds, $playerStats["playerID"]);
+                array_push($response, $playerStats);
+            }
+
+            $query = "SELECT * FROM player_offensive_stats WHERE playerID IN (<?>)";
+            $result = $this->multiSelectValues($query, $playerIds);
+
+            for ($i = 0; $i < count($response); $i++) {
+                $playerStats = array_slice($result[$i], 1, count($result[$i]) - 1);
+                $response[$i]["stats"]["offensive"] = $playerStats;
+            }
+
+            $query = "SELECT * FROM player_defensive_stats WHERE playerID IN (<?>)";
+            $result = $this->multiSelectValues($query, $playerIds);
+
+            for ($i = 0; $i < count($response); $i++) {
+                $playerStats = array_slice($result[$i], 1, count($result[$i]) - 1);
+                $response[$i]["stats"]["defensive"] = $playerStats;
+            }
+
+            $query = "SELECT * FROM player_foul_stats WHERE playerID IN (<?>)";
+            $result = $this->multiSelectValues($query, $playerIds);
+
+            for ($i = 0; $i < count($response); $i++) {
+                $playerStats = array_slice($result[$i], 1, count($result[$i]) - 1);
+                $response[$i]["stats"]["fouls"] = $playerStats;
+            }
+
+            return $response;
         } else {
             throw new ApiException(200, "invalid_scope", "Invalid player statistics scope.");
         }
 
-        $query = "SELECT * FROM player_data";
-        $response = $this->select($query);
         return $response;
     }
 
@@ -445,6 +482,20 @@ WHERE pe.event_id = e.id AND s.event_id = e.id AND s.sub_season_id = ?;";
         $query = str_replace("<?>", $commas, $query);
 
         return $this->executeQuery($query, $data);
+    }
+
+    /**
+     * Takes an array of values
+     * 
+     * @param $query e.g. SELECT * FROM table WHERE column IN (<?>)
+     * @param $data array of values
+     * @return array
+     */
+    private function multiSelectValues($query, $data) {
+        $commas = $this->createCommaString(count($data));
+        $query = str_replace("<?>", $commas, $query);
+
+        return $this->select($query, $data);
     }
 
     /**
