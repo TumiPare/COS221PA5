@@ -16,9 +16,9 @@ class Database {
     private function __construct() {
         $this->publisher = $GLOBALS["config"]["publisher"]["publisher_id"];
         $host = $GLOBALS["config"]["database"]["host"];
-		$user = $GLOBALS["config"]["database"]["user"];
-		$password = $GLOBALS["config"]["database"]["password"];
-		$name = $GLOBALS["config"]["database"]["name"];
+        $user = $GLOBALS["config"]["database"]["user"];
+        $password = $GLOBALS["config"]["database"]["password"];
+        $name = $GLOBALS["config"]["database"]["name"];
 
         try {
             $this->connection = new PDO("mysql:host=$host;dbname=$name", $user, $password);
@@ -33,8 +33,8 @@ class Database {
     }
 
     // ======================================================================================
-	// MAIN DATABASE FUNCTIONS
-	// ======================================================================================
+    // MAIN DATABASE FUNCTIONS
+    // ======================================================================================
 
     /** Runs a given SQL query (e.g. insert, update, etc.)
      * @param string $query SQL query
@@ -51,7 +51,6 @@ class Database {
             }
 
             !$stmt->execute($params);
-
         } catch (PDOException $e) {
             error_log($e->getMessage());
             throw new ApiException(500, "server_error", "Error while trying to execute a database query.");
@@ -86,7 +85,7 @@ class Database {
 
     /**
      * Returns the SQL error code for a specific statement
-     *
+     * 
      * @param $stmt A PDOStatement
      * @return integer|NULL Returns NULL id no error occurred
      */
@@ -100,7 +99,7 @@ class Database {
 
     /**
      * Register a new user/users to the the database
-     *
+     * 
      * @param $data Associative array with all the user objects
      * @return array Associative array with all the newly registered user info
      */
@@ -235,7 +234,6 @@ class Database {
         $response = [];
 
         if ($data["scope"] == "lifetime") {
-            
             $query = "SELECT * FROM player_data WHERE playerID IN (<?>)";
             $result = $this->multiSelect($query, $data["data"]);
             $playerIds = [];
@@ -243,7 +241,7 @@ class Database {
             foreach ($result as $player) {
                 $playerStats = [];
 
-                foreach($player as $key => $value) {
+                foreach ($player as $key => $value) {
                     $playerStats[$key] = $value;
                 }
 
@@ -281,6 +279,8 @@ class Database {
             throw new ApiException(200, "invalid_scope", "Invalid player statistics scope.");
         }
 
+        $query = "SELECT * FROM player_data";
+        $response = $this->select($query);
         return $response;
     }
 
@@ -292,8 +292,7 @@ class Database {
         return strToLower(implode(".", preg_split('/\s+/', $teamName)));
     }
 
-    function generateSiteKey($street, $city, $addrID)
-    {
+    function generateSiteKey($street, $city, $addrID) {
         return strToLower(preg_split('/\s+/', $street)[0] . ", $city ($addrID)");
     }
 
@@ -305,8 +304,7 @@ class Database {
             $teamKey = $this->generateTeamKey($teamName);
 
             $siteID = null;
-            if($team["homeSite"] != null)
-            {
+            if ($team["homeSite"] != null) {
                 //Add location and address
                 $locAddrIDs = $this->addAddress($team["homeSite"]);
 
@@ -338,17 +336,6 @@ class Database {
         return $response;
     }
 
-    function deleteTeam($data) {
-        $queries = [
-            "DELETE FROM display_names WHERE entity_id IN (<?>) AND entity_type='teams'",
-            "DELETE FROM teams_media WHERE team_id IN (<?>)",
-            "DELETE FROM teams WHERE `id` IN (<?>)"
-        ];
-        foreach($queries as $query) { $this->multiExecuteQuery($query, $data); }
-
-        return ["Teams deleted"];
-    }
-
     //Returns the id, team_key, and display_names(full_name) of ALL teams in the DB
     function getTeams() {
         // $query = "SELECT t.id, t.team_key, d.full_name FROM teams t, display_names d WHERE d.entity_type = 'teams' AND d.entity_id = t.id";
@@ -365,84 +352,110 @@ class Database {
         return $response;
     }
 
+    function deleteTeam($data) {
+        $queries = [
+            "DELETE FROM display_names WHERE entity_id IN (<?>) AND entity_type='teams'",
+            "DELETE FROM teams_media WHERE team_id IN (<?>)",
+            "DELETE FROM teams WHERE `id` IN (<?>)"
+        ];
+        foreach($queries as $query) { $this->multiExecuteQuery($query, $data); }
+
+        return ["Teams deleted"];
+    }
 
     // ======================================================================================
     // Tournament FUNCTIONS
     // ======================================================================================
     // TODO
-    public function CreateTourament($affiliation_key=null, $season_key) {
-	// check for a affiliation
-	$query = "SELECT id FROM affiliations WHERE affiliation_key = ?;";
-	$affiliation_id = $this->select($query, [$affiliation_key]);
+    public function CreateTournament($affiliation_key = null, $season_key) {
+        // check for a affiliation
+        $query = "SELECT id FROM affiliations WHERE affiliation_key = ?;";
+        $affiliation_id = $this->select($query, [$affiliation_key]);
 
         if ($affiliation_id == []) {
             throw new ApiException(401, "invalid_affiliation", "The affiliation that you have specified does not exist.");
         }
-	// check for a season add if not
-	$query = "SELECT id FROM seasons WHERE league_id = ?;";
-	$season_id = $this->select($query, [$affiliation_key]);
+        // check for a season add if not
+        $query = "SELECT id FROM seasons WHERE league_id = ?;";
+        $season_id = $this->select($query, [$affiliation_key]);
 
         if ($affiliation_id == []) {
             throw new ApiException(401, "invalid_affiliation", "The affiliation that you have specified does not exist.");
         }
-	// make tournament
-	$query = "INSERT INTO sub_seasons (sub_season_key,season_id,sub_season_type,start_date_time,end_date_time)" .
-	    "(?,?,?,?,?)";
-	// make events
-	// 		if no site make one
-	// link teams to events
-	// link players to events
+        // make tournament
+        $query = "INSERT INTO sub_seasons (sub_season_key,season_id,sub_season_type,start_date_time,end_date_time)" .
+            "(?,?,?,?,?)";
+        // make events
+        // 		if no site make one
+        // link teams to events
+        // link players to events
     }
 
 
     public function getTournament($tournamentID) {
-	#TODO Change teams to team
-	$query = "SELECT s.event_id, sub_season_id, event_number as match_number, round_number, participant_id as team_id, score FROM
-(SELECT * FROM events_sub_seasons) s,
-(SELECT events.id, events.event_number, events.round_number FROM events)e,
-(SELECT participants_events.event_id, participants_events.participant_id, participants_events.score FROM participants_events
-WHERE participants_events.participant_type = 'team')pe
-WHERE pe.event_id = e.id AND s.event_id = e.id AND s.sub_season_id = ?;";
-	$result = $this->select($query, [$tournamentID]);
-	if ($result == []) {
-	    throw new ApiException(401, "invalid_tournamentid", "The specified tournament does not have any data accociated wiht it.");
-	}
-	// the counters for the seperate rounds
-	$counters = array(0,0,0,0);
-	$matchpaircounter = 0;
-	$counters[0]++;
-	$team = "teamB";
-	$return["tournament"]["tournamentID"] = $tournamentID;
-	// adding all the data from the query
-	foreach ($result as $value) {
-	    if ($team == "teamB") {
-		$team = "teamA";
-	    } else {
-		$team == "teamB";
-	    }
+        #TODO Change teams to team
+        $query = "SELECT s.event_id, sub_season_id, event_number as match_number, round_number, participant_id as team_id, score FROM
+        (SELECT * FROM events_sub_seasons) s,
+        (SELECT events.id, events.event_number, events.round_number FROM events)e,
+        (SELECT participants_events.event_id, participants_events.participant_id, participants_events.score FROM participants_events
+        WHERE participants_events.participant_type = 'team')pe
+        WHERE pe.event_id = e.id AND s.event_id = e.id AND s.sub_season_id = ?;";
+        $result = $this->select($query, [$tournamentID]);
+        if ($result == []) {
+            throw new ApiException(401, "invalid_tournamentid", "The specified tournament does not have any data accociated wiht it.");
+        }
+        // the counters for the seperate rounds
+        $counters = array(0, 0, 0, 0);
+        $matchpaircounter = 0;
+        $counters[0]++;
+        $team = "teamB";
+        $return["tournament"]["tournamentID"] = $tournamentID;
+        // adding all the data from the query
+        foreach ($result as $value) {
+            if ($team == "teamB") {
+                $team = "teamA";
+            } else {
+                $team == "teamB";
+            }
 
-	    $roundNo = $value["round_number"]-1;
-	    $return["tournament"]["rounds"][$roundNo]["matches"][$counters[$roundNo]]["matchID"] = $value["event_id"];
-	    $return["tournament"]["rounds"][$roundNo]["roundNo"] = $value["round_number"];
-	    if ($matchpaircounter === 0) {
-		$return["tournament"]["rounds"][$roundNo]["matches"][$counters[$roundNo]]["teamA"]["teamID"] = $value["team_id"];
-		$return["tournament"]["rounds"][$roundNo]["matches"][$counters[$roundNo]]["teamA"]["points"] = $value["score"];
-		$matchpaircounter++;
-	    } else {
-		$return["tournament"]["rounds"][$roundNo]["matches"][$counters[$roundNo]]["teamB"]["teamID"] = $value["team_id"];
-		$return["tournament"]["rounds"][$value["round_number"]-1]["matches"][$counters[$value["round_number"]-1]]["teamB"]["points"] = $value["score"];
-		$matchpaircounter = 0;
-	    }
-	}
+            $roundNo = $value["round_number"] - 1;
+            $return["tournament"]["rounds"][$roundNo]["matches"][$counters[$roundNo]]["matchID"] = $value["event_id"];
+            $return["tournament"]["rounds"][$roundNo]["roundNo"] = $value["round_number"];
+            if ($matchpaircounter === 0) {
+                $return["tournament"]["rounds"][$roundNo]["matches"][$counters[$roundNo]]["teamA"]["teamID"] = $value["team_id"];
+                $return["tournament"]["rounds"][$roundNo]["matches"][$counters[$roundNo]]["teamA"]["points"] = $value["score"];
+                $matchpaircounter++;
+            } else {
+                $return["tournament"]["rounds"][$roundNo]["matches"][$counters[$roundNo]]["teamB"]["teamID"] = $value["team_id"];
+                $return["tournament"]["rounds"][$value["round_number"] - 1]["matches"][$counters[$value["round_number"] - 1]]["teamB"]["points"] = $value["score"];
+                $matchpaircounter = 0;
+            }
+        }
 
-	$query = "SELECT full_name FROM display_names WHERE entity_type = 'tournament' AND entity_id = ?;";
-	$result = $this->select($query, [$tournamentID]);
-	if ($result == []) {
-	    $return["tournament"]["tournamentName"] = "No Name";
-	} else {
-	    $return["tournament"]["tournamentName"] = $result["full_name"];
-	}
-	return $return;
+        $query = "SELECT full_name FROM display_names WHERE entity_type = 'tournament' AND entity_id = ?;";
+        $result = $this->select($query, [$tournamentID]);
+        if ($result == []) {
+            $return["tournament"]["tournamentName"] = "No Name";
+        } else {
+            $return["tournament"]["tournamentName"] = $result["full_name"];
+        }
+        return $return;
+    }
+    // LEAGUE FUNCTIONS
+    // ======================================================================================
+
+    function getLeagueData($data) {
+        $query = "SELECT id AS leagueID, affiliation_key as leagueKey FROM affiliations ORDER BY id";
+        $response = $this->multiSelect($query, $data);
+
+        $query = "SELECT id AS seasonID, start_date_time AS startDate, end_date_time AS endDate FROM seasons s WHERE s.league_id = ?";
+        for($i = 0; $i < count($response); $i++)
+        {
+            $seasons = $this->select($query, [$response[$i]["leagueID"]]);
+            $response[$i]["seasons"] = $seasons;
+        }
+
+        return $response;
     }
 
     // ======================================================================================
@@ -463,7 +476,7 @@ WHERE pe.event_id = e.id AND s.event_id = e.id AND s.sub_season_id = ?;";
 
     /**
      * Converts an array with objects to an array of values
-     *
+     * 
      * @param $query e.g. SELECT * FROM table WHERE column IN (<?>)
      * @param $data array of JSON objects
      * @return array
@@ -500,7 +513,7 @@ WHERE pe.event_id = e.id AND s.event_id = e.id AND s.sub_season_id = ?;";
 
     /**
      * Converts an array with objects to an array of values
-     *
+     * 
      * @param $data associative array of key values
      * @return array
      */
@@ -534,6 +547,6 @@ WHERE pe.event_id = e.id AND s.event_id = e.id AND s.sub_season_id = ?;";
         $addressStmt = $this->executeQuery($query, [$locationId, $addr["streetNo"], $addr["street"], $addr["postalCode"], $addr["country"]]);
         $addressId = $this->getLastGeneratedID();
 
-        return ["locationID"=>$locationId, "addressID"=>$addressId];
+        return ["locationID" => $locationId, "addressID" => $addressId];
     }
 }
