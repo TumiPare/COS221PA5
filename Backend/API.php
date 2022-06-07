@@ -147,6 +147,9 @@ class API {
             case "league":
                 $this->handleLeague();
                 break;
+            case "season":
+                $this->handleSeason();
+                break;
             default:
                 throw new ApiException(200, "invalid_type", "The specified type is not valid.");
                 break;
@@ -192,6 +195,13 @@ class API {
             case "get": $this->getTeam($this->request["data"]); break;
             case "getAll": $this->response = $this->database->getTeams(); break;
             case "delete": $this->deleteTeam($this->request["data"]); break;
+        }
+    }
+
+    private function handleSeason() {
+        $this->authorizeRequest();
+        switch($this->request["operation"]) {
+            case "get": $this->getSeason($this->request["data"]); break;
         }
     }
 
@@ -393,6 +403,19 @@ class API {
         }
 
         $this->response = $this->database->getLeagueData($this->request["data"]);
+    }
+
+    // ===================SEASONS===================
+
+    function getSeason($data)
+    {
+        $requiredSeasonInfo = ["seasonID"];
+        foreach($data as $season)
+        {
+            $this->validateRequiredFields($season, $requiredSeasonInfo);
+        }
+
+        $this->response = $this->database->getSeasonData($this->request["data"]);
     }
 
 }
