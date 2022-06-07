@@ -333,7 +333,7 @@ class Database {
     // Tournament FUNCTIONS
     // ======================================================================================
     // TODO
-    public function CreateTourament($affiliation_key=null, $season_key,) {
+    public function CreateTourament($affiliation_key=null, $season_key) {
 	// check for a affiliation
 	$query = "SELECT id FROM affiliations WHERE affiliation_key = ?;";
 	$affiliation_id = $this->select($query, [$affiliation_key]);
