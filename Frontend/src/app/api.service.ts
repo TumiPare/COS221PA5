@@ -200,6 +200,30 @@ export class APIService {
     return this.http.post(this.apiURL, body, this.httpOptions);
   }
 
+  getMatch(MatchID: number): Observable<any> {
+    let body = {
+      apiKey: this.apiKey,
+      type: "match",
+      operation: "get",
+      data: [{
+        matchID: MatchID
+      }]
+    };
+    return this.http.post(this.apiURL, body, this.httpOptions);
+  }
+
+  getTeam(TeamID: number): Observable<any> {
+    let body = {
+      apiKey: this.apiKey,
+      type: "team",
+      operation: "get",
+      data: [{
+        teamID: TeamID
+      }]
+    };
+    return this.http.post(this.apiURL, body, this.httpOptions);
+  }
+
   
 
 }

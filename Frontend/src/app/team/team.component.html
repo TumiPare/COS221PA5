@@ -3,12 +3,13 @@
     <div style="display: flex; width: 90%; justify-content: space-around;" class="">
         <p style="font-size: 50pt;">{{teamName}}</p>
         <div class="outline" style="width: 120px; height: 100px;">team_logo
+            <img src={{TeamLogo}} alt="Team logo">
         </div>
     </div>
     <p style="font-size: 30pt; width: 80%">Members</p>
     <div class="teamMembersCont">
-        <app-team-member *ngFor="let i of [0, 1, 2, 3, 4, 5, 6]" [memberID]="i"
-            [routerLink]="'/player/' + i + '/' + 'player_name'"></app-team-member>
+        <app-team-member *ngFor="let player of players" [player]="player"
+            [routerLink]="'/player/' + player.playerID + '/' + 'player.firstName'"></app-team-member>
         <button mat-raised-button (click)="addPlayer()">Add Player</button>
     </div>
 </div>

@@ -2,6 +2,7 @@ import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { APIService } from '../api.service';
+import { TeamMemberComponent } from '../team-member/team-member.component';
 
 @Component({
   selector: 'app-team',
@@ -11,16 +12,60 @@ import { APIService } from '../api.service';
 export class TeamComponent implements OnInit {
   teamName: string;
   teamID: number;
-
+  matchID: number;
+  TeamP: string;
+  players: Array<any>;
+  TeamLogo: string;
   constructor(
     private route: ActivatedRoute,
     public dialog: MatDialog,
+    private api: APIService
   ) {
     this.teamName = this.route.snapshot.paramMap.get('teamName');
-    this.teamID = Number(this.route.snapshot.paramMap.get('teamID'));
+    this.teamID = Number(this.route.snapshot.paramMap.get('teamID'));    // Add this later
+    // this.matchID = Number(this.route.snapshot.paramMap.get('matchID'));
+    // this.TeamP = Number(this.route.snapshot.paramMap.get('TeamP'));
+
+
+
   }
 
   ngOnInit(): void {
+    this.api.getMatch(this.matchID).subscribe((res) => {
+      console.log(res);
+
+
+      // let players = [{
+      //   playerID: 12930293,
+      //   firstName: "Peter",
+      //   lastName: "Parker",
+      //   image: "HFJWIwiocWOHNWJIWJwiubwjiwunW",
+      // }, {
+      //   playerID: 4,
+      //   firstName: "not ",
+      //   lastName: "Hulk",
+      //   image: "HFJWIwiocWOHNWJIWJwiubwjiwunW",
+      // }];
+
+      if (res.status == "success") {
+        if (this.TeamP == "A")
+          this.players = res.match.teamA.players;
+        else
+          this.players = res.match.teamB.players;
+      }
+      else
+        console.log("Something went wrong with get Match api");
+    });
+
+    this.api.getTeam(this.teamID).subscribe((res) => {
+      console.log(res);
+      
+      this.TeamLogo = res.teams[0].teamLogo;
+
+
+    });
+
+
   }
 
   addPlayer(): void {
@@ -39,12 +84,14 @@ export class TeamComponent implements OnInit {
   selector: 'add-team-member-dialog',
   templateUrl: 'add-team-member-dialog.html',
 })
-export class AddMemberDialog implements OnInit{
+export class AddMemberDialog implements OnInit {
   @ViewChild('playerName') name;
   @ViewChild('playerSurname') surname;
   @ViewChild('DOB') DOB;
   @ViewChild('csvInput') upload;
   playerPic: string;
+
+
 
   constructor(
     public dialogRef: MatDialogRef<AddMemberDialog>,
@@ -55,7 +102,6 @@ export class AddMemberDialog implements OnInit{
   }
 
   ngOnInit(): void {
-    // TEAM API HERE 
   }
 
   csvInputChange(fileInputEvent: any) {
