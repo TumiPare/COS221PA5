@@ -1,4 +1,7 @@
-<div fxLayout="column" fxLayoutAlign="center center" class="cardContainer outline sShadow">
+<!-- <div fxLayout="column" fxLayoutAlign="center center" class="cardContainer outline sShadow">
     <p>team name</p>
     <p style="font-style: italic;">team_logo</p>
+</div> -->
+<div *ngIf="teamInfo" class="outline teamPic" [style]="'background-image: url(data:image;base64,' + teamInfo.logo + ');'">
+    <p>{{teamInfo.name}}</p>
 </div>
