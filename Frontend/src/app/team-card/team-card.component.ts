@@ -15,7 +15,7 @@ export class TeamCardComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.api.getTeamInfo(this.teamID).subscribe((res) => {
+    this.api.getTeam(this.teamID).subscribe((res) => {
       console.log(res);
       this.teamInfo = res.data[0];
     });

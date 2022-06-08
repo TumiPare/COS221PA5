@@ -37,7 +37,7 @@ export class PlayerComponent implements OnInit {
   }> = [];
 
   constructor(private route: ActivatedRoute,
-    private api: APIService,private router: Router) {
+    private api: APIService, private router: Router) {
     this.playerName = this.route.snapshot.paramMap.get('playerName');
     this.playerID = Number(this.route.snapshot.paramMap.get('playerID'));
   }
@@ -54,27 +54,27 @@ export class PlayerComponent implements OnInit {
 
 
 
-          // thissy.offenseStats = result;
-        console.log( Object.keys(res.data[0].stats.offensive));
+        // thissy.offenseStats = result;
+        console.log(Object.keys(res.data[0].stats.offensive));
 
         // Replace this.player with this.player.stats.appropriateStat
-        Object.keys(res.data[0].stats.offensive).map(function (key,index) {
-          
+        Object.keys(res.data[0].stats.offensive).map(function (key, index) {
+
           let jan = Object.keys(res.data[0].stats.offensive);
           let san = Object.values(res.data[0].stats.offensive)
-          thissy.offenseStats.push({ statistic: jan[index] , value : san[index] as any});
+          thissy.offenseStats.push({ statistic: jan[index], value: san[index] as any });
         });
         console.log(thissy.offenseStats);
 
         Object.keys(res.data[0].stats.defensive).map(function (key, index) {
           let jan = Object.keys(res.data[0].stats.defensive);
           let san = Object.values(res.data[0].stats.defensive)
-          thissy.defenceStats.push({ statistic: jan[index] , value : san[index] as any});
+          thissy.defenceStats.push({ statistic: jan[index], value: san[index] as any });
         });
         Object.keys(res.data[0].stats.fouls).map(function (key, index) {
           let jan = Object.keys(res.data[0].stats.fouls);
           let san = Object.values(res.data[0].stats.fouls)
-          thissy.foulStats.push({ statistic: jan[index] , value : san[index] as any});
+          thissy.foulStats.push({ statistic: jan[index], value: san[index] as any });
         });
 
         // console.log(res.data[0].statistic);
@@ -86,8 +86,11 @@ export class PlayerComponent implements OnInit {
   }
 
   displayEdit1() {
-    console.log("hvered pver");
-    // if(event.)
+    console.log("bug")
+    if (document.getElementById('OffenceHover').style.display == "none")
+      document.getElementById('OffenceHover').style.display = "block";
+    else
+      document.getElementById('OffenceHover').style.display = "none";
   }
 
   displayEdit2() {
@@ -100,32 +103,28 @@ export class PlayerComponent implements OnInit {
     // if(event.)
   }
 
-  KillPlayer()
-  {
+  KillPlayer() {
     this.api.DeletePlayer(this.playerID).subscribe((res) => {
       if (res.status == "success") {
         console.log(res);
         alert("Player succesfully deleted");
         this.router.navigate([``]);
       }
-      else
-      {
+      else {
         alert("Delete failed");
       }
 
     });
   }
 
-  UpdateStats()
-  {
+  UpdateStats() {
     this.api.DeletePlayer(this.playerID).subscribe((res) => {
       if (res.status == "success") {
         console.log(res);
         alert("Player stats updated");
       }
-      else
-      {
-       alert(res.error.message);
+      else {
+        alert(res.error.message);
       }
 
     });
