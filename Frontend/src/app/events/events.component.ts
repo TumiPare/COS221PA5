@@ -13,20 +13,12 @@ import { UserService } from '../user.service';
   styleUrls: ['./events.component.css']
 })
 export class EventsComponent implements OnInit {
-  leagueName: string;
-  leagueID: number;
+  seasonID: number;
 
-  selectedSubSeason: number;
+  selectedSubSeason: any;// will be a season
+  subseasons: Array<any> = [];
   events: any;
-  tournements = [{
-    tournementName: "Clash of mandems",
-  }, {
-    tournementName: "Arabella vs Mitski",
-  }, {
-    tournementName: "Radloff's underlings vs World",
-  }, {
-    tournementName: "Me vs Radloff",
-  }];
+  tournements = [];
 
   constructor(
     private router: Router,
@@ -36,24 +28,28 @@ export class EventsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.leagueName = this.route.snapshot.paramMap.get('leagueName');
-    this.leagueID = Number(this.route.snapshot.paramMap.get('leagueID'));
+    this.seasonID = Number(this.route.snapshot.paramMap.get('seasonID'));
 
-    this.api.getSubSeasons(this.leagueID).subscribe((res) => {
-      console.log(res);
+    this.api.getSubSeasons(this.seasonID).subscribe((res) => {
+      if (res.status == "success") {
+        for (let season of res.data) {
+          for (let subSeason of season.subseasons) {
+            this.subseasons.push(subSeason);
+          }
+        }
+        console.log(this.subseasons);
+      }
     });
   }
 
-  selectSubSeason(selectedSubSeason: number) {
+  selectSubSeason(selectedSubSeason: any) {
     this.selectedSubSeason = selectedSubSeason;
-
-    alert("make request for subseasons");
-    // make request with selected subSeason
-
-    this.api.getTournaments(this.selectedSubSeason).subscribe((res) => {
+    this.api.getTournaments(this.selectedSubSeason.subseasonID).subscribe((res) => {
       console.log(res);
-
-
+      if (res.status == "success") {
+        this.tournements.push(res.data.tournament);
+        console.log(this.tournements);
+      }
     });
   }
 

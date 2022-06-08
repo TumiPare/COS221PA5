@@ -1,5 +1,12 @@
 <div fxFlex fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="40px" class="container">
-    <p style="padding-top: 4rem; font-size: 50pt;">Leagues</p>
-    <mat-card [routerLink]="'/league/4/PremierLeague'" >Premier League</mat-card>
-    <mat-card>Premier League 2</mat-card>
+    <p style="font-size: 40pt; padding-top: 3rem;">Leagues</p>
+    <div class="league" *ngFor="let league of leagues" fxFlex fxLayout="column" fxLayoutAlign="center center">
+        <mat-card>
+            {{league.leagueKey}}
+        </mat-card>
+        <p style="opacity: 50%; font-size: 20pt; padding-top: 1rem;">Select Season:</p>
+        <button mat-stroked-button *ngFor="let season of league.seasons" [routerLink]="'tournaments/' + season.seasonID">Duration: {{season.startDate}} -
+            {{season.endDate}}</button>
+    </div>
+
 </div>

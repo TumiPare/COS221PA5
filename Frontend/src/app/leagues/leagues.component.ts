@@ -15,7 +15,12 @@ export class LeaguesComponent implements OnInit {
 
   ngOnInit(): void {
     this.api.getLeagues().subscribe((res) => {
-      console.log(res);
+      if(res.status == "success") {
+        console.log(res);
+        this.leagues = res.data;
+      } else {
+        console.log(res);
+      }
     });
   }
 

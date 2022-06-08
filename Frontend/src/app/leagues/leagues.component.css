@@ -1,9 +1,18 @@
 mat-card {
     width: 80%;
-    height: 4rem;
+    height: 2.5rem;
     font-size: 30pt;
     padding-top: 2rem;
     text-align: center;
-    cursor: pointer;
+}
 
+.league {
+    margin-top: 2rem;
+    width: 100%;
+}
+
+button {
+    padding-left: 3rem;
+    padding-right: 3rem;
+    margin-top: 0.75rem;
 }

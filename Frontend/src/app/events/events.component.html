@@ -1,19 +1,19 @@
 <div fxFlex fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="40px" class="container">
-    <p style="padding-top: 4rem; font-size: 50pt;">{{leagueName}}</p>
+    <!-- <p style="padding-top: 4rem; font-size: 50pt;">{{leagueName}}</p> -->
 
     <mat-accordion>
         <!-- (opened)="panelOpenState = true" (closed)="panelOpenState = false" -->
         <mat-expansion-panel #topPanel>
             <mat-expansion-panel-header>
                 <mat-panel-title>
-                    {{selectedSubSeason ? selectedSubSeason : 'Select a Subseason'}}
+                    {{selectedSubSeason ? selectedSubSeason.subseasonKey : 'Select a Subseason'}}
                 </mat-panel-title>
                 <mat-panel-description>
                     Select a Subseason
                 </mat-panel-description>
             </mat-expansion-panel-header>
             <div fxFlex fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1rem">
-                <button *ngFor="let season of [1, 2, 3]" mat-stroked-button (click)="selectSubSeason(season);topPanel.close()" style="width: 80%;">subseason_name</button>
+                <button *ngFor="let subseason of subseasons" mat-stroked-button (click)="selectSubSeason(subseason);topPanel.close()" style="width: 80%;">{{subseason.subseasonKey}}</button>
             </div>
         </mat-expansion-panel>
     </mat-accordion>
@@ -21,7 +21,7 @@
     <div fxFlex fxLayout="column" fxLayoutAlign="center center" class="tourneyContainer outline lShadow"
         *ngFor="let tournement of tournements; index as i"
         [routerLink]="'/tournament/' + i + '/' + tournement.tournementName">
-        <p class="tourneyName">{{tournement.tournementName}}</p>
+        <p class="tourneyName">{{tournement.tournamentName}}</p>
         <div fxFlex fxLayout="row" fxLayoutGap="10px" class="tourneyParticipants">
             <app-team-card (click)="navigateToTeamPage(0, 'Fredric')" fxFlex="25%" [teamID]="i"></app-team-card>
             <app-team-card (click)="navigateToTeamPage(1, 'James')" fxFlex="25%" [teamID]="i"></app-team-card>
