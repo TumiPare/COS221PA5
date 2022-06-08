@@ -87,18 +87,6 @@ export class APIService {
     return this.http.post(this.apiURL, body, this.httpOptions);
   }
 
-  getTeamInfo(teamID: number): Observable<any> {
-    let body = {
-      apiKey: this.apiKey,
-      type: "team",
-      operation: "get",
-      data: [{
-        teamID: teamID
-      }]
-    };
-    return this.http.post(this.apiURL, body, this.httpOptions);
-  }
-
   editPlayer(playerID: number, name: string, surname: string, DOB: string, playerPic: string): Observable<any> {
     let body = {
       apiKey: this.apiKey,
@@ -259,6 +247,118 @@ export class APIService {
     };
     return this.http.post(this.apiURL, body, this.httpOptions);
   }
+
+  DeletePlayer(PlayerID: number): Observable<any> {
+    let body = {
+      apiKey: this.apiKey,
+      type: "player",
+      operation: "delete",
+      data: [{
+        playerID: PlayerID
+      }]
+    };
+    return this.http.post(this.apiURL, body, this.httpOptions);
+  }
+
+  UpdateStats(PlayerID: number,FirstName:string,LastName:string,DOOB:string,Image:string): Observable<any> {
+
+    interface ExampleObject {
+      [key: string]: any
+    }
+    let jan: ExampleObject = {};
+
+    jan.playerID = PlayerID;
+    jan.firstName = FirstName;
+    jan.lastName = LastName;
+    jan.DOB = DOOB;
+
+    if (Image != "") jan.image = Image;
+    let body = {
+      apiKey: this.apiKey,
+      type: "player",
+      operation: "seet",
+      data: [jan]
+    };
+    return this.http.post(this.apiURL, body, this.httpOptions);
+  }
+
+  AddPlayer(PlayerID: number,FirstName:string,LastName:string,Image:string,Gender:string,DOOB:string,PersonKey:string,
+    StreetNo:string,Street:string,City:string,PostalCode:number,Country:string): Observable<any> {
+    interface ExampleObject {
+      [key: string]: any
+    }
+    let jan: ExampleObject = {};
+
+    jan.playerID = PlayerID;
+    jan.firstName = FirstName;
+    jan.lastName = LastName;
+    if (Image != "") jan.image = Image;
+    jan.gender = Gender;
+    jan.DOB = DOOB;
+    jan.personKey = PersonKey;
+    jan.birthAddr = 
+    {
+      streetNo: StreetNo,
+      street: Street,
+      city: City,
+      postalCode:PostalCode,
+      country:Country
+    };
+
+    let body = {
+      apiKey: this.apiKey,
+      type: "player",
+      operation: "add",
+      data: [jan]
+    };
+    return this.http.post(this.apiURL, body, this.httpOptions);
+  }
+
+  GetAllTeams(PlayerID: number,): Observable<any> {
+    let body = {
+      apiKey: this.apiKey,
+      type: "team",
+    };
+    return this.http.post(this.apiURL, body, this.httpOptions);
+  }
+
+  DeleteTeam(TeamID: number,): Observable<any> {
+    let body = {
+      apiKey: this.apiKey,
+      type: "team",
+      operation: "delete",
+      data: [
+        {teamID: TeamID}
+      ]
+    };
+    return this.http.post(this.apiURL, body, this.httpOptions);
+  }
+
+  AddTeam(TeamID: number,TeamLogo:string,HomeSite:string,TeamName:string,PostalCode:number,Country:string): Observable<any> {
+    interface ExampleObject {
+      [key: string]: any
+    }
+    let jan: ExampleObject = {};
+
+    jan.teamName = TeamName;
+    if (TeamLogo != "") jan.teamLogo = TeamLogo;
+    if (HomeSite != "") jan.homeSite = HomeSite;
+  
+    let body = {
+      apiKey: this.apiKey,
+      type: "team",
+      operation: "add",
+      data: [jan]
+    };
+    return this.http.post(this.apiURL, body, this.httpOptions);
+  }
+
+
+
+
+
+
+
 
 
 

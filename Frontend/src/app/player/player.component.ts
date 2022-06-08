@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
+
 import { APIService } from '../api.service';
 
 
@@ -35,13 +37,14 @@ export class PlayerComponent implements OnInit {
   }> = [];
 
   constructor(private route: ActivatedRoute,
-    private api: APIService) {
+    private api: APIService,private router: Router) {
     this.playerName = this.route.snapshot.paramMap.get('playerName');
     this.playerID = Number(this.route.snapshot.paramMap.get('playerID'));
   }
 
   ngOnInit(): void {
     this.api.getPlayer(this.playerID).subscribe((res) => {
+      console.log(res);
       if (res.status == "success") {
         console.log(res.data[0]);
         this.player = res.data[0];
@@ -95,5 +98,36 @@ export class PlayerComponent implements OnInit {
   displayEdit3() {
     console.log("hvered pver");
     // if(event.)
+  }
+
+  KillPlayer()
+  {
+    this.api.DeletePlayer(this.playerID).subscribe((res) => {
+      if (res.status == "success") {
+        console.log(res);
+        alert("Player succesfully deleted");
+        this.router.navigate([``]);
+      }
+      else
+      {
+        alert("Delete failed");
+      }
+
+    });
+  }
+
+  UpdateStats()
+  {
+    this.api.DeletePlayer(this.playerID).subscribe((res) => {
+      if (res.status == "success") {
+        console.log(res);
+        alert("Player stats updated");
+      }
+      else
+      {
+       alert(res.error.message);
+      }
+
+    });
   }
 }
