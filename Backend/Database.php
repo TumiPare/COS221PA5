@@ -620,10 +620,9 @@ class Database {
         #TODO Change teams to team
         $query = "SELECT s.event_id, sub_season_id, event_number as match_number, round_number, participant_id as team_id, score FROM
         (SELECT * FROM events_sub_seasons) s,
-        (SELECT events.id, events.event_number, events.round_number FROM events)e,
-        (SELECT participants_events.event_id, participants_events.participant_id, participants_events.score FROM participants_events
+        (SELECT events.id, events.event_number, events.round_number FROM events)e LEFT JOIN (SELECT participants_events.event_id, participants_events.participant_id, participants_events.score FROM participants_events
         WHERE participants_events.participant_type = 'team')pe
-        WHERE pe.event_id = e.id AND s.event_id = e.id AND s.sub_season_id = ?;";
+        ON pe.event_id = e.id WHERE s.event_id = e.id AND s.sub_season_id = ?;";
         $result = $this->select($query, [$tournamentID]);
         if ($result == []) {
             throw new ApiException(401, "invalid_tournamentid", "The specified tournament does not have any data accociated wiht it.");
