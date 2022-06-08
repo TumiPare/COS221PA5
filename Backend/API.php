@@ -171,6 +171,8 @@ class API {
             $this->response = $this->database->getPlayers($this->request);
         } else if ($this->request["operation"] == "add") {
             $this->addPlayers($this->request["data"]);
+        } else if ($this->request["operation"] == "delete") {
+            $this->deletePlayers($this->request["data"]);
         } else {
             throw new ApiException(200, "invalid_operation", "Invalid operation, only set, get and add is allowed.");
         }
@@ -258,6 +260,17 @@ class API {
 
         $this->database->setPlayers($data);
     }
+
+    function deletePlayers($data) {
+        $requiredPersonInfo = ["playerID"];
+
+        foreach ($data as $object) {
+            $this->validateRequiredFields($object, $requiredPersonInfo);
+        }
+
+        $this->database->deletePlayer($data);
+    }
+
 
     // ===================USERS===================
     function addUser($data) {
