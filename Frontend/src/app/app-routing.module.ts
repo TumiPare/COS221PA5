@@ -8,6 +8,7 @@ import { TeamComponent } from './team/team.component';
 import { TournementComponent } from './tournement/tournement.component';
 import { ManageComponent } from './manage/manage.component';
 import { LeaguesComponent } from './leagues/leagues.component';
+import { StatsFormsComponent } from './stats-forms/stats-forms.component'
 
 const routes: Routes = [
   { path: '', component: LeaguesComponent },
@@ -17,7 +18,8 @@ const routes: Routes = [
   { path: 'tournament/:tournementID/:tournementName', component: TournementComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  { path: 'manage', component: ManageComponent }
+  { path: 'manage', component: ManageComponent },
+  { path: 'stats-forms', component: StatsFormsComponent }
 ];
 
 @NgModule({
