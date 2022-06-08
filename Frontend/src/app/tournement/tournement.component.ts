@@ -35,6 +35,8 @@ export class TournementComponent implements OnInit {
         let Team1 = res.data.tournament.rounds[0].matches[i].teamA.teamID;
         let Team2 = res.data.tournament.rounds[0].matches[i].teamB.teamID;
 
+        
+
         console.log(Team1);
         console.log(Team2); 
         this.api.get2Teams(Team1, Team2).subscribe((req) => {  // Get the teams
@@ -47,16 +49,16 @@ export class TournementComponent implements OnInit {
             Team2 = req.data[1].name;
             let Team2pic = req.data[1].teamLogo;
 
-            this.tournament.rounds[i].teamA = Team1;
-            this.tournament.rounds[i].picA = Team1pic;
+            this.tournament.rounds[0].matches[i].teamA = Team1;
+            this.tournament.rounds[0].matches[i].picA = Team1pic;
 
-            this.tournament.rounds[i].scoreA = res.data.rounds[0].matches[i].teamA.points;
+            this.tournament.rounds[0].matches[i].scoreA = res.data.tournament.rounds[0].matches[i].teamA.points;
 
 
-            this.tournament.rounds[i].teamB = Team2;
-            this.tournament.rounds[i].picB = Team2pic;
+            this.tournament.rounds[0].matches[i].teamB = Team2;
+            this.tournament.rounds[0].matches[i].picB = Team2pic;
 
-            this.tournament.rounds[i].scoreB = res.data.rounds[0].matches[i].teamB.points;
+            this.tournament.rounds[0].matches[i].scoreB = res.data.tournament.rounds[0].matches[i].teamB.points;
           }
           else
             console.log("Something went wrong with getTeam");
@@ -84,13 +86,13 @@ export class TournementComponent implements OnInit {
             this.tournament.quarterFinals[i].teamA = Team1;
             this.tournament.quarterFinals[i].picA = Team1pic;
 
-            this.tournament.quarterFinals[i].scoreA = res.data.rounds[1].matches[i].teamA.points;
+            this.tournament.quarterFinals[i].scoreA = res.data.tournament.rounds[1].matches[i].teamA.points;
 
 
             this.tournament.quarterFinals[i].teamB = Team2;
             this.tournament.quarterFinals[i].picB = Team2pic;
 
-            this.tournament.quarterFinals[i].scoreB = res.data.rounds[1].matches[i].teamB.points;
+            this.tournament.quarterFinals[i].scoreB = res.data.tournament.rounds[1].matches[i].teamB.points;
           }
           else
             console.log("Something went wrong with getTeam");
@@ -118,13 +120,13 @@ export class TournementComponent implements OnInit {
             this.tournament.semiFinals[i].teamA = Team1;
             this.tournament.semiFinals[i].picA = Team1pic;
 
-            this.tournament.semiFinals[i].scoreA = res.data.rounds[2].matches[i].teamA.points;
+            this.tournament.semiFinals[i].scoreA = res.data.tournament.rounds[2].matches[i].teamA.points;
 
 
             this.tournament.semiFinals[i].teamB = Team2;
             this.tournament.semiFinals[i].picB = Team2pic;
 
-            this.tournament.semiFinals[i].scoreB = res.data.rounds[2].matches[i].teamB.points;
+            this.tournament.semiFinals[i].scoreB = res.data.tournament.rounds[2].matches[i].teamB.points;
           }
           else
             console.log("Something went wrong with getTeam");
@@ -153,13 +155,13 @@ export class TournementComponent implements OnInit {
             this.tournament.final.teamA = Team1;
             this.tournament.final.picA = Team1pic;
 
-            this.tournament.final.scoreA = res.data.rounds[3].matches[0].teamA.points
+            this.tournament.final.scoreA = res.data.tournament.rounds[3].matches[0].teamA.points
 
 
             this.tournament.final.teamB = Team2;
             this.tournament.final.picB = Team2pic;
 
-            this.tournament.final.scoreB = res.data.rounds[3].matches[0].teamB.points;
+            this.tournament.final.scoreB = res.data.tournament.rounds[3].matches[0].teamB.points;
           }
           else
             console.log("Something went wrong with getTeam");
