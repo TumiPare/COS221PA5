@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { APIService } from '../api.service';
 
 @Component({
   selector: 'app-team-card',
@@ -7,10 +8,17 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class TeamCardComponent implements OnInit {
   @Input('teamID') teamID: number;
+  teamInfo: any;
 
-  constructor() { }
+  constructor(
+    private api: APIService,
+  ) { }
 
   ngOnInit(): void {
+    this.api.getTeamInfo(this.teamID).subscribe((res) => {
+      console.log(res);
+      this.teamInfo = res.data[0];
+    });
   }
 
 }

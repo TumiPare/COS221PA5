@@ -18,15 +18,14 @@
         </mat-expansion-panel>
     </mat-accordion>
 
+    <p style="opacity: 70%; font-size: 30pt">Tournaments:</p>
     <div fxFlex fxLayout="column" fxLayoutAlign="center center" class="tourneyContainer outline lShadow"
         *ngFor="let tournement of tournements; index as i"
         [routerLink]="'/tournament/' + i + '/' + tournement.tournementName">
         <p class="tourneyName">{{tournement.tournamentName}}</p>
-        <div fxFlex fxLayout="row" fxLayoutGap="10px" class="tourneyParticipants">
-            <app-team-card (click)="navigateToTeamPage(0, 'Fredric')" fxFlex="25%" [teamID]="i"></app-team-card>
-            <app-team-card (click)="navigateToTeamPage(1, 'James')" fxFlex="25%" [teamID]="i"></app-team-card>
-            <app-team-card (click)="navigateToTeamPage(2, 'Joshua')" fxFlex="25%" [teamID]="i"></app-team-card>
-            <app-team-card (click)="navigateToTeamPage(3, 'BuffleMan')" fxFlex="25%" [teamID]="i"></app-team-card>
+        <p style="opacity: 50%;">Participants:</p>
+        <div fxFlex fxLayout="row wrap" fxLayoutGap="10px" class="tourneyParticipants" fxLayoutGap="0.65rem">
+            <app-team-card *ngFor="let i of [50, 51, 52, 53, 54, 55, 56, 57, 58]" [teamID]="i"></app-team-card>
         </div>
     </div>
     <button mat-raised-button color="primary" id="addTourneyBtn" (click)="addTourney()" style="width: 80%;">Add
