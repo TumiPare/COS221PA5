@@ -355,6 +355,7 @@ class API {
 
         $this->response = $this->database->addTeams($this->request["data"]);
     }
+
     function getTeam($data) {
         $requiredTeamInfo = ["teamID"];
         foreach ($data as $team) {
