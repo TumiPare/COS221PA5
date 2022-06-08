@@ -5,6 +5,7 @@ export class Event{
     scoreB: number;
     picA: string;
     picB: string;
+    date: string;
     eventNumber: number;
     constructor(teamA: string, teamB: string, scoreA: number, scoreB: number, eventNumber: number, picA: string, picB: string){
         this.teamA = teamA;

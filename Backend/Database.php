@@ -292,7 +292,7 @@ class Database {
                 continue;
             }
 
-            $query = "UPDATE display_names SET full_name = ?, first_name = ?, last_name = ? 
+            $query = "UPDATE display_names SET full_name = ?, first_name = ?, last_name = ?
                         WHERE entity_type = 'persons' AND entity_id = ?";
             $fullName = $player["firstName"] . " " . $player["lastName"];
             $nameStmt = $this->executeQuery($query, [$fullName, $player["firstName"], $player["lastName"], $player["playerID"]]);
@@ -329,6 +329,48 @@ class Database {
         foreach($queries as $query) { $this->multiExecuteQuery($query, $data); }
 
         return ["Teams deleted"];
+    }
+
+    // ======================================================================================
+    // STATS FUNCTIONS
+    // ======================================================================================
+
+    function setBlankPlayerStats($playerId, $matchId) {
+        $query = "INSERT INTO waterpolo_offensive_stats () VALUES ()";
+        $offenseId = $this->getLastGeneratedID();
+        $query = "INSERT INTO waterpolo_defensive_stats () VALUES ()";
+        $defenseId = $this->getLastGeneratedID();
+        $query = "INSERT INTO waterpolo_foul_stats () VALUES ()";
+        $foulId = $this->getLastGeneratedID();
+
+        $query = "SELECT team_id FROM person_event_metadata
+                    WHERE person_id = ? AND event_id = ?";
+        $result = $this->select($query, [$playerId, $matchId]);
+        $teamId = $result[0]["team_id"];
+
+        $query = "INSERT INTO stats (stat_repository_type, stat_repository_id,
+                    stat_holder_type, stat_holder_id,
+                    stat_coverage_type, stat_coverage_id,
+                    stat_membership_type, stat_membership_id, context) VALUES (
+                    waterpolo_offensive_stats, ?, persons, ?, events, ?,
+                    teams, ?, `event`)";
+        $offenseStmt = $this->executeQuery($query, [$offenseId, $playerId, $matchId, $teamId]);
+
+        $query = "INSERT INTO stats (stat_repository_type, stat_repository_id,
+                    stat_holder_type, stat_holder_id,
+                    stat_coverage_type, stat_coverage_id,
+                    stat_membership_type, stat_membership_id, context) VALUES (
+                    waterpolo_defensive_stats, ?, persons, ?, events, ?,
+                    teams, ?, `event`)";
+        $defenseStmt = $this->executeQuery($query, [$defenseId, $playerId, $matchId, $teamId]);
+
+        $query = "INSERT INTO stats (stat_repository_type, stat_repository_id,
+                    stat_holder_type, stat_holder_id,
+                    stat_coverage_type, stat_coverage_id,
+                    stat_membership_type, stat_membership_id, context) VALUES (
+                    waterpolo_foul_stats, ?, persons, ?, events, ?,
+                    teams, ?, `event`)";
+        $foulStmt = $this->executeQuery($query, [$foulId, $playerId, $matchId, $teamId]);
     }
 
     // ======================================================================================
@@ -417,9 +459,9 @@ class Database {
     public function addTournament($season_id, $start, $end, $events) {
         // make tournament
 	// TODO Check date time format.
-        $query = "INSERT INTO sub_seasons (season_id,sub_season_type,start_date_time,end_date_time)" .
-            "VALUES (?,'season-regular',?,?)";
-	$this->executeQuery($query, [$season_id, $start, $end]);
+        $query = "INSERT INTO sub_seasons (sub_season_key,season_id,sub_season_type,start_date_time,end_date_time)" .
+            "VALUES (?, ?,'season-regular',?,?)";
+	$this->executeQuery($query, [$this->generateAPIKey(), $season_id, $start, $end]);
 	$tournamentID = $this->getLastGeneratedID();
 
 	// check that all the teams exist
@@ -435,7 +477,7 @@ class Database {
 	    }
 	}
         // make events
-	$query = "INSERT INTO events (publisher_id, event_status, duration, event_number, round_number) VALUES (2,'pre-event', '00:32:00', ?, ?)";
+	$query = "INSERT INTO events (event_key, publisher_id, event_status, duration, event_number, round_number) VALUES (?, 2,'pre-event', '00:32:00', ?, ?)";
 	$roundCounters = array(0,0,0,0);
 	$counter = 0;
 	$breakpoint = 8;
@@ -446,21 +488,37 @@ class Database {
 	    if (!($roundCounters[$index] <= $breakpoint)) {
 		$breakpoint = $breakpoint/2;
 		$index++;
+		$roundCounters[$index]++;
 	    }
-	    if ($breakpoint == 1) {
+	    if ($breakpoint == 0) {
 		$index--;
 	    }
-	    $this->executeQuery($query, [$counter, $index+1]);
+	    $this->executeQuery($query, [$this->generateAPIKey(), $counter, $index+1]);
 	    $this->executeQuery(
 		"INSERT INTO events_sub_seasons (event_id, sub_season_id) VALUES (?,?)",
 		[$this->getLastGeneratedID(), $tournamentID]);
 	}
+
         // link teams to events
 
-	$query = "SELECT id FROM
+	$query = "SELECT id, event_number FROM
 	(SELECT event_id FROM events_sub_seasons WHERE sub_season_id = ?) a,
-	(select id FROM events)b
+	(SELECT id, event_number FROM events WHERE round_number = 1)b
 	Where a.event_id = b.id;";
+
+	$results = $this->select($query, [$tournamentID]);
+	$counter = 0;
+	foreach ($results as $result) {
+	    $this->executeQuery(
+		"INSERT INTO participants_events (participant_type, participant_id, event_id) VALUES ('team',?,?)",
+		[$events[$counter]["teamA"], $result["id"]]
+		);
+	    $this->executeQuery(
+		"INSERT INTO participants_events (participant_type, participant_id, event_id) VALUES ('team',?,?)",
+		[$events[$counter]["teamB"], $result["id"]]
+		);
+	    $counter++;
+	}
     }
 
 
@@ -479,7 +537,6 @@ class Database {
         // the counters for the seperate rounds
         $counters = array(0, 0, 0, 0);
         $matchpaircounter = 0;
-        $counters[0]++;
         $team = "teamB";
         $return["tournament"]["tournamentID"] = $tournamentID;
         // adding all the data from the query
@@ -501,6 +558,7 @@ class Database {
                 $return["tournament"]["rounds"][$roundNo]["matches"][$counters[$roundNo]]["teamB"]["teamID"] = $value["team_id"];
                 $return["tournament"]["rounds"][$value["round_number"] - 1]["matches"][$counters[$value["round_number"] - 1]]["teamB"]["points"] = $value["score"];
                 $matchpaircounter = 0;
+		$counters[$roundNo]++;
             }
         }
 

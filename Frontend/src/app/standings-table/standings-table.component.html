@@ -1,44 +1,35 @@
-<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-    <ng-container matColumnDef="pos">
-        <th mat-header-cell *matHeaderCellDef>Pos</th>
-        <td mat-cell *matCellDef="let element"> {{element.pos}} </td>
-    </ng-container>
-    <ng-container matColumnDef="team">
-        <th mat-header-cell *matHeaderCellDef>Team</th>
-        <td mat-cell *matCellDef="let element"> {{element.team}} </td>
-    </ng-container>
-    <ng-container matColumnDef="Pld">
-        <th mat-header-cell *matHeaderCellDef>Pld</th>
-        <td mat-cell *matCellDef="let element"> {{element.Pld}} </td>
-    </ng-container>
-    <ng-container matColumnDef="W">
-        <th mat-header-cell *matHeaderCellDef>W</th>
-        <td mat-cell *matCellDef="let element"> {{element.W}} </td>
-    </ng-container>
-    <ng-container matColumnDef="D">
-        <th mat-header-cell *matHeaderCellDef>D</th>
-        <td mat-cell *matCellDef="let element"> {{element.D}} </td>
-    </ng-container>
-    <ng-container matColumnDef="L">
-        <th mat-header-cell *matHeaderCellDef>L</th>
-        <td mat-cell *matCellDef="let element"> {{element.L}} </td>
-    </ng-container>
-    <ng-container matColumnDef="GF">
-        <th mat-header-cell *matHeaderCellDef>GF</th>
-        <td mat-cell *matCellDef="let element"> {{element.GF}} </td>
-    </ng-container>
-    <ng-container matColumnDef="GA">
-        <th mat-header-cell *matHeaderCellDef>GA</th>
-        <td mat-cell *matCellDef="let element"> {{element.GA}} </td>
-    </ng-container>
-    <ng-container matColumnDef="GD">
-        <th mat-header-cell *matHeaderCellDef>GD</th>
-        <td mat-cell *matCellDef="let element"> {{element.GD}} </td>
-    </ng-container>
-    <ng-container matColumnDef="Pts">
-        <th mat-header-cell *matHeaderCellDef>Pts</th>
-        <td mat-cell *matCellDef="let element"> {{element.Pts}} </td>
-    </ng-container>
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-</table>
+<div class="container mt-5">
+
+    <h2>Group A</h2>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Pos</th>
+                <th>Team</th>
+                <th>Pld</th>
+                <th>W</th>
+                <th>D</th>
+                <th>L</th>
+                <th>GF</th>
+                <th>GA</th>
+                <th>GD</th>
+                <th>Pts</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let stand of standings">
+                <td>{{ stand.pos }}</td>
+                <td>{{ stand.team }}</td>
+                <td>{{ stand.Pld }}</td>
+                <td>{{ stand.W }}</td>
+                <td>{{ stand.D }}</td>
+                <td>{{ stand.L }}</td>
+                <td>{{ stand.GF }}</td>
+                <td>{{ stand.GA }}</td>
+                <td>{{ stand.GD }}</td>
+                <td>{{ stand.Pts }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

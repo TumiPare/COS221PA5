@@ -29,6 +29,8 @@ import { LeaguesComponent } from './leagues/leagues.component';
 import { StandingsCardComponent } from './standings-card/standings-card.component';
 import { StandingsTableComponent } from './standings-table/standings-table.component';
 import { StandingEventCardComponent } from './standing-event-card/standing-event-card.component';
+import { SiteComponent } from './site/site.component';
+import { SiteCardComponent } from './site-card/site-card.component';
 
 
 @NgModule({
@@ -53,6 +55,8 @@ import { StandingEventCardComponent } from './standing-event-card/standing-event
     StandingsCardComponent,
     StandingsTableComponent,
     StandingEventCardComponent,
+    SiteComponent,
+    SiteCardComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),

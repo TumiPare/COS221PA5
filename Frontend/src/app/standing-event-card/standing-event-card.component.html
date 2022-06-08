@@ -1,4 +1,4 @@
-<div id="border">
+<!-- <div id="border">
     <p>DATE</p>
     <div class="card">
         <div id="team1">
@@ -12,6 +12,23 @@
         <div id="team2">
             <img src="assets/images/KOR.png" alt="country2Image" width="50" height="25">
             <p>S Korea</p>
+        </div>
+    </div>
+</div> -->
+<div id="border">
+    <p>{{event.date}}</p>
+    <div class="card">
+        <div id="team1">
+            <img src="{{event.picA}}" alt="country1Image" width="50" height="25">
+            <p>{{event.teamA}}</p>
+        </div>
+        <div id="center">
+            <p>2-1</p>
+            <p>Match: {{event.eventNumber}}</p>
+        </div>
+        <div id="team2">
+            <img src="{{event.picB}}" alt="country2Image" width="50" height="25">
+            <p>{{event.teamB}}</p>
         </div>
     </div>
 </div>
