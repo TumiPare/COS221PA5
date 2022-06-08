@@ -5,7 +5,7 @@ export class Site{
   street: string;
   city: string;
   postalCode: string;
-  country: stirng;
+  country: string;
   countryCode: string;
 }
 @Component({
