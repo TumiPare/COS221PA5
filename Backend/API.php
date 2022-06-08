@@ -153,6 +153,8 @@ class API {
                 break;
             case "stats":
                 $this->handleStats();
+            case "eventSites":
+                $this->handleEventSites();
                 break;
             default:
                 throw new ApiException(200, "invalid_type", "The specified type is not valid.");
@@ -221,6 +223,14 @@ class API {
         $this->authorizeRequest();
         switch($this->request["operation"]) {
             case "get": $this->getSeason($this->request["data"]); break;
+        }
+    }
+
+    private function handleEventSites() {
+        $this->authorizeRequest();
+        switch($this->request["operation"]) {
+            case "getAll": $this->response = $this->database->getAllEventSites($this->request["data"]); break;
+            case "set": $this->setEventSites($this->request["data"]); break;
         }
     }
 
@@ -454,6 +464,20 @@ class API {
         $this->response = $this->database->getSeasonData($this->request["data"]);
     }
 
+    // ===================EVENT SITES===================
+
+    function setEventSites($data)
+    {
+        $requiredEventSiteInfo = ["siteID", "address"];
+        $optionalEventSiteInfo = ["streetNo", "street", "postalCode", "city", "country", "countryCode"];
+        foreach($data as $eventSite)
+        {
+            $this->validateRequiredFields($eventSite, $requiredEventSiteInfo);
+            $this->validateRequiredFields($eventSite["address"], $optionalEventSiteInfo);
+        }
+
+        $this->response = $this->database->setEventSites($this->request["data"]);
+    }
 }
 
 // ======================================================================================

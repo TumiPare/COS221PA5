@@ -688,6 +688,77 @@ class Database {
     // EVENT FUNCTIONS
     // ======================================================================================
 
+    // ======================================================================================
+    // EVENT SITE FUNCTIONS
+    // ======================================================================================
+
+    function getAllEventSites()
+    {
+        // ["siteKey", "streetNo", "street", "postalCode", "city", "country", "countryCode"];
+        $query = "SELECT eventID, siteID, siteKey FROM event_sites";
+        $response = $this->select($query);
+
+        $query = "SELECT streetNo, street, postalCode, city, country, countryCode FROM event_sites WHERE eventID = ?";
+        for($i = 0; $i < count($response); $i++)
+        {
+            $response[$i]["address"] = $this->select($query, [$response[$i]["eventID"]])[0];
+        }
+
+        return $response;
+    }
+
+    function setEventSites($data)
+    {
+        foreach($data as $eventSite)
+        {
+            $siteID = $eventSite["siteID"];
+
+            //Get locationID
+            $query = "SELECT location_id FROM sites WHERE id = ?";
+            $locationID = $this->select($query, [$siteID])[0]["location_id"];
+
+            //Get addressID
+            $query = "SELECT `id` FROM addresses WHERE id=?";
+            $addressID = $this->select($query, [$locationID])[0]["id"];
+
+            //Create new address and location
+            $addrLocIDs = $this->addAddress($eventSite["address"]);
+
+            //Delete address and location
+            $query = "DELETE FROM locations WHERE `id`=?";
+            $this->executeQuery($query, [$locationID]);
+            $query = "DELETE FROM addresses WHERE `id`=?";
+            $this->executeQuery($query, [$addressID]);
+
+            //Update site
+            $query = "UPDATE sites SET location_id=?, site_key=? WHERE `id`=?";
+            $siteKey = $this->generateSiteKey($eventSite["address"]["street"], $eventSite["address"]["city"], $addrLocIDs["locationID"]);
+            $this->executeQuery($query, [$addrLocIDs["locationID"], $siteKey, $siteID]);
+
+            ///-------------
+
+            // //Update address
+            // $query = "UPDATE addresses SET street_number=?, street=?, postal_code=?, country=? WHERE id = ?";
+            // $stmtAddr = $this->executeQuery($query, [$eventSite["streetNo"], $eventSite["street"], $eventSite["postalCode"], $eventSite["country"], $addressID]);
+            // return [$stmtAddr];
+            
+            // //Update location
+            // $query = "UPDATE location SET city=?, country=?, country_code=? WHERE id=?;";
+            // $this->executeQuery($query, [$eventSite["city"], $eventSite["country"], $eventSite["countryCode"], $locationID]);
+
+            // //Get site key data again
+            // $query = "SELECT a.street, l.city FROM locations l, addresses a WHERE a.location_id = l.id AND l.id=?";
+            // $locationData = $this->select($query, [$locationID])[0];
+            
+            // //Update sites
+            // $query = "UPDATE sites SET site_key=?, publisher_id=2 WHERE id = ?";
+            // $siteKey = $this->generateSiteKey($locationData["street"], $locationData["city"], $addressID);
+            // return [$siteKey];
+            // $this->executeQuery($query, [$siteKey, $siteID]);
+        }
+        return ["tables updated"];
+    }
+
     //GUSTAV MIGHT BE IMPLEMENTING THIS SO JUST GONNA LEAVE IT HERE FOR NOW
     // function addEvent($data) {
     //     $eventKey = $data["eventKey"];
