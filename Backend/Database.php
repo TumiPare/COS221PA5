@@ -352,7 +352,7 @@ class Database {
                     stat_holder_type, stat_holder_id,
                     stat_coverage_type, stat_coverage_id,
                     stat_membership_type, stat_membership_id, context) VALUES (
-                    waterpolo_offensive_stats, ?, persons, ?, events, ?,
+                    'waterpolo_offensive_stats', ?, persons, ?, events, ?,
                     teams, ?, `event`)";
         $offenseStmt = $this->executeQuery($query, [$offenseId, $playerId, $matchId, $teamId]);
 
@@ -360,7 +360,7 @@ class Database {
                     stat_holder_type, stat_holder_id,
                     stat_coverage_type, stat_coverage_id,
                     stat_membership_type, stat_membership_id, context) VALUES (
-                    waterpolo_defensive_stats, ?, persons, ?, events, ?,
+                    'waterpolo_defensive_stats', ?, persons, ?, events, ?,
                     teams, ?, `event`)";
         $defenseStmt = $this->executeQuery($query, [$defenseId, $playerId, $matchId, $teamId]);
 
@@ -368,7 +368,7 @@ class Database {
                     stat_holder_type, stat_holder_id,
                     stat_coverage_type, stat_coverage_id,
                     stat_membership_type, stat_membership_id, context) VALUES (
-                    waterpolo_foul_stats, ?, persons, ?, events, ?,
+                    'waterpolo_foul_stats', ?, persons, ?, events, ?,
                     teams, ?, `event`)";
         $foulStmt = $this->executeQuery($query, [$foulId, $playerId, $matchId, $teamId]);
     }
