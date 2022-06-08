@@ -31,6 +31,7 @@ import { StandingsTableComponent } from './standings-table/standings-table.compo
 import { StandingEventCardComponent } from './standing-event-card/standing-event-card.component';
 import { SiteComponent } from './site/site.component';
 import { SiteCardComponent } from './site-card/site-card.component';
+import { StatsFormsComponent } from './stats-forms/stats-forms.component';
 
 
 @NgModule({
@@ -57,6 +58,7 @@ import { SiteCardComponent } from './site-card/site-card.component';
     StandingEventCardComponent,
     SiteComponent,
     SiteCardComponent,
+    StatsFormsComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
