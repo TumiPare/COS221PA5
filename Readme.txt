@@ -53,6 +53,23 @@ Once the login button is clicked with correct details, the user will be
 sent to the main page which displays the current leagues stored on the
 system. 
 
+The user also however has the option to edit their own account by clicking
+on the navbar link Account. The user will be redirected to the account page
+where they can change the details of their account. If the user changes their
+email to an email that already exists, then the user will receive an error
+and the change in account details will fail.
+
+Furthermore if the values of email and Password are changed, validation rules
+stil apply and the data must be valid. Upon entering correct details, and 
+provided the details are not the exact same, then the user's account will be
+updated.
+
+The user can also delete the current account by clicking on the trash icon
+and confirming that they want to delete the current account. The account
+will then be permanently removed from the system. The user will then be
+redirected to the login page to login into a new account/register new 
+account.
+
 **********************************************************************
                           Usage of core website:
 
