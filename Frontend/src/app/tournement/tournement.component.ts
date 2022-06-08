@@ -30,32 +30,33 @@ export class TournementComponent implements OnInit {
   setTournament() {
     this.api.getTournament(this.tournamentID).subscribe((res) => {
       console.log(res);
-      this.tournament = res.data;
+      this.tournament = res.data.tournament;
       for (let i = 0; i < 8; i++) {
         let Team1 = res.data.tournament.rounds[0].matches[i].teamA.teamID;
         let Team2 = res.data.tournament.rounds[0].matches[i].teamB.teamID;
 
+        console.log(Team1);
+        console.log(Team2); 
         this.api.get2Teams(Team1, Team2).subscribe((req) => {  // Get the teams
           console.log(req);
 
           if (req.status == "success") {
-            
-            Team1 = req.teams[0].name;
-            let Team1pic = req.teams[0].teamLogo;
+            Team1 = req.data[0].name;
+            let Team1pic = req.data[0].teamLogo;
 
-            Team2 = req.teams[1].name;
-            let Team2pic = req.teams[1].teamLogo;
+            Team2 = req.data[1].name;
+            let Team2pic = req.data[1].teamLogo;
 
-            this.tournament.roundof16[i].teamA = Team1;
-            this.tournament.roundof16[i].picA = Team1pic;
+            this.tournament.rounds[i].teamA = Team1;
+            this.tournament.rounds[i].picA = Team1pic;
 
-            this.tournament.roundof16[i].scoreA = res.data.rounds[0].matches[i].teamA.points;
+            this.tournament.rounds[i].scoreA = res.data.rounds[0].matches[i].teamA.points;
 
 
-            this.tournament.roundof16[i].teamB = Team2;
-            this.tournament.roundof16[i].picB = Team2pic;
+            this.tournament.rounds[i].teamB = Team2;
+            this.tournament.rounds[i].picB = Team2pic;
 
-            this.tournament.roundof16[i].scoreB = res.data.rounds[0].matches[i].teamB.points;
+            this.tournament.rounds[i].scoreB = res.data.rounds[0].matches[i].teamB.points;
           }
           else
             console.log("Something went wrong with getTeam");
@@ -65,15 +66,20 @@ export class TournementComponent implements OnInit {
         let Team1 = res.data.tournament.rounds[1].matches[i].teamA.teamID;
         let Team2 = res.data.tournament.rounds[1].matches[i].teamB.teamID;
 
+        
+        
+
         this.api.get2Teams(Team1, Team2).subscribe((req) => { // Get the teams
           console.log(req);
 
-          if (req.status == "success") {
-            Team1 = req.teams[0].name;
-            let Team1pic = req.teams[0].teamLogo;
 
-            Team2 = req.teams[1].name;
-            let Team2pic = req.teams[1].teamLogo;
+
+          if (req.status == "success") {
+            Team1 = req.data[0].name;
+            let Team1pic = req.data[0].teamLogo;
+
+            Team2 = req.data[1].name;
+            let Team2pic = req.data[1].teamLogo;
 
             this.tournament.quarterFinals[i].teamA = Team1;
             this.tournament.quarterFinals[i].picA = Team1pic;
@@ -103,11 +109,11 @@ export class TournementComponent implements OnInit {
           console.log(req);
 
           if (req.status == "success") {
-            Team1 = req.teams[0].name;
-            let Team1pic = req.teams[0].teamLogo;
+            Team1 = req.data[0].name;
+            let Team1pic = req.data[0].teamLogo;
 
-            Team2 = req.teams[1].name;
-            let Team2pic = req.teams[1].teamLogo;
+            Team2 = req.data[1].name;
+            let Team2pic = req.data[1].teamLogo;
 
             this.tournament.semiFinals[i].teamA = Team1;
             this.tournament.semiFinals[i].picA = Team1pic;
