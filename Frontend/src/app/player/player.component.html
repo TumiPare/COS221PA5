@@ -1,5 +1,4 @@
-<div fxFlex fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="40px" class="container"
-    style="padding-top: 6rem;">
+<div fxFlex fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="40px" class="container" style="padding-top: 6rem;">
     <h1 style="font-size: 37pt;">{{playerName}}</h1>
     <div *ngIf="player" class="outline playerInfo lShadow" fxFlex fxLayout="column" fxLayoutAlign="center center">
         <div class="playerPic outline" [style]="'background-image: url(data:image;base64,' + player.image + ');'"></div>
@@ -10,10 +9,9 @@
         <p></p>
     </div>
     <div class="stats" fxFlex fxLayoutAlign="space-around">
-        <div class="outline statistic lShadow" fxFlex fxLayout="column" fxFlex="30%" fxLayoutAlign="center"
-            fxLayoutGap="0.5rem" (mouseenter)="displayEdit1()" (mouseleave)="displayEdit1()" >
-            <div class="editHover" style="display: none;" id="OffenceHover">edit
-            </div>
+        <div class="outline statistic lShadow" fxFlex fxLayout="column" fxFlex="30%" fxLayoutAlign="center" fxLayoutGap="0.5rem" (mouseenter)="displayEdit1()" (mouseleave)="displayEdit1()">
+            <mat-icon class="editIcon" class="editHover" style="display: none;" id="OffenceHover">edit
+            </mat-icon>
             <p class="mat-h1" style="text-align: center;">Offence</p>
             <div *ngFor="let stat of offenseStats;last as last" class="actualStat">
                 <div fxLayout="row" fxLayoutAlign="space-between">
@@ -23,10 +21,9 @@
                 <hr *ngIf="!last" style="opacity: 50%;">
             </div>
         </div>
-        <div class="outline statistic lShadow" fxFlex fxLayout="column" fxFlex="30%" fxLayoutAlign="center"
-            fxLayoutGap="0.5rem" (mouseenter)="displayEdit2()" (mouseleave)="displayEdit2()">
-            <div class="editHover" style="display: none;" id="DefenceHover">edit
-            </div>
+        <div class="outline statistic lShadow" fxFlex fxLayout="column" fxFlex="30%" fxLayoutAlign="center" fxLayoutGap="0.5rem" (mouseenter)="displayEdit2()" (mouseleave)="displayEdit2()">
+            <mat-icon class="editHover" style="display: none;" id="DefenceHover">edit
+            </mat-icon>
             <p class="mat-h1" style="text-align: center;">Defence</p>
             <div *ngFor="let stat of defenceStats;last as last" class="actualStat">
                 <div fxLayout="row" fxLayoutAlign="space-between">
@@ -36,10 +33,9 @@
                 <hr *ngIf="!last" style="opacity: 50%;">
             </div>
         </div>
-        <div class="outline statistic lShadow" fxFlex fxLayout="column" fxFlex="30%" fxLayoutAlign="center"
-            fxLayoutGap="0.5rem" (mouseenter)="displayEdit3()" (mouseleave)="displayEdit3()">
-            <div class="editHover" style="display: none;" id="FoulHover">edit
-            </div>
+        <div class="outline statistic lShadow" fxFlex fxLayout="column" fxFlex="30%" fxLayoutAlign="center" fxLayoutGap="0.5rem" (mouseenter)="displayEdit3()" (mouseleave)="displayEdit3()">
+            <mat-icon class="editHover" style="display: none;" id="FoulHover">edit
+            </mat-icon>
             <p class="mat-h1" style="text-align: center;">Fouls</p>
             <div *ngFor="let stat of foulStats;last as last" class="actualStat">
                 <div fxLayout="row" fxLayoutAlign="space-between">

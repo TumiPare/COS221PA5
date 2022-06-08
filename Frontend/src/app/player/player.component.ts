@@ -95,11 +95,19 @@ export class PlayerComponent implements OnInit {
 
   displayEdit2() {
     console.log("hvered pver");
+    if (document.getElementById('DefenceHover').style.display == "none")
+      document.getElementById('DefenceHover').style.display = "block";
+    else
+      document.getElementById('DefenceHover').style.display = "none";
     // if(event.)
   }
 
   displayEdit3() {
     console.log("hvered pver");
+    if (document.getElementById('FoulHover').style.display == "none")
+      document.getElementById('FoulHover').style.display = "block";
+    else
+      document.getElementById('FoulHover').style.display = "none";
     // if(event.)
   }
 
