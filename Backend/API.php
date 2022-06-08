@@ -242,6 +242,8 @@ class API {
             $this->addTournament($this->request["data"]);
         } else if ($this->request["operation"] == "get") {
             $this->getTournament($this->request["data"]);
+        } else if ($this->request["operation"] == "getMatches") {
+            $this->getMatches($this->request["data"]);
         } else {
             throw new ApiException(400, "invalid_operation", "Invalid operation, only set, get and add is allowed.");
         }
@@ -440,13 +442,16 @@ class API {
 	$d=strtotime("+6 Months");
 	$end =  date("Y-m-d", $d);
 	$this->database->addTournament($data[0]["seasonID"],
-	    $start, $end, $data[0]["lineups"]);
+	    $start, $end, $data[0]["lineups"], $data[0]["tournamentName"]);
 	$this->response = ["good run" => "good run"];
     }
 
     private function getTournament($data) {
         $this->validateRequiredFields($data[0], ["tournamentID"]);
         $this->response = $this->database->getTournament($data[0]["tournamentID"]);
+    }
+
+    private function getMatches($data) {
     }
 
     // ===================LEAGUES===================
