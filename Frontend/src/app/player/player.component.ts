@@ -46,21 +46,54 @@ export class PlayerComponent implements OnInit {
         console.log(res.data[0]);
         this.player = res.data[0];
 
+        console.log(res.data[0].stats.offensive);
         let thissy = this;
+
+
+
+          // thissy.offenseStats = result;
+        console.log( Object.keys(res.data[0].stats.offensive));
+
         // Replace this.player with this.player.stats.appropriateStat
-        Object.keys(res.data[0].stats.offensive).map(function (key, index) {
-          thissy.offenseStats.push({ statistic: key, value: index });
+        Object.keys(res.data[0].stats.offensive).map(function (key,index) {
+          
+          let jan = Object.keys(res.data[0].stats.offensive);
+          let san = Object.values(res.data[0].stats.offensive)
+          thissy.offenseStats.push({ statistic: jan[index] , value : san[index] as any});
         });
+        console.log(thissy.offenseStats);
+
         Object.keys(res.data[0].stats.defensive).map(function (key, index) {
-          thissy.defenceStats.push({ statistic: key, value: index });
+          let jan = Object.keys(res.data[0].stats.defensive);
+          let san = Object.values(res.data[0].stats.defensive)
+          thissy.defenceStats.push({ statistic: jan[index] , value : san[index] as any});
         });
         Object.keys(res.data[0].stats.fouls).map(function (key, index) {
-          thissy.foulStats.push({ statistic: key, value: index });
+          let jan = Object.keys(res.data[0].stats.fouls);
+          let san = Object.values(res.data[0].stats.fouls)
+          thissy.foulStats.push({ statistic: jan[index] , value : san[index] as any});
         });
+
+        // console.log(res.data[0].statistic);
+
       } else {
         console.log("Error fetching player");
       }
     });
   }
 
+  displayEdit1() {
+    console.log("hvered pver");
+    // if(event.)
+  }
+
+  displayEdit2() {
+    console.log("hvered pver");
+    // if(event.)
+  }
+
+  displayEdit3() {
+    console.log("hvered pver");
+    // if(event.)
+  }
 }

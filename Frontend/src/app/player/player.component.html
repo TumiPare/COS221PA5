@@ -11,7 +11,9 @@
     </div>
     <div class="stats" fxFlex fxLayoutAlign="space-around">
         <div class="outline statistic lShadow" fxFlex fxLayout="column" fxFlex="30%" fxLayoutAlign="center"
-            fxLayoutGap="0.5rem">
+            fxLayoutGap="0.5rem" (mouseenter)="displayEdit1()" (mouseleave)="displayEdit1()" >
+            <div class="editHover" style="display: none;" id="OffenceHover">edit
+            </div>
             <p class="mat-h1" style="text-align: center;">Offence</p>
             <div *ngFor="let stat of offenseStats;last as last" class="actualStat">
                 <div fxLayout="row" fxLayoutAlign="space-between">
@@ -22,7 +24,9 @@
             </div>
         </div>
         <div class="outline statistic lShadow" fxFlex fxLayout="column" fxFlex="30%" fxLayoutAlign="center"
-            fxLayoutGap="0.5rem">
+            fxLayoutGap="0.5rem" (mouseenter)="displayEdit2()" (mouseleave)="displayEdit2()">
+            <div class="editHover" style="display: none;" id="DefenceHover">edit
+            </div>
             <p class="mat-h1" style="text-align: center;">Defence</p>
             <div *ngFor="let stat of defenceStats;last as last" class="actualStat">
                 <div fxLayout="row" fxLayoutAlign="space-between">
@@ -33,7 +37,9 @@
             </div>
         </div>
         <div class="outline statistic lShadow" fxFlex fxLayout="column" fxFlex="30%" fxLayoutAlign="center"
-            fxLayoutGap="0.5rem">
+            fxLayoutGap="0.5rem" (mouseenter)="displayEdit3()" (mouseleave)="displayEdit3()">
+            <div class="editHover" style="display: none;" id="FoulHover">edit
+            </div>
             <p class="mat-h1" style="text-align: center;">Fouls</p>
             <div *ngFor="let stat of foulStats;last as last" class="actualStat">
                 <div fxLayout="row" fxLayoutAlign="space-between">
