@@ -28,11 +28,9 @@ export class TournementComponent implements OnInit {
   }
 
   setTournament() {
-    
-
     this.api.getTournament(this.tournamentID).subscribe((res) => {
       console.log(res);
-      
+      this.tournament = res.data;
       for (let i = 0; i < 8; i++) {
         let Team1 = res.data.tournament.rounds[0].matches[i].teamA.teamID;
         let Team2 = res.data.tournament.rounds[0].matches[i].teamB.teamID;
