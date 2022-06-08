@@ -452,6 +452,7 @@ class API {
     }
 
     private function getMatches($data) {
+	$this->response = $this->database->getMatches($data[0]["tournamentID"]);
     }
 
     // ===================LEAGUES===================
