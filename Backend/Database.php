@@ -373,6 +373,86 @@ class Database {
         $foulStmt = $this->executeQuery($query, [$foulId, $playerId, $matchId, $teamId]);
     }
 
+    function setPlayerStats($data) {
+        foreach ($data as $player) {
+            $offensiveStats = $player["stats"]["offensive"];
+            $defensiveStats = $player["stats"]["defensive"];
+            $foulStats = $player["stats"]["fouls"];
+
+            // ==============================GET REPO ID's==============================
+
+            $query = "SELECT stat_repository_id AS repo_id
+                        FROM stats
+                        WHERE stat_repository_type = 'waterpolo_offensive_stats' AND 
+                        stat_holder_type = 'persons' AND stat_holder_id = ? AND
+                        stat_coverage_type = 'events' AND stat_coverage_id = ?";
+            $result = $this->select($query, [$player["playerID"], $player["matchID"]]);
+            $offenseId = $result[0]["repo_id"];
+
+            $query = "SELECT stat_repository_id AS repo_id
+                        FROM stats
+                        WHERE stat_repository_type = 'waterpolo_defensive_stats' AND 
+                        stat_holder_type = 'persons' AND stat_holder_id = ? AND
+                        stat_coverage_type = 'events' AND stat_coverage_id = ?";
+            $result = $this->select($query, [$player["playerID"], $player["matchID"]]);
+            $defenseId = $result[0]["repo_id"];
+
+            $query = "SELECT stat_repository_id AS repo_id
+                        FROM stats
+                        WHERE stat_repository_type = 'waterpolo_foul_stats' AND 
+                        stat_holder_type = 'persons' AND stat_holder_id = ? AND
+                        stat_coverage_type = 'events' AND stat_coverage_id = ?";
+            $result = $this->select($query, [$player["playerID"], $player["matchID"]]);
+            $foulId = $result[0]["repo_id"];
+
+            // ================================SET STATS================================
+
+            $query = "UPDATE waterpolo_offensive_stats SET
+                        assists = ?,
+                        successful_passes = ?, unsuccessful_passes = ?,
+                        sprints_won = ?, sprints_lost = ?,
+                        goals = ?, misses = ?
+                        WHERE id = ?";
+            $offenseStmt = $this->executeQuery(
+                $query, 
+                [
+                    $offensiveStats["assists"], $offensiveStats["successfulPasses"],
+                    $offensiveStats["unsuccessfulPasses"], $offensiveStats["sprintsWon"],
+                    $offensiveStats["sprintsLost"], $offensiveStats["goals"], $offensiveStats["misses"],
+                    $offenseId
+                ]
+            );
+
+            $query = "UPDATE waterpolo_defensive_stats SET
+                        steals = ?, saves = ?, failed_blocks = ?,
+                        successful_blocks = ?
+                        WHERE id = ?";
+            $defenseStmt = $this->executeQuery(
+                $query,
+                [
+                    $defensiveStats["steals"], $defensiveStats["saves"],
+                    $defensiveStats["failedBlocks"], $defensiveStats["successfulBlocks"],
+                    $defenseId
+                ]
+            );
+
+            $query = "UPDATE waterpolo_foul_stats SET
+                        turnovers = ?, exclusions = ?, major_fouls = ?,
+                        minor_fouls = ?, penalty_shots_taken = ?, penalty_shots_given = ?
+                        WHERE id = ?";
+            $foulStmt = $this->executeQuery(
+                $query,
+                [
+                    $foulStats["turnovers"], $foulStats["exclusions"],
+                    $foulStats["majorFouls"], $foulStats["minorFouls"],
+                    $foulStats["penaltyShotsTaken"], $foulStats["penaltyShotsGiven"],
+                    $foulId
+                ]
+            );
+            echo($this->getErrorCode($foulStmt));
+        }
+    }
+
     // ======================================================================================
     // TEAM FUNCTIONS
     // ======================================================================================
@@ -607,6 +687,77 @@ class Database {
     // ======================================================================================
     // EVENT FUNCTIONS
     // ======================================================================================
+
+    // ======================================================================================
+    // EVENT SITE FUNCTIONS
+    // ======================================================================================
+
+    function getAllEventSites()
+    {
+        // ["siteKey", "streetNo", "street", "postalCode", "city", "country", "countryCode"];
+        $query = "SELECT eventID, siteID, siteKey FROM event_sites";
+        $response = $this->select($query);
+
+        $query = "SELECT streetNo, street, postalCode, city, country, countryCode FROM event_sites WHERE eventID = ?";
+        for($i = 0; $i < count($response); $i++)
+        {
+            $response[$i]["address"] = $this->select($query, [$response[$i]["eventID"]])[0];
+        }
+
+        return $response;
+    }
+
+    function setEventSites($data)
+    {
+        foreach($data as $eventSite)
+        {
+            $siteID = $eventSite["siteID"];
+
+            //Get locationID
+            $query = "SELECT location_id FROM sites WHERE id = ?";
+            $locationID = $this->select($query, [$siteID])[0]["location_id"];
+
+            //Get addressID
+            $query = "SELECT `id` FROM addresses WHERE id=?";
+            $addressID = $this->select($query, [$locationID])[0]["id"];
+
+            //Create new address and location
+            $addrLocIDs = $this->addAddress($eventSite["address"]);
+
+            //Delete address and location
+            $query = "DELETE FROM locations WHERE `id`=?";
+            $this->executeQuery($query, [$locationID]);
+            $query = "DELETE FROM addresses WHERE `id`=?";
+            $this->executeQuery($query, [$addressID]);
+
+            //Update site
+            $query = "UPDATE sites SET location_id=?, site_key=? WHERE `id`=?";
+            $siteKey = $this->generateSiteKey($eventSite["address"]["street"], $eventSite["address"]["city"], $addrLocIDs["locationID"]);
+            $this->executeQuery($query, [$addrLocIDs["locationID"], $siteKey, $siteID]);
+
+            ///-------------
+
+            // //Update address
+            // $query = "UPDATE addresses SET street_number=?, street=?, postal_code=?, country=? WHERE id = ?";
+            // $stmtAddr = $this->executeQuery($query, [$eventSite["streetNo"], $eventSite["street"], $eventSite["postalCode"], $eventSite["country"], $addressID]);
+            // return [$stmtAddr];
+            
+            // //Update location
+            // $query = "UPDATE location SET city=?, country=?, country_code=? WHERE id=?;";
+            // $this->executeQuery($query, [$eventSite["city"], $eventSite["country"], $eventSite["countryCode"], $locationID]);
+
+            // //Get site key data again
+            // $query = "SELECT a.street, l.city FROM locations l, addresses a WHERE a.location_id = l.id AND l.id=?";
+            // $locationData = $this->select($query, [$locationID])[0];
+            
+            // //Update sites
+            // $query = "UPDATE sites SET site_key=?, publisher_id=2 WHERE id = ?";
+            // $siteKey = $this->generateSiteKey($locationData["street"], $locationData["city"], $addressID);
+            // return [$siteKey];
+            // $this->executeQuery($query, [$siteKey, $siteID]);
+        }
+        return ["tables updated"];
+    }
 
     //GUSTAV MIGHT BE IMPLEMENTING THIS SO JUST GONNA LEAVE IT HERE FOR NOW
     // function addEvent($data) {
