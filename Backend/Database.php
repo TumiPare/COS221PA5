@@ -453,7 +453,6 @@ class Database {
                     $foulId
                 ]
             );
-            echo($this->getErrorCode($foulStmt));
         }
     }
 

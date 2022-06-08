@@ -144,7 +144,7 @@ class API {
                 break;
             case "tournament":
                 $this->handleTournament();
-		break;
+		        break;
             case "league":
                 $this->handleLeague();
                 break;
@@ -153,6 +153,7 @@ class API {
                 break;
             case "stats":
                 $this->handleStats();
+                break;
             case "eventSites":
                 $this->handleEventSites();
                 break;
