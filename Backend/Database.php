@@ -353,7 +353,7 @@ class Database {
                     stat_coverage_type, stat_coverage_id,
                     stat_membership_type, stat_membership_id, context) VALUES (
                     'waterpolo_offensive_stats', ?, 'persons', ?, 'events', ?,
-                    'teams', ?, `event`)";
+                    'teams', ?, 'event')";
         $offenseStmt = $this->executeQuery($query, [$offenseId, $playerId, $matchId, $teamId]);
 
         $query = "INSERT INTO stats (stat_repository_type, stat_repository_id,
@@ -361,7 +361,7 @@ class Database {
                     stat_coverage_type, stat_coverage_id,
                     stat_membership_type, stat_membership_id, context) VALUES (
                     'waterpolo_defensive_stats', ?, 'persons', ?, 'events', ?,
-                    'teams', ?, `event`)";
+                    'teams', ?, 'event')";
         $defenseStmt = $this->executeQuery($query, [$defenseId, $playerId, $matchId, $teamId]);
 
         $query = "INSERT INTO stats (stat_repository_type, stat_repository_id,
@@ -369,7 +369,7 @@ class Database {
                     stat_coverage_type, stat_coverage_id,
                     stat_membership_type, stat_membership_id, context) VALUES (
                     'waterpolo_foul_stats', ?, 'persons', ?, 'events', ?,
-                    'teams', ?, `event`)";
+                    'teams', ?, 'event')";
         $foulStmt = $this->executeQuery($query, [$foulId, $playerId, $matchId, $teamId]);
     }
 
