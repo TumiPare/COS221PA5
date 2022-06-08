@@ -21,7 +21,7 @@
     <p style="opacity: 70%; font-size: 30pt">Tournaments:</p>
     <div fxFlex fxLayout="column" fxLayoutAlign="center center" class="tourneyContainer outline lShadow"
         *ngFor="let tournement of tournements; index as i"
-        [routerLink]="'/tournament/' + i + '/' + tournement.tournementName">
+        [routerLink]="'/tournament/' + 1 + '/' + tournement.tournementName">
         <p class="tourneyName">{{tournement.tournamentName}}</p>
         <p style="opacity: 50%;">Participants:</p>
         <div fxFlex fxLayout="row wrap" fxLayoutGap="10px" class="tourneyParticipants" fxLayoutGap="0.65rem">

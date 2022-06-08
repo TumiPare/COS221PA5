@@ -18,48 +18,48 @@
             <div id="left-column1" class="column">
 
                 <div class="a4eventsTop">
-                    <tournament-card event="{{tournament.rounds[0]}}"></tournament-card>
-                    <tournament-card event="{{tournament.rounds[1]}}"></tournament-card>
+                    <tournament-card event="{{tournament.rounds[0].matches[0]}}"></tournament-card>
+                    <tournament-card event="{{tournament.rounds[0].matches[1]}}"></tournament-card>
                 </div>
                 <div class="a4eventsBottom">
-                    <tournament-card event="{{tournament.rounds[2]}}"></tournament-card>
-                    <tournament-card event="{{tournament.rounds[3]}}"></tournament-card>
+                    <tournament-card event="{{tournament.rounds[0].matches[2]}}"></tournament-card>
+                    <tournament-card event="{{tournament.rounds[0].matches[3]}}"></tournament-card>
                 </div>
             </div>
             <div id="left-column2" class="column">
-                <tournament-card event="{{tournament.rounds[0]}}"></tournament-card>
-                <tournament-card event="{{tournament.rounds[1]}}"></tournament-card>
+                <tournament-card event="{{tournament.rounds[1].matches[0]}}"></tournament-card>
+                <tournament-card event="{{tournament.rounds[1].matches[1]}}"></tournament-card>
             </div>
             <div id="left-column3" class="column">
-                <tournament-card event="{{tournament.rounds[0]}}"></tournament-card>
+                <tournament-card event="{{tournament.rounds[2].matches[0]}}"></tournament-card>
             </div>
         </div>
         <div id="center" class="column">
             <div id="roundfor3">
                 <p>Match for third place </p>
-                <tournament-card event="{{tournament.rounds}}"></tournament-card>
+                <tournament-card event="{{tournament.rounds[3].matches[0]}}"></tournament-card>
             </div>
             <div class="final">
                 <p>Final</p>
-                <tournament-card event="{{tournament.rounds}}"></tournament-card>
+                <tournament-card event="{{tournament.rounds[3].matches[0]}}"></tournament-card>
             </div>
         </div>
         <div id="right">
             <div id="right-column1" class="column">
-                <tournament-card event="{{tournament.rounds[1]}}"></tournament-card>
+                <tournament-card event="{{tournament.rounds[2].matches[1]}}"></tournament-card>
             </div>
             <div id="right-column2" class="column">
-                <tournament-card event="{{tournament.rounds[2]}}"></tournament-card>
-                <tournament-card event="{{tournament.rounds[3]}}"></tournament-card>
+                <tournament-card event="{{tournament.rounds[1].matches[2]}}"></tournament-card>
+                <tournament-card event="{{tournament.rounds[1].matches[3]}}"></tournament-card>
             </div>
             <div id="right-column3" class="column">
                 <div class="a4eventsTop">
-                    <tournament-card event="{{tournament.rounds[4]}}"></tournament-card>
-                    <tournament-card event="{{tournament.rounds[5]}}"></tournament-card>
+                    <tournament-card event="{{tournament.rounds[0].matches[4]}}"></tournament-card>
+                    <tournament-card event="{{tournament.rounds[0].matches[5]}}"></tournament-card>
                 </div>
                 <div class="a4eventsBottom">
-                    <tournament-card event="{{tournament.rounds[6]}}"></tournament-card>
-                    <tournament-card event="{{tournament.rounds[7]}}"></tournament-card>
+                    <tournament-card event="{{tournament.rounds[0].matches[6]}}"></tournament-card>
+                    <tournament-card event="{{tournament.rounds[0].matches[7]}}"></tournament-card>
                 </div>
             </div>
         </div>
