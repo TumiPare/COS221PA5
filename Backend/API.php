@@ -378,17 +378,17 @@ class API {
     // =====================Tournaments=====================
     private function addTournament($data) {
         // normal validation of the required data
-        $requiredUserInfo = ["tournamentName", "lineups", "rounds"];
-        $this->validateRequiredFields($data, $requiredUserInfo);
+        $requiredUserInfo = ["tournamentName", "lineups"];
+        $this->validateRequiredFields($data[0], $requiredUserInfo);
 
         // checking that the data has what it needs
-        if (sizeof($data["lineups"]) != 8) {
+        if (sizeof($data[0]["lineups"]) != 8) {
             throw new ApiException(400, "invalid_parameters", "A invalid amout of lineups was specified. (" .
                 sizeof($data["lineups"]) . "was specified, should be 8");
         }
         // validating the lineups parameters
         $count = 0;
-        foreach ($data["lineups"] as $lineup) {
+        foreach ($data[0]["lineups"] as $lineup) {
             if (!(array_key_exists("teamA", $lineup))) {
                 throw new ApiException(400, "invalid_parameters", "teamA was not specified for the " .
                     $count . "th lineup.");
@@ -401,19 +401,13 @@ class API {
         }
         // TODO
         // validating the rounds
-        if (sizeof($data["rounds"]) != 4) {
-            throw new ApiException(400, "invalid_parameters", "A invalid amout of rounds was specified. (" .
-                sizeof($data["rounds"]) . "was specified, should be 4");
-        }
-
-        if (sizeof($data["rounds"][0]["matches"]) != 8) {
-        }
-        if (sizeof($data["rounds"][1]["matches"]) != 4) {
-        }
-        if (sizeof($data["rounds"][2]["matches"]) != 2) {
-        }
-        if (sizeof($data["rounds"][3]["matches"]) != 1) {
-        }
+	$d=strtotime("+3 Months");
+	$start =  date("Y-m-d", $d);
+	$d=strtotime("+6 Months");
+	$end =  date("Y-m-d", $d);
+	$this->database->addTournament($data[0]["seasonID"],
+	    $start, $end, $data[0]["lineups"]);
+	$this->response = ["good run" => "good run"];
     }
 
     private function getTournament($data) {
