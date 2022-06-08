@@ -5,7 +5,6 @@ import { Router } from '@angular/router';
 
 import { APIService } from '../api.service';
 
-
 @Component({
   selector: 'app-player',
   templateUrl: './player.component.html',
@@ -53,8 +52,6 @@ export class PlayerComponent implements OnInit {
 
         console.log(res.data[0].stats.offensive);
         let thissy = this;
-
-
 
         // thissy.offenseStats = result;
         console.log(Object.keys(res.data[0].stats.offensive));
