@@ -115,8 +115,9 @@ export class APIService {
     return this.http.post(this.apiURL, body, this.httpOptions);
   }
 
-  addTournament(tournName: string, lineupArr: Array<any>[8]): Observable<any> {
+  addTournament(seasonID: number, tournName: string, lineupArr: Array<any>[8]): Observable<any> {
     let body = {
+      seasonID: seasonID,
       type: "tournament",
       operation: "add",
       data: [

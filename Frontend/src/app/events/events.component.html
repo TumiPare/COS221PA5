@@ -25,7 +25,7 @@
         <p class="tourneyName">{{tournement.tournamentName}}</p>
         <p style="opacity: 50%;">Participants:</p>
         <div fxFlex fxLayout="row wrap" fxLayoutGap="10px" class="tourneyParticipants" fxLayoutGap="0.65rem">
-            <app-team-card *ngFor="let i of [50, 51, 52, 53, 54, 55, 56, 57, 58]" [teamID]="i"></app-team-card>
+            <app-team-card *ngFor="let i of tournement.teams" [teamID]="i"></app-team-card>
         </div>
     </div>
     <button mat-raised-button color="primary" id="addTourneyBtn" (click)="addTourney()" style="width: 80%;">Add

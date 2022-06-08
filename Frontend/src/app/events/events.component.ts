@@ -37,7 +37,7 @@ export class EventsComponent implements OnInit {
             this.subseasons.push(subSeason);
           }
         }
-        console.log(this.subseasons);
+        // console.log(this.subseasons);
       }
     });
   }
@@ -45,20 +45,18 @@ export class EventsComponent implements OnInit {
   selectSubSeason(selectedSubSeason: any) {
     this.selectedSubSeason = selectedSubSeason;
     this.api.getTournaments(this.selectedSubSeason.subseasonID).subscribe((res) => {
-      console.log(res);
       if (res.status == "success") {
+        res.data.tournament.teams = [];
+        for (let match of res.data.tournament.rounds[0].matches) {
+          res.data.tournament.teams.push(match.teamA.teamID);
+        }
         this.tournements.push(res.data.tournament);
-        console.log(this.tournements);
       }
     });
   }
 
-  navigateToTeamPage(teamID: number, teamName: string) {
-    this.router.navigate([`team/${teamID}/${teamName}`]);
-  }
-
   addTourney(): void {
-    const dialogRef = this.dialog.open(AddTournaDialog, {});
+    const dialogRef = this.dialog.open(AddTournaDialog, { data: { seasonID: this.selectedSubSeason.subseasonID }, });
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
@@ -76,9 +74,10 @@ export class EventsComponent implements OnInit {
 export class AddTournaDialog implements OnInit {
   @ViewChild('playerName') name;
   lineups: Array<{ teamA: string, teamB: string }>;
+  seasonID: number;
 
   myControl = new FormControl();
-  teams: { teamID: number, teamName: string, teamLogo: string }[];
+  teams: Array<{ id: number, team_key: string, full_name: string }> = [];
   options: string[] = ['team1', 'team2', 'team3'];
   filteredOptions: Observable<string[]>;
 
@@ -94,25 +93,26 @@ export class AddTournaDialog implements OnInit {
         teamB: '',
       });
     }
+    this.seasonID = this.data.seasonID;
   }
 
   ngOnInit() {
     this.api.getAllTeams().subscribe((res) => {
       if (res.status == "success") {
         console.log(res);
-        this.teams = res.teams;
+        this.teams = res.data;
         this.teams.forEach(team => {
-          this.options.push(team.teamName);
+          this.options.push(team.team_key);
         });
+        this.filteredOptions = this.myControl.valueChanges.pipe(
+          startWith(''),
+          map(value => this._filter(value))
+        );
       } else {
         //Error
         console.log(res);
       }
     });
-    this.filteredOptions = this.myControl.valueChanges.pipe(
-      startWith(''),
-      map(value => this._filter(value))
-    );
   }
 
   private _filter(value: string): string[] {
@@ -131,16 +131,21 @@ export class AddTournaDialog implements OnInit {
       let tempLineup = { teamA: 0, teamB: 0 };
 
       for (let i = 0; i < this.teams.length; i++) {
-        if (this.teams[i].teamName == match.teamA)
-          tempLineup.teamA = this.teams[i].teamID;
-        if (this.teams[i].teamName == match.teamB)
-          tempLineup.teamB = this.teams[i].teamID;
+        if (this.teams[i].team_key == match.teamA)
+          tempLineup.teamA = this.teams[i].id;
+        if (this.teams[i].team_key == match.teamB)
+          tempLineup.teamB = this.teams[i].id;
       }
 
       actualLineups.push(tempLineup);
     });
 
-    console.log(this.lineups);
+    let tourneyName = (<HTMLInputElement>document.getElementById("tournaName")).value;
+
+    this.api.addTournament(this.seasonID, tourneyName, actualLineups).subscribe((res) => {
+      console.log(res);
+    });
+    console.log(actualLineups);
     this.dialogRef.close(this.data);
   }
 

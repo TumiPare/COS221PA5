@@ -1,5 +1,9 @@
 <h1 mat-dialog-title>Add Tournement</h1>
 <div mat-dialog-content>
+    <mat-form-field>
+        <mat-label>Tournament Name</mat-label>
+        <input id="tournaName" matInput>
+    </mat-form-field>
     <div fxFlex fxLayout="row wrap" fxLayoutAlign="space-around">
         <div fxLayout="column" fxLayoutAlign="space-around" fxFlex="25%" class="gameSelection"
             *ngFor="let game of lineups; index as i">
