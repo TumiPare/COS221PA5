@@ -536,6 +536,17 @@ class Database {
     // Tournament FUNCTIONS
     // ======================================================================================
     // TODO
+
+    public function getMatches($tournamentID) {
+	$query = "SELECT event_id FROM events_sub_seasons where sub_season_id = ?;";
+	$results = $this->select($query, [$tournamentID]);
+	$count = 0;
+	foreach ($results as $result) {
+	    $return[$count] = $result["event_id"];
+	    $count++;
+	}
+	return $return;
+    }
     public function addTournament($season_id, $start, $end, $events, $display_names) {
         // make tournament
 	// TODO Check date time format.
