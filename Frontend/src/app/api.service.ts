@@ -87,6 +87,18 @@ export class APIService {
     return this.http.post(this.apiURL, body, this.httpOptions);
   }
 
+  getTeamInfo(teamID: number): Observable<any> {
+    let body = {
+      apiKey: this.apiKey,
+      type: "team",
+      operation: "get",
+      data: [{
+        teamID: teamID
+      }]
+    };
+    return this.http.post(this.apiURL, body, this.httpOptions);
+  }
+
   editPlayer(playerID: number, name: string, surname: string, DOB: string, playerPic: string): Observable<any> {
     let body = {
       apiKey: this.apiKey,
