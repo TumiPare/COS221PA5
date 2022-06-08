@@ -203,6 +203,7 @@ class Database {
     // ======================================================================================
 
     function addPlayers($data) {
+        $response = [];
         foreach ($data as $object) {
             $birthAddr = $object["birthAddr"];
 
@@ -226,7 +227,10 @@ class Database {
 
             $query = "INSERT INTO persons_media (person_id, media_id) VALUES (?, ?)";
             $mediaPersonStmt = $this->executeQuery($query, [$personId, $mediaId]);
+
+            array_push($response, $personId);
         }
+        return $response;
     }
 
     function getPlayers($data) {
@@ -542,7 +546,10 @@ class Database {
 	$results = $this->select($query, [$tournamentID]);
 	$count = 0;
 	foreach ($results as $result) {
-	    $return[$count] = $result["event_id"];
+	    $return[$count] = ["eventID" => $result["event_id"]];
+
+        $query = "SELECT participant_id AS teamID, event_id AS eventID FROM participants_events WHERE event_id = ?";
+        $return[$count] = $this->select($query, [$result["event_id"]])[0];
 	    $count++;
 	}
 	return $return;
@@ -613,6 +620,7 @@ class Database {
 
 	$query = "INSERT INTO display_names (entity_id, full_name, entity_type, language) VALUES (?,?, 'tournament', 'en-US');";
 	$this->executeQuery($query, [$tournamentID,$display_names]);
+    return $tournamentID;
     }
 
 

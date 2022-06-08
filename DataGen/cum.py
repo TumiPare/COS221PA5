@@ -23,8 +23,8 @@ def csvToList(file):
 # Passes the provided json body onto the API, returns JSON response
 def qAPI(body):
     res = req.post(API, json=body)
-    print(res.content)
-    return res
+    print("API RESPONSE:\n" + res.content.decode('utf-8'))
+    return JSON.loads(res.content.decode('utf-8'))
 
 def genPic(isMale):
     resp = req.get("https://randomuser.me/api/portraits/thumb/{}/{}.jpg".format(("men" if isMale else "women"), randrange(100)))
@@ -126,12 +126,16 @@ def addPlayers(n):
         "operation": "add",
         "data": data
     }
-    print(JSON.dumps(json))
-    qAPI(json)
+    # print(JSON.dumps(json))
+    return qAPI(json)
+
+#=====SEASONS=====
+def addSeasons():
+    return
 
 #=====STATS=====
 def addStats(playerID, matchID):
-    {
+    json = {
     "apiKey": API_KEY,
     "type": "stats",
     "operation": "add",
@@ -198,7 +202,7 @@ def addUsers(n):
         "data": data
     }
 
-    print(JSON.dumps(json))
+    # print(JSON.dumps(json))
     # qAPI(json)
 
 #=====TEAMS=====
@@ -223,11 +227,88 @@ def addTeams(n):
         "operation": "add",
         "data": data
     }
-    print(JSON.dumps(json))
-    qAPI(json)
+    # print(JSON.dumps(json))
+    return qAPI(json)
+
+#=====TOURNAMENTS=====
+def getTournamentName():
+    suffixes = ["Championship", "Sub-season", "League", "Cup", "Tournaments", "Finals"]
+    return randomElement(["The ", ""]) + randomElement(teamnouns) + " " + randomElement(suffixes)
+
+def getTournamentMatches(tournamentID):
+    json = {
+        "apiKey": API_KEY,
+        "type": "tournament",
+        "operation": "getMatches",
+        "data": [
+            {
+                "tournamentID": tournamentID
+            }
+        ]
+    }
+    res = qAPI(json)
+    # print("HERE")
+    # print(res["data"])
+    return res["data"]
+
+def addPlayersToMatch(n, matchID, teamID):
+    players = addPlayers(n)["data"]
+
+    data = []
+    for p in players:
+        data.append({
+            "playerID": p,
+            "teamID": teamID,
+            "matchID": matchID
+        })
+
+    json = {
+        "apiKey": API_KEY,
+        "type": "match",
+        "operation": "addPlayer",
+        "data": data
+    }
+
+    return qAPI(json)
+
+def addTournaments(n):
+    data = []
+
+    for tour in range(n):
+        teams = addTeams(16)["data"]
+
+        lineups = []
+        for lu in range(0, 16, 2):
+            lineups.append({
+                "teamA": teams[lu]["teamID"],
+                "teamB": teams[lu+1]["teamID"]
+            })
+        # print(JSON.dumps(lineups))
+
+        data.append({
+            "seasonID" : randrange(10),
+            "tournamentName": getTournamentName(),
+            "lineups": lineups
+        })
+
+    json = {
+        "type": "tournament",
+        "operation": "add",
+        "data": data
+    }
+
+    tournamentID = qAPI(json)["data"]["tournamentID"]
+
+    matches = getTournamentMatches(tournamentID)
+    print("TESTESTES")
+    for m in matches:
+        if m is not None:
+            print(addPlayersToMatch(7, m["eventID"], m["teamID"]))
+
 
 init()
 
-# addPlayers(100)
-addTeams(100)
+# addPlayers(1)
+# addTeams(1)
+addTournaments(5)
 # addUsers(100)

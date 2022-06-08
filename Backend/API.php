@@ -282,7 +282,7 @@ class API {
             $this->validateRequiredFields($object["birthAddr"], $requiredAddressInfo);
         }
 
-        $this->database->addPlayers($data);
+        $this->response = $this->database->addPlayers($data);
     }
 
     function setPlayers($data) {
@@ -441,9 +441,9 @@ class API {
 	$start =  date("Y-m-d", $d);
 	$d=strtotime("+6 Months");
 	$end =  date("Y-m-d", $d);
-	$this->database->addTournament($data[0]["seasonID"],
+	$tournamentID = $this->database->addTournament($data[0]["seasonID"],
 	    $start, $end, $data[0]["lineups"], $data[0]["tournamentName"]);
-	$this->response = ["good run" => "good run"];
+	$this->response = ["tournamentID" => $tournamentID];
     }
 
     private function getTournament($data) {
