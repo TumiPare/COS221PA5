@@ -383,7 +383,7 @@ class Database {
 
             $query = "SELECT stat_repository_id AS repo_id
                         FROM stats
-                        WHERE stat_repository_type = 'waterpolo_offensive_stats' AND 
+                        WHERE stat_repository_type = 'waterpolo_offensive_stats' AND
                         stat_holder_type = 'persons' AND stat_holder_id = ? AND
                         stat_coverage_type = 'events' AND stat_coverage_id = ?";
             $result = $this->select($query, [$player["playerID"], $player["matchID"]]);
@@ -391,7 +391,7 @@ class Database {
 
             $query = "SELECT stat_repository_id AS repo_id
                         FROM stats
-                        WHERE stat_repository_type = 'waterpolo_defensive_stats' AND 
+                        WHERE stat_repository_type = 'waterpolo_defensive_stats' AND
                         stat_holder_type = 'persons' AND stat_holder_id = ? AND
                         stat_coverage_type = 'events' AND stat_coverage_id = ?";
             $result = $this->select($query, [$player["playerID"], $player["matchID"]]);
@@ -399,7 +399,7 @@ class Database {
 
             $query = "SELECT stat_repository_id AS repo_id
                         FROM stats
-                        WHERE stat_repository_type = 'waterpolo_foul_stats' AND 
+                        WHERE stat_repository_type = 'waterpolo_foul_stats' AND
                         stat_holder_type = 'persons' AND stat_holder_id = ? AND
                         stat_coverage_type = 'events' AND stat_coverage_id = ?";
             $result = $this->select($query, [$player["playerID"], $player["matchID"]]);
@@ -414,7 +414,7 @@ class Database {
                         goals = ?, misses = ?
                         WHERE id = ?";
             $offenseStmt = $this->executeQuery(
-                $query, 
+                $query,
                 [
                     $offensiveStats["assists"], $offensiveStats["successfulPasses"],
                     $offensiveStats["unsuccessfulPasses"], $offensiveStats["sprintsWon"],
@@ -741,7 +741,7 @@ class Database {
             // $query = "UPDATE addresses SET street_number=?, street=?, postal_code=?, country=? WHERE id = ?";
             // $stmtAddr = $this->executeQuery($query, [$eventSite["streetNo"], $eventSite["street"], $eventSite["postalCode"], $eventSite["country"], $addressID]);
             // return [$stmtAddr];
-            
+
             // //Update location
             // $query = "UPDATE location SET city=?, country=?, country_code=? WHERE id=?;";
             // $this->executeQuery($query, [$eventSite["city"], $eventSite["country"], $eventSite["countryCode"], $locationID]);
@@ -749,7 +749,7 @@ class Database {
             // //Get site key data again
             // $query = "SELECT a.street, l.city FROM locations l, addresses a WHERE a.location_id = l.id AND l.id=?";
             // $locationData = $this->select($query, [$locationID])[0];
-            
+
             // //Update sites
             // $query = "UPDATE sites SET site_key=?, publisher_id=2 WHERE id = ?";
             // $siteKey = $this->generateSiteKey($locationData["street"], $locationData["city"], $addressID);
@@ -872,5 +872,30 @@ class Database {
         $addressId = $this->getLastGeneratedID();
 
         return ["locationID" => $locationId, "addressID" => $addressId];
+    }
+
+    public function addPlayerToMatch($playerID, $teamID, $matchID) {
+	$query = "INSERT INTO person_event_metadata (person_id, event_id, team_id) VALUES (?,?,?);";
+	$this->executeQuery($query, [$playerID, $matchID, $teamID]);
+	$this->setBlankPlayerStats($playerID, $matchID);
+    }
+
+    public function addMatch($matchID, $teams) {
+	$query = "INSERT INTO participants_events (participant_type, participant_id, event_id) VALUES ('team',?,?)";
+	$this->executeQuery($query, [$teams["teamA"], $matchID]);
+	$this->executeQuery($query, [$teams["teamB"], $matchID]);
+
+
+	$query = "SELECT person_id FROM person_event_metadata WHERE team_id = ? AND event_id = ?;";
+	$results = $this->select($query, [$teams["teamA"], $teams["teamA_matchID"]]);
+	foreach ($results as $result) {
+	    $this->addPlayerToMatch($result["person_id"], $teams["teamA"], $matchID);
+	}
+
+	$query = "SELECT person_id FROM person_event_metadata WHERE team_id = ? AND event_id = ?;";
+	$results = $this->select($query, [$teams["teamB"], $teams["teamB_matchID"]]);
+	foreach ($results as $result) {
+	    $this->addPlayerToMatch($result["person_id"], $teams["teamB"], $matchID);
+	}
     }
 }

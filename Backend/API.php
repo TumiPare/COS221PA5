@@ -156,6 +156,9 @@ class API {
             case "eventSites":
                 $this->handleEventSites();
                 break;
+	    case "match":
+		$this->handleMatch();
+		break;
             default:
                 throw new ApiException(200, "invalid_type", "The specified type is not valid.");
                 break;
@@ -251,6 +254,14 @@ class API {
         {
             case "get": $this->getLeague($this->request["data"]); break;
         }
+    }
+
+    private function handleMatch() {
+	if ($this->request["operation"] == "addPlayer") {
+	    $this->addPlayerToMatch($this->request["data"]);
+	} else if ($this->request["operation"] == "add") {
+	    $this->addMatch($this->request["data"]);
+	}
     }
 
     // ======================================================================================
@@ -478,7 +489,22 @@ class API {
 
         $this->response = $this->database->setEventSites($this->request["data"]);
     }
+    // ===================Matches=======================
+    private function addPlayerToMatch($data) {
+	foreach ($data as $player) {
+	    $this->database->addPlayerToMatch($player["playerID"], $player["teamID"], $player["matchID"]);
+	}
+	$this->response = ["data" => "done"];
+    }
+
+    private function addMatch($data) {
+	foreach ($data as $newMatch) {
+	    $this->database->addMatch($newMatch["matchID"], $newMatch["teams"]);
+	}
+    }
+
 }
+
 
 // ======================================================================================
 // API INSTANCE TO HANDLE INCOMING REQUESTS
