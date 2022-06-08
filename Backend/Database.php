@@ -536,12 +536,12 @@ class Database {
     // Tournament FUNCTIONS
     // ======================================================================================
     // TODO
-    public function addTournament($season_id, $start, $end, $events) {
+    public function addTournament($season_id, $start, $end, $events, $display_names) {
         // make tournament
 	// TODO Check date time format.
         $query = "INSERT INTO sub_seasons (sub_season_key,season_id,sub_season_type,start_date_time,end_date_time)" .
-            "VALUES (?, ?,'season-regular',?,?)";
-	$this->executeQuery($query, [$this->generateAPIKey(), $season_id, $start, $end]);
+            "VALUES (?, ?,'tournament',?,?)";
+	$this->executeQuery($query, [$this->generateTeamKey($display_names), $season_id, $start, $end]);
 	$tournamentID = $this->getLastGeneratedID();
 
 	// check that all the teams exist
@@ -599,6 +599,9 @@ class Database {
 		);
 	    $counter++;
 	}
+
+	$query = "INSERT INTO display_names (entity_id, full_name, entity_type, language) VALUES (?,?, 'tournament', 'en-US');";
+	$this->executeQuery($query, [$tournamentID,$display_names]);
     }
 
 
@@ -647,7 +650,7 @@ class Database {
         if ($result == []) {
             $return["tournament"]["tournamentName"] = "No Name";
         } else {
-            $return["tournament"]["tournamentName"] = $result["full_name"];
+            $return["tournament"]["tournamentName"] = $result[0]["full_name"];
         }
         return $return;
     }
