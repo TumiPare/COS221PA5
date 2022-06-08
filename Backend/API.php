@@ -151,6 +151,9 @@ class API {
             case "season":
                 $this->handleSeason();
                 break;
+            case "stats":
+                $this->handleStats();
+                break;
             default:
                 throw new ApiException(200, "invalid_type", "The specified type is not valid.");
                 break;
@@ -175,6 +178,16 @@ class API {
             $this->deletePlayers($this->request["data"]);
         } else {
             throw new ApiException(200, "invalid_operation", "Invalid operation, only set, get and add is allowed.");
+        }
+    }
+
+    private function handleStats() {
+        $this->authorizeRequest();
+        $requiredField = ["data"];
+        $this->validateRequiredFields($this->request, $requiredField);
+
+        if ($this->request["operation"] == "set") {
+            $this->database->setPlayerStats($this->request["data"]);
         }
     }
 

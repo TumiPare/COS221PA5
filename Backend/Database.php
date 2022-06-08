@@ -373,6 +373,86 @@ class Database {
         $foulStmt = $this->executeQuery($query, [$foulId, $playerId, $matchId, $teamId]);
     }
 
+    function setPlayerStats($data) {
+        foreach ($data as $player) {
+            $offensiveStats = $player["stats"]["offensive"];
+            $defensiveStats = $player["stats"]["defensive"];
+            $foulStats = $player["stats"]["fouls"];
+
+            // ==============================GET REPO ID's==============================
+
+            $query = "SELECT stat_repository_id AS repo_id
+                        FROM stats
+                        WHERE stat_repository_type = 'waterpolo_offensive_stats' AND 
+                        stat_holder_type = 'persons' AND stat_holder_id = ? AND
+                        stat_coverage_type = 'events' AND stat_coverage_id = ?";
+            $result = $this->select($query, [$player["playerID"], $player["matchID"]]);
+            $offenseId = $result[0]["repo_id"];
+
+            $query = "SELECT stat_repository_id AS repo_id
+                        FROM stats
+                        WHERE stat_repository_type = 'waterpolo_defensive_stats' AND 
+                        stat_holder_type = 'persons' AND stat_holder_id = ? AND
+                        stat_coverage_type = 'events' AND stat_coverage_id = ?";
+            $result = $this->select($query, [$player["playerID"], $player["matchID"]]);
+            $defenseId = $result[0]["repo_id"];
+
+            $query = "SELECT stat_repository_id AS repo_id
+                        FROM stats
+                        WHERE stat_repository_type = 'waterpolo_foul_stats' AND 
+                        stat_holder_type = 'persons' AND stat_holder_id = ? AND
+                        stat_coverage_type = 'events' AND stat_coverage_id = ?";
+            $result = $this->select($query, [$player["playerID"], $player["matchID"]]);
+            $foulId = $result[0]["repo_id"];
+
+            // ================================SET STATS================================
+
+            $query = "UPDATE waterpolo_offensive_stats SET
+                        assists = ?,
+                        successful_passes = ?, unsuccessful_passes = ?,
+                        sprints_won = ?, sprints_lost = ?,
+                        goals = ?, misses = ?
+                        WHERE id = ?";
+            $offenseStmt = $this->executeQuery(
+                $query, 
+                [
+                    $offensiveStats["assists"], $offensiveStats["successfulPasses"],
+                    $offensiveStats["unsuccessfulPasses"], $offensiveStats["sprintsWon"],
+                    $offensiveStats["sprintsLost"], $offensiveStats["goals"], $offensiveStats["misses"],
+                    $offenseId
+                ]
+            );
+
+            $query = "UPDATE waterpolo_defensive_stats SET
+                        steals = ?, saves = ?, failed_blocks = ?,
+                        successful_blocks = ?
+                        WHERE id = ?";
+            $defenseStmt = $this->executeQuery(
+                $query,
+                [
+                    $defensiveStats["steals"], $defensiveStats["saves"],
+                    $defensiveStats["failedBlocks"], $defensiveStats["successfulBlocks"],
+                    $defenseId
+                ]
+            );
+
+            $query = "UPDATE waterpolo_foul_stats SET
+                        turnovers = ?, exclusions = ?, major_fouls = ?,
+                        minor_fouls = ?, penalty_shots_taken = ?, penalty_shots_given = ?
+                        WHERE id = ?";
+            $foulStmt = $this->executeQuery(
+                $query,
+                [
+                    $foulStats["turnovers"], $foulStats["exclusions"],
+                    $foulStats["majorFouls"], $foulStats["minorFouls"],
+                    $foulStats["penaltyShotsTaken"], $foulStats["penaltyShotsGiven"],
+                    $foulId
+                ]
+            );
+            echo($this->getErrorCode($foulStmt));
+        }
+    }
+
     // ======================================================================================
     // TEAM FUNCTIONS
     // ======================================================================================
