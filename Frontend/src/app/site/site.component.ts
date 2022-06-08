@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
-export class Site(){
+export class Site{
   streetNo: string;
   street: string;
   city: string;
@@ -20,6 +20,6 @@ export class SiteComponent implements OnInit {
   ngOnInit(): void {
   }
   setSites(){
-    
+
   }
 }
