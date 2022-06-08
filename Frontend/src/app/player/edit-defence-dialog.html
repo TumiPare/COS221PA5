@@ -1,0 +1,26 @@
+<h1 mat-dialog-title>Edit Offence Stats</h1>
+<div mat-dialog-content id="dialogContent">
+    <h1>Defence</h1>
+    <form class="example-form">
+        <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Defence</mat-label>
+            <input matInput>
+        </mat-form-field>
+        <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Saves</mat-label>
+            <input matInput>
+        </mat-form-field>
+        <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Failed Blocks</mat-label>
+            <input matInput>
+        </mat-form-field>
+        <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Successful Blocks</mat-label>
+            <input matInput>
+        </mat-form-field>
+    </form>
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Cancel</button>
+    <button mat-button (click)="editStat()" cdkFocusInitial>Add</button>
+</div>

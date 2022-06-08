@@ -1,0 +1,34 @@
+<h1 mat-dialog-title>Edit Foul Stats</h1>
+<div mat-dialog-content id="dialogContent">
+    <h1>Fouls</h1>
+    <form class="example-form">
+        <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>turnovers</mat-label>
+            <input matInput>
+        </mat-form-field>
+        <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Exclusions</mat-label>
+            <input matInput>
+        </mat-form-field>
+        <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Major Fouls</mat-label>
+            <input matInput>
+        </mat-form-field>
+        <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Minor Fouls</mat-label>
+            <input matInput>
+        </mat-form-field>
+        <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Penalty Shots Taken</mat-label>
+            <input matInput>
+        </mat-form-field>
+        <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Penalty Shots Given</mat-label>
+            <input matInput>
+        </mat-form-field>
+    </form>
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Cancel</button>
+    <button mat-button (click)="editStat()" cdkFocusInitial>Add</button>
+</div>

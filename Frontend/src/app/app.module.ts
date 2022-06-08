@@ -14,7 +14,7 @@ import { AddMemberDialog, TeamComponent } from './team/team.component';
 import { EditMemberDialog, TeamMemberComponent } from './team-member/team-member.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
-import { PlayerComponent } from './player/player.component';
+import { EditDefenceDialog, EditFoulDialog, EditOffenceDialog, PlayerComponent } from './player/player.component';
 import { TournementComponent } from './tournement/tournement.component';
 
 import { TournamentCardComponent } from './tournament-card/tournament-card.component';
@@ -59,6 +59,9 @@ import { StatsFormsComponent } from './stats-forms/stats-forms.component';
     SiteComponent,
     SiteCardComponent,
     StatsFormsComponent,
+    EditFoulDialog,
+    EditOffenceDialog,
+    EditDefenceDialog
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),

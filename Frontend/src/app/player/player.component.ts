@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 
@@ -37,7 +38,8 @@ export class PlayerComponent implements OnInit {
   }> = [];
 
   constructor(private route: ActivatedRoute,
-    private api: APIService, private router: Router) {
+    private api: APIService, private router: Router,
+    public dialog: MatDialog,) {
     this.playerName = this.route.snapshot.paramMap.get('playerName');
     this.playerID = Number(this.route.snapshot.paramMap.get('playerID'));
   }
@@ -86,11 +88,13 @@ export class PlayerComponent implements OnInit {
   }
 
   displayEdit1() {
-    console.log("bug")
     if (document.getElementById('OffenceHover').style.display == "none")
       document.getElementById('OffenceHover').style.display = "block";
     else
       document.getElementById('OffenceHover').style.display = "none";
+  }
+  open1() {
+    const dialogRef = this.dialog.open(EditOffenceDialog, { width: '300px' });
   }
 
   displayEdit2() {
@@ -102,6 +106,9 @@ export class PlayerComponent implements OnInit {
     // if(event.)
   }
 
+  open2() {
+    const dialogRef = this.dialog.open(EditDefenceDialog, { width: '300px' });
+  }
   displayEdit3() {
     console.log("hvered pver");
     if (document.getElementById('FoulHover').style.display == "none")
@@ -111,6 +118,9 @@ export class PlayerComponent implements OnInit {
     // if(event.)
   }
 
+  open3() {
+    const dialogRef = this.dialog.open(EditFoulDialog, { width: '300px' });
+  }
   KillPlayer() {
     this.api.DeletePlayer(this.playerID).subscribe((res) => {
       if (res.status == "success") {
@@ -137,4 +147,106 @@ export class PlayerComponent implements OnInit {
 
     });
   }
+}
+
+@Component({
+  selector: 'edit-offence-dialog',
+  templateUrl: 'edit-offence-dialog.html',
+  styleUrls: ['./player.component.css']
+})
+export class EditOffenceDialog implements OnInit {
+  @ViewChild('playerName') name;
+  @ViewChild('playerSurname') surname;
+  @ViewChild('DOB') DOB;
+  @ViewChild('csvInput') upload;
+  playerPic: string;
+
+  constructor(
+    public dialogRef: MatDialogRef<EditOffenceDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private api: APIService,
+  ) {
+    console.log(data);
+  }
+
+  ngOnInit(): void {
+  }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+  editStat() {
+    // Set the appropriate data variables to whatever changes i guess
+    this.dialogRef.close(this.data);
+  }
+
+}
+
+@Component({
+  selector: 'edit-defence-dialog',
+  templateUrl: 'edit-defence-dialog.html',
+  styleUrls: ['./player.component.css']
+})
+export class EditDefenceDialog implements OnInit {
+  @ViewChild('playerName') name;
+  @ViewChild('playerSurname') surname;
+  @ViewChild('DOB') DOB;
+  @ViewChild('csvInput') upload;
+  playerPic: string;
+
+  constructor(
+    public dialogRef: MatDialogRef<EditDefenceDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private api: APIService,
+  ) {
+    console.log(data);
+  }
+
+  ngOnInit(): void {
+  }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+  editStat() {
+    // Set the appropriate data variables to whatever changes i guess
+    this.dialogRef.close(this.data);
+  }
+
+}
+
+@Component({
+  selector: 'edit-foul-dialog',
+  templateUrl: 'edit-foul-dialog.html',
+  styleUrls: ['./player.component.css']
+})
+export class EditFoulDialog implements OnInit {
+  @ViewChild('playerName') name;
+  @ViewChild('playerSurname') surname;
+  @ViewChild('DOB') DOB;
+  @ViewChild('csvInput') upload;
+  playerPic: string;
+
+  constructor(
+    public dialogRef: MatDialogRef<EditFoulDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private api: APIService,
+  ) {
+    console.log(data);
+  }
+
+  ngOnInit(): void {
+  }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+  editStat() {
+    // Set the appropriate data variables to whatever changes i guess
+    this.dialogRef.close(this.data);
+  }
+
 }

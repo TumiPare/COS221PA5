@@ -1,0 +1,46 @@
+<h1 mat-dialog-title>Edit Offence Stats </h1>
+<div mat-dialog-content id="dialogContent">
+    <form class="example-form">
+        <h1>Offence</h1>
+        <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Assits</mat-label>
+            <input matInput>
+        </mat-form-field>
+        <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Successful Passes</mat-label>
+            <input matInput>
+        </mat-form-field>
+        <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Successful Passes</mat-label>
+            <input matInput>
+        </mat-form-field>
+        <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Unsuccesful Passes</mat-label>
+            <input matInput>
+        </mat-form-field>
+        <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Sprints Won</mat-label>
+            <input matInput>
+        </mat-form-field>
+        <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Sprints Lost</mat-label>
+            <input matInput>
+        </mat-form-field>
+        <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Sprints Lost</mat-label>
+            <input matInput>
+        </mat-form-field>
+        <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Goals</mat-label>
+            <input matInput>
+        </mat-form-field>
+        <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Misses</mat-label>
+            <input matInput>
+        </mat-form-field>
+    </form>
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Cancel</button>
+    <button mat-button (click)="editStat()" cdkFocusInitial>Add</button>
+</div>
