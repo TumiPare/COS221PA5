@@ -1,0 +1,15 @@
+.site {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    background-color: blue;
+    border-radius: 10px;
+    /* From https://css.glass */
+    background: rgba(58, 125, 181, 0.48);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid rgba(58, 125, 181, 0.3);
+}
